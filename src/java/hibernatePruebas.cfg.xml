@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+        <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/SigemcoPRUEBAS</property>
+        <property name="hibernate.connection.username">postgres</property>
+        <property name="hibernate.connection.password">Codesoftware1234</property>
+        <property name="hibernate.connection.pool_size">1</property>
+        <property name="hibernate.show_sql">true</property>
+        <property name="hibernate.format_sql">true</property>
+        <property name="hibernate.enable_lazy_load_no_trans">true</property>
+        <mapping class="co.com.codesoftware.persistencia.entidad.admin.UsuarioEntity"/>
+        <mapping class="co.com.codesoftware.persistencia.entidad.admin.PersonaEntity"/>
+        <mapping class="co.com.codesoftware.persistencia.entidad.admin.PerfilEntity"/>
+        <mapping class="co.com.codesoftware.persistencia.entidad.admin.SedeEntity"/>
+        <mapping class="co.com.codesoftware.persistencia.entidad.admin.ParametrosEmpresaEntity"/>
+        <mapping class="co.com.codesoftware.persistencia.entidad.admin.ClienteEntity"/>
+
+        <mapping class="co.com.codesoftware.persistencia.entidad.inventario.CategoriaEntity"/>
+        <mapping class="co.com.codesoftware.persistencia.entidad.inventario.ConteoEntity"/>
+        <mapping class="co.com.codesoftware.persistencia.entidad.inventario.MarcaEntity"/>
+        <mapping class="co.com.codesoftware.persistencia.entidad.inventario.ProductoConteoEntity"/>
+        <mapping class="co.com.codesoftware.persistencia.entidad.inventario.ProductoEntity"/>
+        <mapping class="co.com.codesoftware.persistencia.entidad.inventario.ReferenciaEntity"/>
+        <mapping class="co.com.codesoftware.persistencia.entidad.inventario.SubCuentaEntity"/>
+        <mapping class="co.com.codesoftware.persistencia.entidad.inventario.ProductoEntity"/>
+        <mapping class="co.com.codesoftware.persistencia.entidad.inventario.PrecioProductoEntity"/>
+        <mapping class="co.com.codesoftware.persistencia.entidad.inventario.PromPonderaEntity"/>
+        <mapping class="co.com.codesoftware.persistencia.entidad.inventario.ExistenciaXSedeEntity"/>
+        
+        <mapping class="co.com.codesoftware.persistencia.entidad.facturacion.FacturaEntity"/>
+        <mapping class="co.com.codesoftware.persistencia.entidad.facturacion.DetProduFacturaEntity"/>
+        <!-- Entidades de NSIGEMCO -->
+        <mapping class="co.com.codesoftware.persistence.entity.administracion.UsuarioEntity"/>
+        <mapping class="co.com.codesoftware.persistence.entity.administracion.MoviContableEntity"/>
+        <mapping class="co.com.codesoftware.persistence.entity.administracion.TipoDocumentoEntity"/>
+        <mapping class="co.com.codesoftware.persistence.entity.administracion.PersonaEntity"/>
+        <mapping class="co.com.codesoftware.persistence.entity.administracion.SedeEntity"/>
+        <mapping class="co.com.codesoftware.persistence.entity.administracion.ProveedoresEntity"/>
+        <mapping class="co.com.codesoftware.persistence.entity.administracion.MarcaEntity"/>
+        <mapping class="co.com.codesoftware.persistence.entity.administracion.ReferenciaEntity"/>
+        <mapping class="co.com.codesoftware.persistence.entity.administracion.CategoriaEntity"/>
+        <mapping class="co.com.codesoftware.persistence.entity.administracion.PerfilEntity"/>
+        <mapping class="co.com.codesoftware.persistence.entity.administracion.ProductoEntity"/>
+        <mapping class="co.com.codesoftware.persistence.entity.administracion.SubCuentaEntity"/>
+        <mapping class="co.com.codesoftware.persistence.entity.administracion.ReteFuenteEntity"/>
+        <mapping class="co.com.codesoftware.persistence.entity.administracion.ParametrosEntity"/>
+        <mapping class="co.com.codesoftware.persistence.entity.productos.ProductoTmpEntity"/>
+        <mapping class="co.com.codesoftware.persistence.entities.simple.ProductoSimpleEntity"/>
+        <mapping class="co.com.codesoftware.persistence.entity.productos.FacturaCompraEntity"/>
+        <mapping class="co.com.codesoftware.persistence.entity.productos.FacturaCompraTotalEntity"/>
+        <mapping class="co.com.codesoftware.persistence.entity.productos.PagoFacCompraEntity"/>
+        <mapping class="co.com.codesoftware.persistence.entity.productos.ProductoFacCompraEntity"/>
+        <mapping class="co.com.codesoftware.persistence.entities.simple.ProductoSimpleEntity"/>
+        <mapping class="co.com.codesoftware.persistence.entities.simple.PrecioProdSimpleEntity"/>
+        <mapping class="co.com.codesoftware.persistence.entity.productos.PorcentajePrecioEntity"/>
+        <mapping class="co.com.codesoftware.persistence.entity.productos.ImagenesFacCompraEntity"/>   
+        <mapping class="co.com.codesoftware.persistence.entity.productos.KardexProductoEntity"/>
+        <mapping class="co.com.codesoftware.persistence.entity.productos.MovimientoInventarioEntity"/>
+        <mapping class="co.com.codesoftware.persistence.entity.facturacion.HistorialFacturaEntity"/>
+        <mapping class="co.com.codesoftware.persistence.entity.administracion.ClienteEntity"/>
+        <mapping class="co.com.codesoftware.persistence.entity.facturacion.ImagenFacturaEntity"/>
+    </session-factory>
+</hibernate-configuration>
