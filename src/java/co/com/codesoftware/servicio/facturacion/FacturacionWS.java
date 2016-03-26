@@ -25,6 +25,7 @@ import javax.xml.bind.annotation.XmlElement;
  */
 @WebService(serviceName = "FacturacionWS")
 public class FacturacionWS {
+
     /**
      * Funcion con la cual obtengo las facturas de una sede y ademas de esto las
      * filtro para encontrarlas mas facil
@@ -38,24 +39,25 @@ public class FacturacionWS {
      */
     @WebMethod(operationName = "obtenerFacturasConFiltros")
     @WebResult(name = "listaFacturas")
-    public List<FacturaEntity> obtenerFacturasConFiltros(@XmlElement(required = true)@WebParam(name = "fInicial")Date fInicial, 
-            @XmlElement(required = true) @WebParam(name = "fFinal")Date fFinal,
-            @WebParam(name = "idFactura")Integer idFactura,
-            @WebParam(name = "idCliente")String IdCliente,
-            @WebParam(name = "codExterno")String codExterno) {
+    public List<FacturaEntity> obtenerFacturasConFiltros(@XmlElement(required = true) @WebParam(name = "fInicial") Date fInicial,
+            @XmlElement(required = true) @WebParam(name = "fFinal") Date fFinal,
+            @WebParam(name = "idFactura") Integer idFactura,
+            @WebParam(name = "idCliente") String IdCliente,
+            @WebParam(name = "codExterno") String codExterno) {
         List<FacturaEntity> rta = null;
-        try (FacturacionLogica objLogic = new FacturacionLogica()){
+        try (FacturacionLogica objLogic = new FacturacionLogica()) {
             rta = objLogic.obtieneFacturasXFiltros(fInicial, fFinal, idFactura, IdCliente, codExterno);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return rta;
     }
-    
+
     /**
      * Metodo con el cual obtengo una factura teniendo como referencia su id
      * unico
      *
+     * @param idFactura
      * @return
      */
     @WebMethod(operationName = "obtenerFacturaXId")
@@ -67,7 +69,7 @@ public class FacturacionWS {
             return null;
         }
     }
-    
+
     /**
      * Metodo que consulta el valor de la facturacion por sede
      *
@@ -78,14 +80,14 @@ public class FacturacionWS {
     @WebResult(name = "cantidad")
     public BigDecimal obtenerValorCaja(@XmlElement(required = true) @WebParam(name = "sede") Integer sede) {
         BigDecimal rta = null;
-        try(FacturacionLogica logic = new FacturacionLogica()) {
+        try (FacturacionLogica logic = new FacturacionLogica()) {
             rta = logic.validaValorCaja(sede);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return rta;
     }
-    
+
     /**
      * Funcion en la cual se crea la facturacion basica del sistema
      *
@@ -103,6 +105,7 @@ public class FacturacionWS {
         }
         return rta;
     }
+
     /**
      * Funcion con la cual se realiza la facturacion de los productos avanzados
      *
@@ -119,7 +122,8 @@ public class FacturacionWS {
             e.printStackTrace();
         }
         return rta;
-    }    
+    }
+
     /**
      * Funcion con la cual se genera un pdf con la factura apartir de su id
      *
@@ -136,5 +140,25 @@ public class FacturacionWS {
             e.printStackTrace();
         }
         return imagen;
+    }
+
+    /**
+     * metodo que consulta las facturas por sede  
+     * @param fInicial
+     * @param fFinal
+     * @param idSede
+     * @return 
+     */
+    @WebMethod(operationName = "obtenerFacturasSede")
+    @WebResult(name = "listaFacturas")
+    public List<FacturaEntity> obtenerFacturasSede(@XmlElement(required = true) @WebParam(name = "fInicial") Date fInicial,@XmlElement(required = true) @WebParam(name = "fFinal") Date fFinal,
+    @XmlElement(required = true) @WebParam(name = "idSede") Integer idSede) {
+        List<FacturaEntity> rta = null;
+        try(FacturacionLogica logica = new FacturacionLogica()) {
+            rta = logica.obtieneFacturasXSede(fInicial, fFinal, idSede);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
     }
 }

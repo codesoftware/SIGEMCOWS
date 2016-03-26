@@ -40,16 +40,11 @@ public class ProductoEntity implements Serializable {
     private String descripcion;
     @Column(name = "dska_iva")
     private String iva;
-    @Column(name = "dska_porc_iva")
-    private Integer ivaPorc;
     @JoinColumn(name = "dska_marca")
     @OneToOne(fetch = FetchType.LAZY)
     private MarcaEntity marca;
     @Column(name = "dska_estado")
     private String estado;
-    @Column(name = "dska_fec_ingreso")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fecha;
     @JoinColumn(name = "dska_cate")
     @OneToOne(fetch = FetchType.LAZY)
     private CategoriaEntity categoria;
@@ -115,13 +110,6 @@ public class ProductoEntity implements Serializable {
         this.iva = iva;
     }
 
-    public Integer getIvaPorc() {
-        return ivaPorc;
-    }
-
-    public void setIvaPorc(Integer ivaPorc) {
-        this.ivaPorc = ivaPorc;
-    }
 
     public MarcaEntity getMarca() {
         return marca;
@@ -139,13 +127,7 @@ public class ProductoEntity implements Serializable {
         this.estado = estado;
     }
 
-    public Date getFecha() {
-        return fecha;
-    }
 
-    public void setFecha(Date fecha) {
-        this.fecha = fecha;
-    }
 
     public CategoriaEntity getCategoria() {
         return categoria;

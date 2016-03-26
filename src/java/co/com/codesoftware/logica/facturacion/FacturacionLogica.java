@@ -44,6 +44,31 @@ public class FacturacionLogica implements AutoCloseable {
     private String mensaje;
 
     /**
+     * metodo que consulta las facturas por fecha y por sede
+     * @param fechaInicial
+     * @param fechaFinal
+     * @param sede
+     * @return 
+     */
+    public List<FacturaEntity> obtieneFacturasXSede(Date fechaInicial,
+            Date fechaFinal,
+            Integer sede) {
+        List<FacturaEntity> rta = null;
+        try {
+            initOperation();
+            rta =sesion.createCriteria(FacturaEntity.class)
+                    .setFetchMode("idSede", FetchMode.JOIN)
+                    .setFetchMode("cliente", FetchMode.JOIN)
+                    .createAlias("idSede", "sed").add(Restrictions.eq("sed.id", sede))
+                    .add(Restrictions.between("fecha", fechaInicial, fechaFinal)).list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+
+    }
+
+    /**
      * Funcion con la cual obtengo facturas por medio de una serie de filtros
      *
      * @param fechaInicial
@@ -485,7 +510,7 @@ public class FacturacionLogica implements AutoCloseable {
         }
         return true;
     }
-    
+
     /**
      * Funcion la cual obtiene el id unico de la tabla temporal de facturacion
      * de productos
@@ -502,6 +527,7 @@ public class FacturacionLogica implements AutoCloseable {
         }
         return result;
     }
+
     /**
      * Funcion la cual obtiene el id unico de la tabla temporal de facturacion
      * de recetas
@@ -518,7 +544,7 @@ public class FacturacionLogica implements AutoCloseable {
         }
         return result;
     }
-   
+
     /**
      * Funcion la cual valida si un objeto receta de facturacion viene con los
      * datos correctos
@@ -546,7 +572,7 @@ public class FacturacionLogica implements AutoCloseable {
         }
         return true;
     }
-    
+
     /**
      * Funcion encargada de realizar el llamado a la funcion que realiza toda la
      * facturacion
@@ -611,7 +637,7 @@ public class FacturacionLogica implements AutoCloseable {
     public void setMensaje(String mensaje) {
         this.mensaje = mensaje;
     }
-    
+
     /**
      * Funcion encargada de realizar la logica para la realizacion de la
      * facturas avanzadas en el sistema
@@ -681,7 +707,7 @@ public class FacturacionLogica implements AutoCloseable {
         }
         return rta;
     }
-    
+
     /**
      * Funcion encargada de realizar el llamado a la funcion que realiza toda la
      * facturacion
