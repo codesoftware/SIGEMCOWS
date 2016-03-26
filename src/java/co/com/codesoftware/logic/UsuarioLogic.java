@@ -5,7 +5,7 @@
  */
 package co.com.codesoftware.logic;
 
-import co.com.codesoftware.persistence.entity.administracion.UsuarioEntity;
+import co.com.codesoftware.persistencia.entidad.admin.UsuarioEntity;
 import co.com.codesoftware.persistencia.HibernateUtil;
 import co.com.codesoftware.persistencia.ReadFunction;
 import co.com.codesoftware.persistencia.utilities.DataType;
@@ -26,27 +26,7 @@ public class UsuarioLogic implements AutoCloseable {
     private Session sesion;
     private Transaction tx;
 
-    /**
-     * Funcion la cual busca el usuario
-     *
-     * @param usuario
-     * @return
-     */
-    public UsuarioEntity obtieneUsuario(String usuario) {
-        UsuarioEntity usuarioEntity = null;
-        try {
-            this.initOperation();
-            Criteria crit = sesion.createCriteria(UsuarioEntity.class);
-            crit.add(Restrictions.eq("usuario", usuario.toUpperCase()));
-            usuarioEntity = (UsuarioEntity) crit.uniqueResult();
-        } catch (Exception e) {
-            usuarioEntity = new UsuarioEntity();
-            usuarioEntity.setDescripcionRespuesta(e.getMessage());
-            usuarioEntity.setCodigoRespuesta(0);
-            usuarioEntity.setMensajeRespuesta("ERROR");
-        }
-        return usuarioEntity;
-    }
+    
 
     /**
      * Funcion encargada de realizar el login de un usuario basandose en su

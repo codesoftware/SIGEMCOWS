@@ -6,7 +6,7 @@
 package co.com.codesoftware.logic;
 
 
-import co.com.codesoftware.persistence.entity.administracion.SedeEntity;
+import co.com.codesoftware.persistencia.entidad.admin.SedeEntity;
 import co.com.codesoftware.persistencia.HibernateUtil;
 import java.util.List;
 import org.hibernate.Criteria;

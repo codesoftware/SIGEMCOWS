@@ -10,7 +10,7 @@ import co.com.codesoftware.logic.productos.FacturaCompraLogic;
 import co.com.codesoftware.persistence.entities.FacturaCompraGeneralEntity;
 import co.com.codesoftware.persistence.entities.simple.PrecioProdSimpleEntity;
 import co.com.codesoftware.persistence.entities.simple.ProductoSimpleEntity;
-import co.com.codesoftware.persistence.entity.administracion.ProductoEntity;
+import co.com.codesoftware.persistencia.entidad.inventario.ProductoEntity;
 import co.com.codesoftware.persistence.entity.administracion.RespuestaEntity;
 import co.com.codesoftware.persistence.entity.productos.FacturaCompraTotalEntity;
 import co.com.codesoftware.persistence.entity.productos.ImagenesFacCompraEntity;
@@ -22,7 +22,6 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
-import javax.xml.ws.ResponseWrapper;
 
 /**
  *

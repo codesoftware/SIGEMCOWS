@@ -12,28 +12,25 @@ import co.com.codesoftware.logic.ProductoTmpLogic;
 import co.com.codesoftware.logic.ProveedoresLogic;
 import co.com.codesoftware.logic.ReferenciaLogic;
 import co.com.codesoftware.logic.RetencionLogic;
-import co.com.codesoftware.logic.SedeLogic;
 import co.com.codesoftware.logic.SubCuentaLogic;
 import co.com.codesoftware.logic.UsuarioLogic;
 import co.com.codesoftware.logic.productos.FacturaCompraLogic;
 import co.com.codesoftware.logic.productos.PedidosLogic;
 import co.com.codesoftware.persistence.entities.MapaEntity;
 import co.com.codesoftware.persistence.entities.PucEntity;
-import co.com.codesoftware.persistence.entity.administracion.CategoriaEntity;
-import co.com.codesoftware.persistence.entity.administracion.MarcaEntity;
-import co.com.codesoftware.persistence.entity.administracion.ProductoEntity;
 import co.com.codesoftware.persistence.entity.administracion.ProveedoresEntity;
-import co.com.codesoftware.persistence.entity.administracion.ReferenciaEntity;
 import co.com.codesoftware.persistence.entity.administracion.RespuestaEntity;
 import co.com.codesoftware.persistence.entity.administracion.ReteFuenteEntity;
-import co.com.codesoftware.persistence.entity.administracion.SedeEntity;
-import co.com.codesoftware.persistence.entity.administracion.SubCuentaEntity;
-import co.com.codesoftware.persistence.entity.administracion.UsuarioEntity;
 import co.com.codesoftware.persistence.entity.productos.FacturaCompraEntity;
 import co.com.codesoftware.persistence.entity.productos.PagoFacCompraEntity;
 import co.com.codesoftware.persistence.entity.productos.PedidoEntity;
 import co.com.codesoftware.persistence.entity.productos.ProductoFacCompraEntity;
 import co.com.codesoftware.persistence.entity.productos.ProductoTmpEntity;
+import co.com.codesoftware.persistencia.entidad.inventario.CategoriaEntity;
+import co.com.codesoftware.persistencia.entidad.inventario.MarcaEntity;
+import co.com.codesoftware.persistencia.entidad.inventario.ProductoEntity;
+import co.com.codesoftware.persistencia.entidad.inventario.ReferenciaEntity;
+import co.com.codesoftware.persistencia.entidad.inventario.SubCuentaEntity;
 import co.com.codesoftware.reportes.logica.ReportesLogic;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -48,26 +45,7 @@ import javax.jws.WebResult;
  * @author ACER
  */
 @WebService(serviceName = "AdministrationEndPoint")
-public class AdministrationEndPoint {
-
-    /**
-     * Funcion con la cual se obtiene los datos de un usuario basandose en el
-     * usuario de la persona
-     *
-     * @param usuario
-     * @return
-     */
-    @WebMethod(operationName = "obtieneUsuarioXUsu")
-    @WebResult(name = "usuarioEntity")
-    public UsuarioEntity obtieneUsuarioXUsu(@WebParam(name = "usuario") String usuario) {
-        UsuarioLogic logic = new UsuarioLogic();
-        try {
-            return logic.obtieneUsuario(usuario);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
+public class AdministrationEndPoint {   
 
     /**
      * Metodo el cual consulta los proveedores activos en el sistema
@@ -204,28 +182,14 @@ public class AdministrationEndPoint {
 
     }
 
-    /**
-     * Funcion que consulta las Sedes activas en el sistema
-     *
-     * @return
-     */
-    @WebMethod(operationName = "obtieneSedes")
-    @WebResult(name = "listaSedes")
-    public List<SedeEntity> obtieneSedes() {
-        try (SedeLogic logic = new SedeLogic()) {
-            return logic.consultaSedes();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
 
-        }
-    }
 
     /**
      * Funcion que consulta las categorias activas en el sistema
      *
      * @return
      */
+    
     @WebMethod(operationName = "obtieneCategorias")
     @WebResult(name = "listaCategorias")
     public List<CategoriaEntity> obtieneCategorias() {

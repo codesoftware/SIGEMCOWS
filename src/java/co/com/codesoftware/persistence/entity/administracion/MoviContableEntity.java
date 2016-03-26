@@ -5,6 +5,7 @@
  */
 package co.com.codesoftware.persistence.entity.administracion;
 
+import co.com.codesoftware.persistencia.entidad.inventario.SubCuentaEntity;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import javax.persistence.Column;

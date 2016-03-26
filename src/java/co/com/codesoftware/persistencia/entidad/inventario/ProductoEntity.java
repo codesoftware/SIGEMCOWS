@@ -62,7 +62,11 @@ public class ProductoEntity implements Serializable {
     private String codigoExt;
     @Column(name="dska_barcod")
     private String codigoBarras;
-
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "dska_fec_ingreso")
+    private Date fechaIngreso;
+    @Column(name = "dska_porc_iva")
+    private Integer porcentajeIva;
     public Integer getId() {
         return id;
     }
@@ -182,4 +186,22 @@ public class ProductoEntity implements Serializable {
     public void setCodigoBarras(String codigoBarras) {
         this.codigoBarras = codigoBarras;
     }
+
+    public Date getFechaIngreso() {
+        return fechaIngreso;
+    }
+
+    public void setFechaIngreso(Date fechaIngreso) {
+        this.fechaIngreso = fechaIngreso;
+    }
+
+    public Integer getPorcentajeIva() {
+        return porcentajeIva;
+    }
+
+    public void setPorcentajeIva(Integer porcentajeIva) {
+        this.porcentajeIva = porcentajeIva;
+    }
+    
+    
 }

@@ -5,10 +5,10 @@
  */
 package co.com.codesoftware.persistence.entity.productos;
 
-import co.com.codesoftware.persistence.entity.administracion.CategoriaEntity;
-import co.com.codesoftware.persistence.entity.administracion.MarcaEntity;
-import co.com.codesoftware.persistence.entity.administracion.ReferenciaEntity;
-import co.com.codesoftware.persistence.entity.administracion.SedeEntity;
+import co.com.codesoftware.persistencia.entidad.inventario.CategoriaEntity;
+import co.com.codesoftware.persistencia.entidad.inventario.MarcaEntity;
+import co.com.codesoftware.persistencia.entidad.inventario.ReferenciaEntity;
+import co.com.codesoftware.persistencia.entidad.admin.SedeEntity;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Column;

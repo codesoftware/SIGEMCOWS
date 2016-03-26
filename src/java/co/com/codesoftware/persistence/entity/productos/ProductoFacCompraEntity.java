@@ -5,7 +5,7 @@
  */
 package co.com.codesoftware.persistence.entity.productos;
 
-import co.com.codesoftware.persistence.entity.administracion.ProductoEntity;
+import co.com.codesoftware.persistencia.entidad.inventario.ProductoEntity;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;

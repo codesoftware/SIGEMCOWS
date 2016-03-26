@@ -10,8 +10,8 @@ import co.com.codesoftware.persistencia.HibernateUtil;
 import co.com.codesoftware.persistence.entities.FacturaCompraGeneralEntity;
 import co.com.codesoftware.persistence.entities.simple.PrecioProdSimpleEntity;
 import co.com.codesoftware.persistence.entities.simple.ProductoSimpleEntity;
-import co.com.codesoftware.persistence.entity.administracion.CategoriaEntity;
-import co.com.codesoftware.persistence.entity.administracion.ProductoEntity;
+import co.com.codesoftware.persistencia.entidad.inventario.CategoriaEntity;
+import co.com.codesoftware.persistencia.entidad.inventario.ProductoEntity;
 import co.com.codesoftware.persistence.entity.administracion.ProveedoresEntity;
 import co.com.codesoftware.persistence.entity.administracion.RespuestaEntity;
 import co.com.codesoftware.persistence.entity.productos.FacturaCompraEntity;
@@ -161,7 +161,6 @@ public class ProductoLogic implements AutoCloseable {
         RespuestaEntity respuesta = new RespuestaEntity();
         try {
             ProveedoresEntity entity = new ProveedoresEntity();
-            entity.setId(1);
             this.initOperation();
             Calendar c = Calendar.getInstance();
             c.add(Calendar.DATE, 0);
@@ -172,7 +171,6 @@ public class ProductoLogic implements AutoCloseable {
             producto.setIva("S");
             producto.setPorcentajeIva(16);
             producto.setSubcuenta(null);
-            producto.setProveedor(entity);
             sesion.save(producto);
             respuesta.setCodigoRespuesta(1);
             respuesta.setDescripcionRespuesta("OK");
@@ -216,7 +214,7 @@ public class ProductoLogic implements AutoCloseable {
             rf.addParametro(objEntity.getDescripcion().toUpperCase(), DataType.TEXT);
             rf.addParametro("" + objEntity.getMarca().getId(), DataType.INT);
             rf.addParametro("" + objEntity.getCategoria().getId(), DataType.INT);
-            rf.addParametro(objEntity.getCodigoExterno(), DataType.TEXT);
+            rf.addParametro(objEntity.getCodigoExt(), DataType.TEXT);
             rf.addParametro(objEntity.getUbicacion(), DataType.TEXT);
             boolean valida = rf.callFunctionJdbc();
             rf.ListResponsePg();

@@ -6,7 +6,7 @@
 package co.com.codesoftware.logic;
 
 
-import co.com.codesoftware.persistence.entity.administracion.ReferenciaEntity;
+import co.com.codesoftware.persistencia.entidad.inventario.ReferenciaEntity;
 import co.com.codesoftware.persistence.entity.administracion.RespuestaEntity;
 import co.com.codesoftware.persistencia.HibernateUtil;
 import java.util.List;
