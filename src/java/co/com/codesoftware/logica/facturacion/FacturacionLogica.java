@@ -81,7 +81,7 @@ public class FacturacionLogica implements AutoCloseable {
     public List<FacturaEntity> obtieneFacturasXFiltros(Date fechaInicial,
             Date fechaFinal,
             Integer idFactura,
-            String idCliente,
+            Integer idCliente,
             String codExterno) {
         List<FacturaEntity> facturas = null;
         try {
@@ -98,7 +98,7 @@ public class FacturacionLogica implements AutoCloseable {
             if (idFactura > 0) {
                 crit.add(Restrictions.eq("id", idFactura));
             } else {
-                if (idCliente != null && !"".equalsIgnoreCase(idCliente)) {
+                if (idCliente != null && idCliente > 0) {
                     crit.createAlias("cliente", "cli");
                     crit.add(Restrictions.eq("cli.id", idCliente));
                 }

@@ -42,7 +42,7 @@ public class FacturacionWS {
     public List<FacturaEntity> obtenerFacturasConFiltros(@XmlElement(required = true) @WebParam(name = "fInicial") Date fInicial,
             @XmlElement(required = true) @WebParam(name = "fFinal") Date fFinal,
             @WebParam(name = "idFactura") Integer idFactura,
-            @WebParam(name = "idCliente") String IdCliente,
+            @WebParam(name = "idCliente") Integer IdCliente,
             @WebParam(name = "codExterno") String codExterno) {
         List<FacturaEntity> rta = null;
         try (FacturacionLogica objLogic = new FacturacionLogica()) {
