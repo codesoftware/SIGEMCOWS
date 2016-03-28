@@ -3,9 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package co.com.codesoftware.persistence.entity.administracion;
+package co.com.codesoftware.persistencia.entidad.contabilidad;
 
-import co.com.codesoftware.persistencia.entidad.inventario.SubCuentaEntity;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import javax.persistence.Column;

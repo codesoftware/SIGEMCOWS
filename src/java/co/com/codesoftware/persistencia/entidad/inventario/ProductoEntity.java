@@ -5,6 +5,7 @@
  */
 package co.com.codesoftware.persistencia.entidad.inventario;
 
+import co.com.codesoftware.persistencia.entidad.contabilidad.SubCuentaEntity;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Column;

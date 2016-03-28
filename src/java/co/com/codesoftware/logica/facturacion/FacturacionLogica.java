@@ -12,6 +12,7 @@ import co.com.codesoftware.persistencia.ReadFunction;
 import co.com.codesoftware.persistencia.entidad.admin.ClienteEntity;
 import co.com.codesoftware.persistencia.entidad.admin.ParametrosEmpresaEntity;
 import co.com.codesoftware.persistencia.entidad.admin.UsuarioEntity;
+import co.com.codesoftware.persistencia.entidad.contabilidad.MoviContableEntity;
 import co.com.codesoftware.persistencia.entidad.facturacion.DetProduFacturaEntity;
 import co.com.codesoftware.persistencia.entidad.facturacion.FacturaEntity;
 import co.com.codesoftware.persistencia.entidad.facturacion.TemporalProdTable;
@@ -56,11 +57,15 @@ public class FacturacionLogica implements AutoCloseable {
         List<FacturaEntity> rta = null;
         try {
             initOperation();
+            Integer iniFact = this.buscaConcecutivoFactura();
             rta =sesion.createCriteria(FacturaEntity.class)
                     .setFetchMode("idSede", FetchMode.JOIN)
                     .setFetchMode("cliente", FetchMode.JOIN)
                     .createAlias("idSede", "sed").add(Restrictions.eq("sed.id", sede))
                     .add(Restrictions.between("fecha", fechaInicial, fechaFinal)).list();
+            for (FacturaEntity fac :rta) {
+                fac.setIdFactVisual(fac.getId() + iniFact);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -746,6 +751,55 @@ public class FacturacionLogica implements AutoCloseable {
         } catch (Exception e) {
             llamadoFunction = "error";
             rta = e.toString();
+            e.printStackTrace();
+        }
+        return rta;
+    }
+    
+    /**
+     * Funcion que consulta los movimientos contables de una factura especifica
+     *
+     * @param idFactura
+     * @param estado
+     * @return
+     */
+    public List<MoviContableEntity> consultaMovContableXFac(Integer idFactura, String estado) {
+        List<MoviContableEntity> rta = null;
+        try {
+            if("notcr".equalsIgnoreCase(estado)){
+                idFactura=llamaProcesoIdCancelacion(idFactura);
+            }
+            initOperation();
+            rta = sesion.createCriteria(MoviContableEntity.class)
+                    .add(Restrictions.eq("idLlave", idFactura))
+                    .add(Restrictions.eq("llave", estado))
+                    .addOrder(Order.asc("naturaleza"))
+                    .setFetchMode("subcuenta", FetchMode.JOIN)
+                    .setFetchMode("tipoDocumento", FetchMode.JOIN)
+                    .list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+    /**
+     * Funcion con 
+     * @param idFactura
+     * @return 
+     */
+    public Integer llamaProcesoIdCancelacion(Integer idFactura) {
+        Integer rta = null;
+        try (ReadFunction rf = new ReadFunction()) {
+            rf.setNombreFuncion("FA_ID_CONSULTA_NOTA");
+            rf.setNumParam(1);
+            rf.addParametro(idFactura.toString(), DataType.INT);
+            boolean valida = rf.callFunctionJdbc();
+              if (valida) {
+                rta = Integer.parseInt(rf.getRespuestaPg().get(0));
+            } else {
+                rta = 0;
+            }
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return rta;

@@ -6,7 +6,7 @@
 package co.com.codesoftware.server.facturacion;
 
 import co.com.codesoftware.logic.facturas.FacturaLogic;
-import co.com.codesoftware.persistence.entity.administracion.MoviContableEntity;
+import co.com.codesoftware.persistencia.entidad.contabilidad.MoviContableEntity;
 import co.com.codesoftware.persistence.entity.facturacion.HistorialFacturaEntity;
 import co.com.codesoftware.persistence.entity.facturacion.ImagenFacturaEntity;
 import co.com.codesoftware.wrapperrequest.CancelaFacturaWrapRequest;
@@ -100,23 +100,7 @@ public class FacturacionEndPoint {
         return rta;
     }
 
-    /**
-     * metodo que consulta los movimientos contables por determinada factura
-     *
-     * @param idFactura
-     * @param estado
-     * @return
-     */
-    @WebMethod(operationName = "obtenerMovimientoContableXFac")
-    public List<MoviContableEntity> obtenerMovimientoContableXFac(@WebParam(name = "idFactura") Integer idFactura, @WebParam(name = "estado") String estado) {
-        List<MoviContableEntity> lista = null;
-        try (FacturaLogic logica = new FacturaLogic()) {
-            lista = logica.consultaMovContableXFac(idFactura, estado);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return lista;
-    }
+    
     
 
 

@@ -5,8 +5,10 @@
  */
 package co.com.codesoftware.servicio.facturacion;
 
+import co.com.codesoftware.logic.facturas.FacturaLogic;
 import co.com.codesoftware.logica.facturacion.FacturacionLogica;
 import co.com.codesoftware.logica.reportes.ReporteLogica;
+import co.com.codesoftware.persistencia.entidad.contabilidad.MoviContableEntity;
 import co.com.codesoftware.persistencia.entidad.facturacion.FacturaEntity;
 import co.com.codesoftware.persistencia.entidad.generico.facturacion.FacturacionGenEntity;
 import co.com.codesoftware.persistencia.utilities.RespuestaFacturacion;
@@ -160,5 +162,23 @@ public class FacturacionWS {
             e.printStackTrace();
         }
         return rta;
+    }
+    
+    /**
+     * metodo que consulta los movimientos contables por determinada factura
+     *
+     * @param idFactura
+     * @param estado
+     * @return
+     */
+    @WebMethod(operationName = "obtenerMovimientoContableXFac")
+    public List<MoviContableEntity> obtenerMovimientoContableXFac(@WebParam(name = "idFactura") Integer idFactura, @WebParam(name = "estado") String estado) {
+        List<MoviContableEntity> lista = null;
+        try (FacturacionLogica logica = new FacturacionLogica()) {
+            lista = logica.consultaMovContableXFac(idFactura, estado);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return lista;
     }
 }

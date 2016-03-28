@@ -6,7 +6,7 @@
 package co.com.codesoftware.logic.facturas;
 
 
-import co.com.codesoftware.persistence.entity.administracion.MoviContableEntity;
+import co.com.codesoftware.persistencia.entidad.contabilidad.MoviContableEntity;
 import co.com.codesoftware.persistence.entity.facturacion.HistorialFacturaEntity;
 import co.com.codesoftware.persistence.entity.facturacion.ImagenFacturaEntity;
 
@@ -58,24 +58,6 @@ public class FacturaLogic implements AutoCloseable {
         return rta;
     }
 
-    public Integer llamaProcesoIdCancelacion(Integer idFactura) {
-        Integer rta = null;
-        try (ReadFunction rf = new ReadFunction()) {
-            rf.setNombreFuncion("FA_ID_CONSULTA_NOTA");
-            rf.setNumParam(1);
-            rf.addParametro(idFactura.toString(), DataType.INT);
-            boolean valida = rf.callFunctionJdbc();
-              if (valida) {
-                rta = Integer.parseInt(rf.getRespuestaPg().get(0));
-            } else {
-                rta = 0;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return rta;
-    }
-
     /**
      * funcion que consulta el historial de un factura por su id
      *
@@ -88,31 +70,6 @@ public class FacturaLogic implements AutoCloseable {
             initOperation();
             rta = sesion.createCriteria(HistorialFacturaEntity.class).
                     add(Restrictions.eq("idFactura", idFactura)).list();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return rta;
-    }
-
-    /**
-     * Funcion que consulta los movimientos contables de una factura especifica
-     *
-     * @param idFactura
-     * @param estado
-     * @return
-     */
-    public List<MoviContableEntity> consultaMovContableXFac(Integer idFactura, String estado) {
-        List<MoviContableEntity> rta = null;
-        try {
-            if("notcr".equalsIgnoreCase(estado)){
-                idFactura=llamaProcesoIdCancelacion(idFactura);
-            }
-            initOperation();
-            rta = sesion.createCriteria(MoviContableEntity.class)
-                    .add(Restrictions.eq("idLlave", idFactura))
-                    .add(Restrictions.eq("llave", estado))
-                    .addOrder(Order.asc("naturaleza"))
-                    .list();
         } catch (Exception e) {
             e.printStackTrace();
         }

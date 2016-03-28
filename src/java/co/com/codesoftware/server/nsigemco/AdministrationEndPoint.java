@@ -30,7 +30,7 @@ import co.com.codesoftware.persistencia.entidad.inventario.CategoriaEntity;
 import co.com.codesoftware.persistencia.entidad.inventario.MarcaEntity;
 import co.com.codesoftware.persistencia.entidad.inventario.ProductoEntity;
 import co.com.codesoftware.persistencia.entidad.inventario.ReferenciaEntity;
-import co.com.codesoftware.persistencia.entidad.inventario.SubCuentaEntity;
+import co.com.codesoftware.persistencia.entidad.contabilidad.SubCuentaEntity;
 import co.com.codesoftware.reportes.logica.ReportesLogic;
 import java.math.BigDecimal;
 import java.util.ArrayList;

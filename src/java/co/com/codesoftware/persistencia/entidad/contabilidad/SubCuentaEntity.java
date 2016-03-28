@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package co.com.codesoftware.persistencia.entidad.inventario;
+package co.com.codesoftware.persistencia.entidad.contabilidad;
 
 import java.io.Serializable;
 import javax.persistence.Column;

@@ -7,7 +7,7 @@ package co.com.codesoftware.logic;
 
 
 import co.com.codesoftware.persistence.entities.PucEntity;
-import co.com.codesoftware.persistencia.entidad.inventario.SubCuentaEntity;
+import co.com.codesoftware.persistencia.entidad.contabilidad.SubCuentaEntity;
 import co.com.codesoftware.persistencia.HibernateUtil;
 import co.com.codesoftware.utilidades.Validaciones;
 import java.util.ArrayList;
