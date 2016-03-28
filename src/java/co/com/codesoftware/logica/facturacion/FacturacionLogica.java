@@ -246,7 +246,8 @@ public class FacturacionLogica implements AutoCloseable {
         BigDecimal rta = null;
         try {
             initOperation();
-            rta = (BigDecimal) sesion.createQuery("SELECT SUM(valor) FROM FacturaEntity where fecha = current_date and idSede =:sede").setParameter("sede", sede).uniqueResult();
+            rta = (BigDecimal) sesion.createQuery("SELECT SUM(valor) FROM FacturaEntity where fecha = current_date and idSede =:sede").
+                    setParameter("sede", sede).uniqueResult();
             if (rta == null) {
                 rta = new BigDecimal(0);
             }

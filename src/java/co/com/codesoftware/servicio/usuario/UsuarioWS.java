@@ -16,7 +16,6 @@ import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.ws.ResponseWrapper;
-import org.hibernate.HibernateException;
 
 /**
  *

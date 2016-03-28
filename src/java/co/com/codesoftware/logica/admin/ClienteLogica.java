@@ -81,6 +81,7 @@ public class ClienteLogica implements AutoCloseable {
             initOperation();
             sesion.update(cliente);
             tx.commit();
+            tx = null;
             return true;
         } catch (HibernateException e) {
             e.printStackTrace();
@@ -120,6 +121,7 @@ public class ClienteLogica implements AutoCloseable {
             }
             sesion.save(cliente);
             tx.commit();
+            tx = null;
             return cliente.getId();
         } catch (HibernateException e) {
             e.printStackTrace();

@@ -239,4 +239,5 @@ public class FacturaEntity implements Serializable {
     public void setDetalleProductos(List<DetProduFacturaEntity> detalleProductos) {
         this.detalleProductos = detalleProductos;
     }
+    
 }
