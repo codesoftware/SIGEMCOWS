@@ -7,8 +7,8 @@ package co.com.codesoftware.logic.productos;
 
 
 import co.com.codesoftware.persistence.entity.administracion.RespuestaEntity;
-import co.com.codesoftware.persistence.entity.productos.PedidoEntity;
 import co.com.codesoftware.persistencia.HibernateUtil;
+import co.com.codesoftware.persistencia.entidad.pedido.PedidoEntity;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -38,7 +38,7 @@ public class PedidosLogic implements AutoCloseable {
             entidad.setId(IdPedidos);
             sesion.save(entidad);
             PedidosProductoLogic logic = new PedidosProductoLogic();
-            respuesta = logic.insertaProductoPedido(IdPedidos, entidad.getProductos());
+            respuesta = logic.insertaProductoPedido(IdPedidos, null);
 
         } catch (Exception e) {
             respuesta.setCodigoRespuesta(0);
