@@ -24,7 +24,6 @@
         <mapping class="co.com.codesoftware.persistencia.entidad.inventario.ProductoConteoEntity"/>
         <mapping class="co.com.codesoftware.persistencia.entidad.inventario.ProductoEntity"/>
         <mapping class="co.com.codesoftware.persistencia.entidad.inventario.ReferenciaEntity"/>
-        <mapping class="co.com.codesoftware.persistencia.entidad.inventario.SubCuentaEntity"/>
         <mapping class="co.com.codesoftware.persistencia.entidad.inventario.PrecioProductoEntity"/>
         <mapping class="co.com.codesoftware.persistencia.entidad.inventario.PromPonderaEntity"/>
         <mapping class="co.com.codesoftware.persistencia.entidad.inventario.ExistenciaXSedeEntity"/>
@@ -32,9 +31,12 @@
         <mapping class="co.com.codesoftware.persistencia.entidad.facturacion.FacturaEntity"/>
         <mapping class="co.com.codesoftware.persistencia.entidad.facturacion.DetProduFacturaEntity"/>
         <mapping class="co.com.codesoftware.persistencia.entidad.facturacion.TemporalProdTable"/>
+        
+        <mapping class="co.com.codesoftware.persistencia.entidad.contabilidad.SubCuentaEntity"/>
+        <mapping class="co.com.codesoftware.persistencia.entidad.contabilidad.MoviContableEntity"/>
+        <mapping class="co.com.codesoftware.persistencia.entidad.contabilidad.TipoDocumentoEntity"/>
         <!-- Entidades de NSIGEMCO -->
-        <mapping class="co.com.codesoftware.persistence.entity.administracion.MoviContableEntity"/>
-        <mapping class="co.com.codesoftware.persistence.entity.administracion.TipoDocumentoEntity"/>
+        
         <mapping class="co.com.codesoftware.persistence.entity.administracion.ProveedoresEntity"/>
         <mapping class="co.com.codesoftware.persistence.entity.administracion.ReteFuenteEntity"/>
         <mapping class="co.com.codesoftware.persistence.entity.administracion.ParametrosEntity"/>
