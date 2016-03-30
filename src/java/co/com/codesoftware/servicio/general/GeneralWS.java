@@ -9,6 +9,7 @@ import co.com.codesoftware.logica.admin.ParametrosEmpresaLogic;
 import co.com.codesoftware.logica.admin.SedesLogica;
 import co.com.codesoftware.persistencia.entidad.admin.ParametrosEmpresaEntity;
 import co.com.codesoftware.persistencia.entidad.admin.SedeEntity;
+import co.com.codesoftware.persistencia.entidad.contabilidad.SubCuentaEntity;
 import java.util.List;
 import javax.jws.WebService;
 import javax.jws.WebMethod;
@@ -52,4 +53,5 @@ public class GeneralWS {
         }
 
     }
+    
 }

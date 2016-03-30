@@ -91,7 +91,7 @@ public class ProductoLogic implements AutoCloseable {
             if (codigoBarras != null && !"".equalsIgnoreCase(codigoBarras)) {
                 crit.add(Restrictions.like("codigoBarras", codigoBarras));
             } else if (codigoExterno != null && !"".equalsIgnoreCase(codigoExterno)) {
-                crit.add(Restrictions.like("codigoExterno", codigoExterno));
+                crit.add(Restrictions.like("codigoExt", codigoExterno));
             }
             crit.add(Restrictions.eq("estado", "A"));
             respuesta = (ProductoEntity) crit.uniqueResult();

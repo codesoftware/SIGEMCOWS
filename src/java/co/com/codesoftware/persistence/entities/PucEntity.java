@@ -5,11 +5,13 @@
  */
 package co.com.codesoftware.persistence.entities;
 
+import java.io.Serializable;
+
 /**
  *
  * @author john
  */
-public class PucEntity {
+public class PucEntity implements Serializable{
     private String clave;
     private Integer[] valor;
 
