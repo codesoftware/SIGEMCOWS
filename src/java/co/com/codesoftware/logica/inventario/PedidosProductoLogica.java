@@ -107,7 +107,7 @@ public class PedidosProductoLogica implements AutoCloseable {
                 Criteria crit = sesion.createCriteria(PedidoProductoEntity.class)
                         .add(Restrictions.eq("pedido", idPedido));
                 listaProductos = crit.list();
-                cliente = consultaCliente(pedido.getCliente().getId().intValue());
+                cliente = consultaCliente(pedido.getCliente().getId());
                 productos = mapeoGenericoProducto(listaProductos);
                 respuesta.setCliente(cliente);
                 respuesta.setListaProductos(productos);
@@ -156,7 +156,8 @@ public class PedidosProductoLogica implements AutoCloseable {
         ClienteEntity repuesta = new ClienteEntity();
         try {
             initOperation();
-            Criteria crit = sesion.createCriteria(ClienteEntity.class).add(Restrictions.eq("id", idCliente.longValue()));
+            Criteria crit = sesion.createCriteria(ClienteEntity.class).
+                    add(Restrictions.eq("id", idCliente));
             repuesta = (ClienteEntity) crit.uniqueResult();
         } catch (Exception e) {
             e.printStackTrace();

@@ -4,11 +4,11 @@
     <session-factory>
         <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
         <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
-        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/Sigemco</property>
+        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/SigemcoPRUEBAS</property>
         <property name="hibernate.connection.username">postgres</property>
         <property name="hibernate.connection.password">Codesoftware1234</property>
         <property name="hibernate.connection.pool_size">1</property>
-        <property name="hibernate.show_sql">true</property>
+        <property name="hibernate.show_sql">false</property>
         <property name="hibernate.format_sql">true</property>
         <property name="hibernate.enable_lazy_load_no_trans">true</property>
         <mapping class="co.com.codesoftware.persistencia.entidad.admin.UsuarioEntity"/>
@@ -35,6 +35,9 @@
         <mapping class="co.com.codesoftware.persistencia.entidad.contabilidad.SubCuentaEntity"/>
         <mapping class="co.com.codesoftware.persistencia.entidad.contabilidad.MoviContableEntity"/>
         <mapping class="co.com.codesoftware.persistencia.entidad.contabilidad.TipoDocumentoEntity"/>
+        
+        <mapping class="co.com.codesoftware.persistencia.entidad.pedido.PedidoEntity"/>
+        <mapping class="co.com.codesoftware.persistencia.entidad.pedido.PedidoProductoEntity"/>
         <!-- Entidades de NSIGEMCO -->
         
         <mapping class="co.com.codesoftware.persistence.entity.administracion.ProveedoresEntity"/>
