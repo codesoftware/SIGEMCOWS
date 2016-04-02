@@ -487,13 +487,14 @@ public class AdministrationEndPoint {
     @WebMethod(operationName = "insertaFacturaCompra")
     public RespuestaEntity insertaFacturaCompra(@WebParam(name = "factura") FacturaCompraEntity factura,@WebParam(name = "pagoFactura") List<PagoFacCompraEntity> pago,@WebParam(name = "productosFactura") List<ProductoFacCompraEntity> productos){
         RespuestaEntity respuesta = new RespuestaEntity();
-        try(FacturaCompraLogic logica = new FacturaCompraLogic()) {
+        try {
+            FacturaCompraLogic logica = new FacturaCompraLogic();
             respuesta = logica.insertaFactura(factura,pago,productos);
             
         } catch (Exception e) {
-            respuesta.setCodigoRespuesta(0);
-            respuesta.setDescripcionRespuesta(e.getCause().toString());
-            respuesta.setMensajeRespuesta(e.toString());
+//            respuesta.setCodigoRespuesta(0);
+//            respuesta.setDescripcionRespuesta(e.getCause().toString());
+//            respuesta.setMensajeRespuesta(e.toString());
             e.printStackTrace();
             
         }
