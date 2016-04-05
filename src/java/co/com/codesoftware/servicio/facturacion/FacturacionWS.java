@@ -8,10 +8,13 @@ package co.com.codesoftware.servicio.facturacion;
 import co.com.codesoftware.logic.facturas.FacturaLogic;
 import co.com.codesoftware.logica.facturacion.FacturacionLogica;
 import co.com.codesoftware.logica.reportes.ReporteLogica;
+import co.com.codesoftware.persistence.entity.facturacion.HistorialFacturaEntity;
+import co.com.codesoftware.persistence.entity.facturacion.ImagenFacturaEntity;
 import co.com.codesoftware.persistencia.entidad.contabilidad.MoviContableEntity;
 import co.com.codesoftware.persistencia.entidad.facturacion.FacturaEntity;
 import co.com.codesoftware.persistencia.entidad.generico.facturacion.FacturacionGenEntity;
 import co.com.codesoftware.persistencia.utilities.RespuestaFacturacion;
+import co.com.codesoftware.wrapperrequest.CancelaFacturaWrapRequest;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -181,4 +184,79 @@ public class FacturacionWS {
         }
         return lista;
     }
+    
+        /**
+     * funcion que ejecuta la cancelacion de factura, se envia nuevo estado
+     *
+     * @param datosCancelacion
+     * @return
+     */
+    @WebMethod(operationName = "cancelaFactura")
+    public String cancelaFactura(@WebParam(name = "DatosCancelacion") CancelaFacturaWrapRequest datosCancelacion) {
+        String rta = "";
+        try {
+            FacturaLogic logica = new FacturaLogic();
+            rta = logica.llamaProcesoCancelaFac(datosCancelacion);
+        } catch (Exception e) {
+            e.printStackTrace();
+            rta = "Error" + e.getMessage();
+        }
+        return rta;
+    }
+    
+    /**
+     * metodo que inserta la ruta de la imagen y hace el reverso de facturación
+     *
+     * @param datosCancelacion
+     * @param imagen
+     * @return
+     */
+    @WebMethod(operationName = "insertaImagenCancelacion")
+    public String insertaImagenCancelacion(@WebParam(name = "DatosCancelacion") CancelaFacturaWrapRequest datosCancelacion, @WebParam(name = "DatosImagen") ImagenFacturaEntity imagen) {
+        String rta = "";
+        try (FacturaLogic logica = new FacturaLogic()) {
+            rta = logica.insertaImagenFactura(imagen);
+            if ("OK".equalsIgnoreCase(rta)) {
+                 rta = logica.llamaProcesoCancelaFac(datosCancelacion);
+            }
+        } catch (Exception e) {
+            rta = "Error " + e.getMessage();
+            e.printStackTrace();
+        }
+        return rta;
+    }
+    
+    /**
+     * metodo que consult todas las imagenes de una factura especifica
+     * @param idFactura
+     * @return 
+     */
+    @WebMethod(operationName = "consutaImagenFacturas")
+    public List<ImagenFacturaEntity> consutaImagenFacturas(@WebParam(name = "idFactura") Integer idFactura){
+       List<ImagenFacturaEntity> rta = null;
+        try (FacturaLogic logica = new FacturaLogic()){
+            rta = logica.consultaImagenesFactura(idFactura);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+
+    /**
+     * metodo que consulta el historial de una factura por id
+     *
+     * @param idFactura
+     * @return
+     */
+    @WebMethod(operationName = "obtenerHistorialFacXID")
+    public List<HistorialFacturaEntity> obtenerHistorialFacXID(@WebParam(name = "IdFactura") Integer idFactura) {
+        List<HistorialFacturaEntity> rta = null;
+        try (FacturaLogic logica = new FacturaLogic()) {
+            rta = logica.consultaHistorialFactura(idFactura);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+
 }
