@@ -246,5 +246,22 @@ public class PedidoWS {
         }
         return rta;
     }
+    /**
+     * Funcion con la cual obtengo los datos principales de un pedido por medio de su id
+     * @param idPedido
+     * @return 
+     */
+    @WebMethod(operationName = "obtenerDatPrincPedidoXId")
+    @WebResult(name = "pedido")
+    public PedidoEntity obtenerDatPrincPedidoXId(@XmlElement(required = true) @WebParam(name = "idPedido") Integer idPedido) {
+        PedidoEntity rta = null;
+        try (PedidoLogica objLogic = new PedidoLogica()) {
+            rta = objLogic.buscaDatPrincPedido(idPedido);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+    
 
 }

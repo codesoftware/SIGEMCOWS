@@ -266,6 +266,28 @@ public class PedidoLogica implements AutoCloseable {
         }
         return rta;
     }
+    /**
+     * Funcion con la cual obtengo los datos principales de un pedido 
+     * @param idPedido
+     * @return 
+     */
+    public PedidoEntity buscaDatPrincPedido(Integer idPedido){
+        PedidoEntity rta = null;
+        try {
+            this.initOperation();
+            Criteria crit= sesion.createCriteria(PedidoEntity.class);
+            crit.add(Restrictions.eq("id", idPedido));
+            crit.setFetchMode("cliente", FetchMode.JOIN);
+            crit.setFetchMode("usuario", FetchMode.JOIN);
+            crit.setFetchMode("usuario.perfil", FetchMode.JOIN);
+            crit.setFetchMode("usuario.persona", FetchMode.JOIN);
+            crit.setFetchMode("sede", FetchMode.JOIN);
+            rta = (PedidoEntity) crit.uniqueResult();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
 
     /**
      * Funcion que inicializa la clase de hibernate
