@@ -16,6 +16,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -137,7 +138,10 @@ public class PedidosProductoLogica implements AutoCloseable {
         try {
             initOperation();
             Criteria crit = sesion.createCriteria(PedidoEntity.class)
-                    .add(Restrictions.eq("id", pedido));
+                    .add(Restrictions.eq("id", pedido))
+                    .setFetchMode("sede", FetchMode.JOIN)
+                    .setFetchMode("usuario", FetchMode.JOIN)
+                    .setFetchMode("cliente", FetchMode.JOIN);
             resultado = (PedidoEntity) crit.uniqueResult();
 
         } catch (Exception e) {

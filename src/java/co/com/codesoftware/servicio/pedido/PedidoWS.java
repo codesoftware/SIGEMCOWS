@@ -95,7 +95,7 @@ public class PedidoWS {
      * @param idPedido
      * @return
      */
-    @WebMethod(operationName = "consultaPedidoXId")
+    @WebMethod(operationName = "obtenerPedidoXId")
     @WebResult(name = "RespuestaPedidoEntity")
     public RespuestaPedidoEntity obtenerPedidoXId(@XmlElement(required = true) @WebParam(name = "pedi_pedi") Integer idPedido) {
         RespuestaPedidoEntity respuesta = new RespuestaPedidoEntity();
@@ -219,10 +219,28 @@ public class PedidoWS {
      */
     @WebMethod(operationName = "buscaCotizacionPorCliente")
     @WebResult(name = "listaPedidos")
-    public List<PedidoEntity> buscaCotizacionPorCliente(@XmlElement(required = true) @WebParam(name = "idCliente") Long idCliente) {
+    public List<PedidoEntity> buscaCotizacionPorCliente(@XmlElement(required = true) @WebParam(name = "idCliente") Integer idCliente) {
         List<PedidoEntity> rta = null;
         try (PedidoLogica objLogic = new PedidoLogica()) {
             rta = objLogic.buscaCotizacionXCliente(idCliente);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+    
+    /**
+     * Funcion con la cual busco las remisiones que se encuentran solicitadas por un cliente
+     *
+     * @param idCliente
+     * @return
+     */
+    @WebMethod(operationName = "obtenerRemisionesPorCliente")
+    @WebResult(name = "listaPedidos")
+    public List<PedidoEntity> obtenerRemisionesPorCliente(@XmlElement(required = true) @WebParam(name = "idCliente") Integer idCliente) {
+        List<PedidoEntity> rta = null;
+        try (PedidoLogica objLogic = new PedidoLogica()) {
+            rta = objLogic.buscaRemisionXCliente(idCliente);
         } catch (Exception e) {
             e.printStackTrace();
         }

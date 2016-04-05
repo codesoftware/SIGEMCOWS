@@ -173,7 +173,7 @@ public class PedidoLogica implements AutoCloseable {
      * @param fFinal
      * @return
      */
-    public List<PedidoEntity> consultaPedidoXFiltros(String estado, long idUsuario, Date fInicial, Date fFinal) {
+    public List<PedidoEntity> consultaPedidoXFiltros(String estado, Integer idUsuario, Date fInicial, Date fFinal) {
         List<PedidoEntity> respuesta = null;
         try {
             initOperation();
@@ -181,6 +181,11 @@ public class PedidoLogica implements AutoCloseable {
                     .createAlias("usuario", "us")
                     .add(Restrictions.ge("fecha", fInicial))
                     .add(Restrictions.lt("fecha", fFinal))
+                    .setFetchMode("sede", FetchMode.JOIN)
+                    .setFetchMode("usuario", FetchMode.JOIN)
+                    .setFetchMode("cliente", FetchMode.JOIN)
+                    .setFetchMode("usuario.persona", FetchMode.JOIN)
+                    .setFetchMode("usuario.perfil", FetchMode.JOIN)
                     //.add(Restrictions.between("fecha", fInicial, fFinal))
                     .add(Restrictions.eq("us.id", idUsuario));
             if (!"".equalsIgnoreCase(estado)) {
@@ -222,12 +227,36 @@ public class PedidoLogica implements AutoCloseable {
      * @param idCliente
      * @return
      */
-    public List<PedidoEntity> buscaCotizacionXCliente(Long idCliente) {
+    public List<PedidoEntity> buscaCotizacionXCliente(Integer idCliente) {
         List<PedidoEntity> rta = null;
         try {
             initOperation();
             Criteria crit = sesion.createCriteria(PedidoEntity.class);
             crit.createAlias("cliente", "cli").add(Restrictions.eq("cli.id", idCliente)).add(Restrictions.eq("estado", "CO"));
+            crit.setFetchMode("cli", FetchMode.JOIN).setFetchMode("sede", FetchMode.JOIN);
+            crit.setFetchMode("usuario", FetchMode.JOIN);
+            crit.addOrder(Order.desc("id"));
+            rta = crit.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+    
+    /**
+     * Funcion con la cual busco todas las remisiones generadas para un
+     * cliente
+     *
+     * @param idCliente
+     * @return
+     */
+    public List<PedidoEntity> buscaRemisionXCliente(Integer idCliente) {
+        List<PedidoEntity> rta = null;
+        try {
+            initOperation();
+            Criteria crit = sesion.createCriteria(PedidoEntity.class);
+            crit.createAlias("cliente", "cli").add(Restrictions.eq("cli.id", idCliente))
+                    .add(Restrictions.eq("estado", "SR"));
             crit.setFetchMode("cli", FetchMode.JOIN).setFetchMode("sede", FetchMode.JOIN);
             crit.setFetchMode("usuario", FetchMode.JOIN);
             crit.addOrder(Order.desc("id"));

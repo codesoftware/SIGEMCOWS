@@ -7,8 +7,8 @@ package co.com.codesoftware.logic.productos;
 
 
 import co.com.codesoftware.persistence.entity.administracion.RespuestaEntity;
-import co.com.codesoftware.persistence.entity.productos.PedidoProductoEntity;
 import co.com.codesoftware.persistencia.HibernateUtil;
+import co.com.codesoftware.persistencia.entidad.pedido.PedidoProductoEntity;
 import java.util.ArrayList;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
