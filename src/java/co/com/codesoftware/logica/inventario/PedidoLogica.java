@@ -6,8 +6,10 @@
 package co.com.codesoftware.logica.inventario;
 
 import co.com.codesoftware.persistencia.HibernateUtil;
+import co.com.codesoftware.persistencia.ReadFunction;
 import co.com.codesoftware.persistencia.entidad.pedido.PedidoEntity;
 import co.com.codesoftware.persistencia.entidad.pedido.PedidoProductoEntity;
+import co.com.codesoftware.persistencia.utilities.DataType;
 import co.com.codesoftware.persistencia.utilities.RespuestaEntity;
 import java.util.ArrayList;
 import java.util.Date;
@@ -312,6 +314,41 @@ public class PedidoLogica implements AutoCloseable {
         if (sesion != null) {
             sesion.close();
         }
+    }
+    /**
+     * Funcion con la cual obtengo los productos de un pedido
+     * @param idPedido
+     * @return 
+     */
+    public List<PedidoProductoEntity> buscaProductosPedidoXId(Integer idPedido){
+        List<PedidoProductoEntity> rta =  null;
+        try {
+            this.initOperation();
+            Criteria crit = sesion.createCriteria(PedidoProductoEntity.class);
+            crit.add(Restrictions.eq("pedido", idPedido));
+            rta = crit.list(); 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+    /**
+     * Funcion con la cual llamo a la funcion de remisionar
+     * @return 
+     */
+    public String llamaFuncionRemisionar(Integer idPedido){
+        String rta = "";
+        List<String> response = new ArrayList<>();
+        try (ReadFunction rf = new ReadFunction()){
+            rf.setNombreFuncion("US_FCAMBIO_CLAVE");
+            rf.setNumParam(1);
+            rf.addParametro(""+idPedido, DataType.INT);
+            rf.callFunctionJdbc();
+            response = rf.getRespuestaPg();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
     }
 
 }

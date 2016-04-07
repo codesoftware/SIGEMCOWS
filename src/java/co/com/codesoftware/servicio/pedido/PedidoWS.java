@@ -160,10 +160,10 @@ public class PedidoWS {
      */
     @WebMethod(operationName = "consultaPedidosXFiltros")
     @WebResult(name = "PedidoEntity")
-    public List<PedidoEntity> consultaPedidoXFiltros(@XmlElement(required = true) @WebParam(name = "pedi_estado")String estado, 
-            @XmlElement(required = true) @WebParam(name = "fechaIni")Date fInicial, 
-            @XmlElement(required = true) @WebParam(name = "fechaFin")Date fFinal, 
-            @XmlElement(required = true) @WebParam(name = "idTius")Integer idUsuario) {
+    public List<PedidoEntity> consultaPedidoXFiltros(@XmlElement(required = true) @WebParam(name = "pedi_estado") String estado,
+            @XmlElement(required = true) @WebParam(name = "fechaIni") Date fInicial,
+            @XmlElement(required = true) @WebParam(name = "fechaFin") Date fFinal,
+            @XmlElement(required = true) @WebParam(name = "idTius") Integer idUsuario) {
         List<PedidoEntity> respuesta = null;
         try (PedidoLogica logica = new PedidoLogica()) {
             respuesta = logica.consultaPedidoXFiltros(estado, idUsuario, fInicial, fFinal);
@@ -172,7 +172,7 @@ public class PedidoWS {
         }
         return respuesta;
     }
-    
+
     /**
      * Funcion con la cual se actualiza el estado de un pedido
      *
@@ -182,7 +182,7 @@ public class PedidoWS {
      */
     @WebMethod(operationName = "cambiaEstadoPedido")
     @WebResult(name = "respuesta")
-    public boolean cambiaEstadoPedido(@XmlElement(required = true) @WebParam(name = "idPedido") Integer idPedido, 
+    public boolean cambiaEstadoPedido(@XmlElement(required = true) @WebParam(name = "idPedido") Integer idPedido,
             @XmlElement(required = true) @WebParam(name = "estado") String estado) {
         boolean rta = false;
         try (PedidoLogica objLogic = new PedidoLogica()) {
@@ -192,7 +192,7 @@ public class PedidoWS {
         }
         return rta;
     }
-    
+
     /**
      * Funcion con la cual se genera el pdf con el pedido como cotizacion
      *
@@ -210,7 +210,7 @@ public class PedidoWS {
         }
         return rta;
     }
-    
+
     /**
      * Funcion con la cual busco cotizaciones generadas por un cliente
      *
@@ -228,9 +228,10 @@ public class PedidoWS {
         }
         return rta;
     }
-    
+
     /**
-     * Funcion con la cual busco las remisiones que se encuentran solicitadas por un cliente
+     * Funcion con la cual busco las remisiones que se encuentran solicitadas
+     * por un cliente
      *
      * @param idCliente
      * @return
@@ -246,10 +247,13 @@ public class PedidoWS {
         }
         return rta;
     }
+
     /**
-     * Funcion con la cual obtengo los datos principales de un pedido por medio de su id
+     * Funcion con la cual obtengo los datos principales de un pedido por medio
+     * de su id
+     *
      * @param idPedido
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "obtenerDatPrincPedidoXId")
     @WebResult(name = "pedido")
@@ -262,6 +266,45 @@ public class PedidoWS {
         }
         return rta;
     }
+
+    /**
+     * Funcion con la cual obtengo los datos principales de un pedido por medio
+     * de su id
+     *
+     * @param idPedido
+     * @return
+     */
+    @WebMethod(operationName = "obtenerProductosPedido")
+    @WebResult(name = "productos")
+    public List<PedidoProductoEntity> obtenerProductosPedido(@XmlElement(required = true) @WebParam(name = "idPedido") Integer idPedido) {
+        List<PedidoProductoEntity> rta = null;
+        try (PedidoLogica objLogic = new PedidoLogica()) {
+            rta = objLogic.buscaProductosPedidoXId(idPedido);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+    
+    /**
+     * Funcion con la cual genero la remision
+     * de su id
+     *
+     * @param idPedido
+     * @return
+     */
+    @WebMethod(operationName = "generarRemision")
+    @WebResult(name = "rta")
+    public String generarRemision(@XmlElement(required = true) @WebParam(name = "idPedido") Integer idPedido) {
+        String rta = null;
+        try (PedidoLogica objLogic = new PedidoLogica()) {
+            System.out.println("Este es el id del pedido: " + idPedido);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+    
     
 
 }
