@@ -295,9 +295,10 @@ public class PedidoWS {
      */
     @WebMethod(operationName = "generarRemision")
     @WebResult(name = "rta")
-    public String generarRemision(@XmlElement(required = true) @WebParam(name = "idPedido") Integer idPedido) {
+    public String generarRemision(@XmlElement(required = true) @WebParam(name = "idPedido") Integer idPedido, Integer idTius) {
         String rta = null;
         try (PedidoLogica objLogic = new PedidoLogica()) {
+            rta = objLogic.llamaFuncionRemisionar(idPedido, idTius);
             System.out.println("Este es el id del pedido: " + idPedido);
         } catch (Exception e) {
             e.printStackTrace();

@@ -336,15 +336,17 @@ public class PedidoLogica implements AutoCloseable {
      * Funcion con la cual llamo a la funcion de remisionar
      * @return 
      */
-    public String llamaFuncionRemisionar(Integer idPedido){
+    public String llamaFuncionRemisionar(Integer idPedido, Integer idTius){
         String rta = "";
         List<String> response = new ArrayList<>();
         try (ReadFunction rf = new ReadFunction()){
             rf.setNombreFuncion("IN_GENERA_REMISION");
-            rf.setNumParam(1);
+            rf.setNumParam(2);
             rf.addParametro(""+idPedido, DataType.INT);
+            rf.addParametro(""+idTius, DataType.INT);
             rf.callFunctionJdbc();
             response = rf.getRespuestaPg();
+            rta = response.get(0);
         } catch (Exception e) {
             e.printStackTrace();
         }
