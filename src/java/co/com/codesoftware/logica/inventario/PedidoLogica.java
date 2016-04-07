@@ -340,7 +340,7 @@ public class PedidoLogica implements AutoCloseable {
         String rta = "";
         List<String> response = new ArrayList<>();
         try (ReadFunction rf = new ReadFunction()){
-            rf.setNombreFuncion("US_FCAMBIO_CLAVE");
+            rf.setNombreFuncion("IN_GENERA_REMISION");
             rf.setNumParam(1);
             rf.addParametro(""+idPedido, DataType.INT);
             rf.callFunctionJdbc();
