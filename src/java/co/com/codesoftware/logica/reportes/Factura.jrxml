@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="226" pageHeight="2160" columnWidth="214" leftMargin="1" rightMargin="11" topMargin="7" bottomMargin="7" uuid="396ba8d0-ab46-4cae-a719-866dff7b0291">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="96"/>
+	<property name="ireport.y" value="285"/>
 	<parameter name="fact_fact" class="java.lang.String">
 		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
 	</parameter>
@@ -52,7 +52,8 @@ COALESCE((select para_valor from em_tpara where para_clave = 'CORREOFACT'),'NO A
 (SELECT '$' || to_char(FACT_VLR_TARJETA,'9,999,999,999.00') from fa_tfact where fact_fact  = cast($P{fact_fact} as int))PGOTARJETA,
 (SELECT case when FACT_RETEFUN = 'S' then 'SI' ELSE 'NO' END from fa_tfact where fact_fact  = cast($P{fact_fact} as int))RETEFUENTE,
 (SELECT '$' || to_char(FACT_VLRRTFU,'9,999,999,999.00') from fa_tfact where fact_fact  = cast($P{fact_fact} as int))VALOR_RETE,
-(SELECT '$' || to_char((fact_vlr_total+fact_vlr_iva)-(FACT_VLRRTFU),'9,999,999,999.00') from fa_tfact where fact_fact  = cast($P{fact_fact} as int))PAGUE,
+(SELECT '$' || to_char((fact_ajpeso+fact_vlr_total+fact_vlr_iva)-(FACT_VLRRTFU),'9,999,999,999.00') from fa_tfact where fact_fact  = cast($P{fact_fact} as int))PAGUE,
+(SELECT '$' || to_char(fact_ajpeso,'9,999,999,999.00') from fa_tfact where fact_fact  = cast($P{fact_fact} as int))REDONDEO,
 (select Coalesce(para_valor,' ') from em_tpara where para_clave = 'ACRONIMO') MENSAJE,
 (select Coalesce(para_valor,' ') from em_tpara where para_clave = 'RESOLUCION') MSNRESOLUCION,
 (select Coalesce(para_valor,' ') from em_tpara where para_clave = 'PRENUMFACT') PRENUMFACT]]>
@@ -80,11 +81,12 @@ COALESCE((select para_valor from em_tpara where para_clave = 'CORREOFACT'),'NO A
 	<field name="retefuente" class="java.lang.String"/>
 	<field name="valor_rete" class="java.lang.String"/>
 	<field name="pague" class="java.lang.String"/>
+	<field name="redondeo" class="java.lang.String"/>
 	<field name="mensaje" class="java.lang.String"/>
 	<field name="msnresolucion" class="java.lang.String"/>
 	<field name="prenumfact" class="java.lang.String"/>
 	<title>
-		<band height="320" splitType="Stretch">
+		<band height="335" splitType="Stretch">
 			<textField>
 				<reportElement x="0" y="55" width="215" height="15" uuid="3e3cea59-d8a1-47c5-8aec-0d1ffea4b7db"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -93,14 +95,14 @@ COALESCE((select para_valor from em_tpara where para_clave = 'CORREOFACT'),'NO A
 				<textFieldExpression><![CDATA[$F{nit}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="277" width="215" height="12" uuid="88b5bbde-b74c-45bd-860e-c4ad279640b4"/>
+				<reportElement x="0" y="288" width="215" height="12" uuid="88b5bbde-b74c-45bd-860e-c4ad279640b4"/>
 				<textElement textAlignment="Center">
 					<font fontName="SansSerif" size="8" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{ciudad}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="102" y="305" width="110" height="12" uuid="d9206362-7b87-493b-be57-ec509caa5319"/>
+				<reportElement x="102" y="316" width="110" height="12" uuid="d9206362-7b87-493b-be57-ec509caa5319"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="7"/>
 				</textElement>
@@ -141,7 +143,7 @@ COALESCE((select para_valor from em_tpara where para_clave = 'CORREOFACT'),'NO A
 				</graphicElement>
 			</line>
 			<line>
-				<reportElement x="3" y="263" width="212" height="1" uuid="d42e2e49-b68f-45dc-9b1a-7a84579cfbfe"/>
+				<reportElement x="2" y="275" width="212" height="1" uuid="d42e2e49-b68f-45dc-9b1a-7a84579cfbfe"/>
 				<graphicElement>
 					<pen lineStyle="Dashed"/>
 				</graphicElement>
@@ -168,7 +170,7 @@ COALESCE((select para_valor from em_tpara where para_clave = 'CORREOFACT'),'NO A
 				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="0" y="319" width="215" height="1" uuid="64127512-c7d3-4e22-8176-0a1ff761542f"/>
+				<reportElement x="0" y="329" width="215" height="1" uuid="64127512-c7d3-4e22-8176-0a1ff761542f"/>
 				<graphicElement>
 					<pen lineStyle="Dashed"/>
 				</graphicElement>
@@ -216,14 +218,14 @@ COALESCE((select para_valor from em_tpara where para_clave = 'CORREOFACT'),'NO A
 				<text><![CDATA[TOTAL NETO:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="293" width="100" height="12" uuid="ada9214e-7ae9-4201-859c-c00b911816e3"/>
+				<reportElement x="0" y="304" width="100" height="12" uuid="ada9214e-7ae9-4201-859c-c00b911816e3"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="7" isBold="true"/>
 				</textElement>
 				<text><![CDATA[USTED FUE ATENDIDO POR:    ]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="0" y="265" width="215" height="12" uuid="e3b7afc2-b229-411f-b86b-83354c141c39"/>
+				<reportElement x="0" y="276" width="215" height="12" uuid="e3b7afc2-b229-411f-b86b-83354c141c39"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="8"/>
 				</textElement>
@@ -253,7 +255,7 @@ COALESCE((select para_valor from em_tpara where para_clave = 'CORREOFACT'),'NO A
 				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="102" y="293" width="110" height="12" uuid="db200089-0a4f-4f67-8d17-1358c216a28d"/>
+				<reportElement x="102" y="304" width="110" height="12" uuid="db200089-0a4f-4f67-8d17-1358c216a28d"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isBold="false"/>
 				</textElement>
@@ -281,21 +283,21 @@ COALESCE((select para_valor from em_tpara where para_clave = 'CORREOFACT'),'NO A
 				<textFieldExpression><![CDATA[$F{valor_rete}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="10" y="246" width="70" height="15" uuid="a246791d-04c9-4d4d-8cf9-c4d7f5673ef7"/>
+				<reportElement x="10" y="260" width="70" height="15" uuid="a246791d-04c9-4d4d-8cf9-c4d7f5673ef7"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="7" isBold="true"/>
 				</textElement>
 				<text><![CDATA[PAGUE:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="84" y="247" width="130" height="14" uuid="30ed3657-0ee5-49dd-bb68-02b38c311ceb"/>
+				<reportElement x="84" y="261" width="130" height="14" uuid="30ed3657-0ee5-49dd-bb68-02b38c311ceb"/>
 				<textElement verticalAlignment="Middle">
 					<font size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{pague}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="305" width="100" height="12" uuid="88034479-e06b-48c5-92bb-d0dac9b007b0"/>
+				<reportElement x="0" y="316" width="100" height="12" uuid="88034479-e06b-48c5-92bb-d0dac9b007b0"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="7" isBold="true"/>
 				</textElement>
@@ -335,6 +337,20 @@ COALESCE((select para_valor from em_tpara where para_clave = 'CORREOFACT'),'NO A
 					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{prenumfact}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="10" y="246" width="70" height="15" uuid="b689db02-a986-4201-a2e1-691e7b79fe24"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[RED. CINCUENTENA:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="84" y="246" width="128" height="15" uuid="a7127f02-1d6c-4e2e-9ecc-bd05631563bd"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{redondeo}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
