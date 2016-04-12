@@ -9,6 +9,8 @@ import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -22,6 +24,7 @@ import javax.persistence.TemporalType;
 @Table(name = "fa_trsfa")
 public class ResolucionFactEntity implements Serializable{
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "rsfa_rsfa")
     private Integer id;
     @Column(name = "rsfa_prefij")

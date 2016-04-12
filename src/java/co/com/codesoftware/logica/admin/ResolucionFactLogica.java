@@ -7,8 +7,13 @@ package co.com.codesoftware.logica.admin;
 
 import co.com.codesoftware.persistencia.HibernateUtil;
 import co.com.codesoftware.persistencia.entidad.admin.ResolucionFactEntity;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Order;
 
 /**
  *
@@ -21,16 +26,37 @@ public class ResolucionFactLogica implements AutoCloseable{
     
     /**
      * Funcion con la cula inserto las resoluciones de facturacion
+     * @param resolucionEntity
      * @return 
      */
     public String insertaResolucion(ResolucionFactEntity resolucionEntity){
         String rta = "";
         try {
             this.initOperation();
-            sesion.save(ResolucionFactEntity.class);
+            resolucionEntity.setConsecutivo(0);
+            Date c = new Date();
+            resolucionEntity.setFecha(c);
+            sesion.save(resolucionEntity);
+            rta = "Ok";
         } catch (Exception e) {
             e.printStackTrace();
-            return rta;
+            rta = "Error " +e ;
+        }
+        return rta;
+    }
+    /**
+     * Funcion con la cual obtengo todas las resoluciones de facturacion que se encuentran en el sistema
+     * @return 
+     */
+    public List<ResolucionFactEntity> obtieneResolucionesFacturacion(){
+        List<ResolucionFactEntity> rta = null;
+        try {
+            this.initOperation();
+            Criteria crit = sesion.createCriteria(ResolucionFactEntity.class);
+            crit.addOrder(Order.desc("id"));
+            rta = crit.list();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return rta;
     }

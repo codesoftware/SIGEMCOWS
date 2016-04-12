@@ -71,4 +71,20 @@ public class GeneralWS {
         }
     }
     
+    /**
+     * Metodo con el cual se insertan las resoluciones de facturacion
+     * compañia
+     *
+     * @return
+     */
+    @WebMethod(operationName = "obtenerResolucionesFact")
+    @WebResult(name = "resoluciones")
+    public List<ResolucionFactEntity> obtenerResolucionesFact() {
+        try (ResolucionFactLogica objLogica = new ResolucionFactLogica()) {
+            return objLogica.obtieneResolucionesFacturacion();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+    
 }
