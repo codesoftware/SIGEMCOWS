@@ -15,3 +15,4 @@ build.xml
 /nbproject/
 /src/conf/MANIFEST.MF
 /web/WEB-INF/sun-jaxws.xml
+/dist/
