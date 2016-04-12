@@ -9,7 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -28,12 +28,10 @@ public class PrecioRecetaEntity implements Serializable {
     @Temporal(TemporalType.DATE)
     @Column(name = "prre_fecha")
     private Date fecha;
-    @Column(name = "prre_rece")
-    private Integer idReceta;
     @Column(name = "prre_sede")
     private Integer idSede;
     @JoinColumn(name = "prre_rece")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     private RecetaEntity receta;
 
     public Integer getId() {
@@ -68,14 +66,7 @@ public class PrecioRecetaEntity implements Serializable {
         this.fecha = fecha;
     }
 
-    public Integer getIdReceta() {
-        return idReceta;
-    }
-
-    public void setIdReceta(Integer idReceta) {
-        this.idReceta = idReceta;
-    }
-
+ 
     public Integer getIdSede() {
         return idSede;
     }

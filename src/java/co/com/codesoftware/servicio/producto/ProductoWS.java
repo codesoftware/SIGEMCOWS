@@ -7,10 +7,12 @@ package co.com.codesoftware.servicio.producto;
 
 import co.com.codesoftware.logica.inventario.ProductoLogica;
 import co.com.codesoftware.logica.inventario.ProductosGenericosLogica;
+import co.com.codesoftware.logica.receta.RecetaLogica;
 import co.com.codesoftware.persistencia.entidad.generico.producto.ProductoGenericoEntity;
 import co.com.codesoftware.persistencia.entidad.inventario.ExistenciaXSedeEntity;
 import co.com.codesoftware.persistencia.entidad.inventario.PrecioProductoEntity;
 import co.com.codesoftware.persistencia.entidad.inventario.PromPonderaEntity;
+import co.com.codesoftware.persistencia.entidad.receta.PrecioRecetaEntity;
 import java.math.BigDecimal;
 import java.util.List;
 import javax.jws.WebService;
@@ -43,6 +45,18 @@ public class ProductoWS {
             e.printStackTrace();
             return null;
         }
+    }
+    
+    @WebMethod(operationName = "obtieneRecetasXSede")
+     @WebResult(name = "ListaReceta")
+    public List<PrecioRecetaEntity> consultaRecetas(@WebParam(name = "idSede") Integer idSede){
+        List<PrecioRecetaEntity> rta = null;
+        try(RecetaLogica logica = new RecetaLogica();) {
+            rta = logica.getRecetas(idSede);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
     }
 
     /**

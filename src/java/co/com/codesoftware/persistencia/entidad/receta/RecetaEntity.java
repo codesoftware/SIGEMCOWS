@@ -6,20 +6,21 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "in_trece", uniqueConstraints = {
-    @UniqueConstraint(columnNames = "rece_codigo")})
+@Table(name = "in_trece")
 public class RecetaEntity implements Serializable {
+
     @Id
-    @Column(name = "rece_rece", nullable = false)
+    @Column(name = "rece_rece")
     private Integer id;
-    @Column(name = "rece_codigo", nullable = false)
+    @Column(name = "rece_codigo")
     private String codigo;
     @Column(name = "rece_nombre")
     private String nombre;
@@ -98,4 +99,5 @@ public class RecetaEntity implements Serializable {
     public void setPromedio(BigDecimal promedio) {
         this.promedio = promedio;
     }
+
 }
