@@ -6,10 +6,11 @@
 package co.com.codesoftware.servicio.general;
 
 import co.com.codesoftware.logica.admin.ParametrosEmpresaLogic;
+import co.com.codesoftware.logica.admin.ResolucionFactLogica;
 import co.com.codesoftware.logica.admin.SedesLogica;
 import co.com.codesoftware.persistencia.entidad.admin.ParametrosEmpresaEntity;
+import co.com.codesoftware.persistencia.entidad.admin.ResolucionFactEntity;
 import co.com.codesoftware.persistencia.entidad.admin.SedeEntity;
-import co.com.codesoftware.persistencia.entidad.contabilidad.SubCuentaEntity;
 import java.util.List;
 import javax.jws.WebService;
 import javax.jws.WebMethod;
@@ -52,6 +53,22 @@ public class GeneralWS {
             return null;
         }
 
+    }
+    
+    /**
+     * Metodo con el cual se insertan las resoluciones de facturacion
+     * compañia
+     *
+     * @return
+     */
+    @WebMethod(operationName = "insertarResolucion")
+    @WebResult(name = "respuesta")
+    public String insertarResolucion(ResolucionFactEntity objEntity) {
+        try (ResolucionFactLogica objLogica = new ResolucionFactLogica()) {
+            return objLogica.insertaResolucion(objEntity);
+        } catch (Exception e) {
+            return null;
+        }
     }
     
 }
