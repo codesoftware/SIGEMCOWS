@@ -3,6 +3,8 @@ package co.com.codesoftware.persistencia.entidad.facturacion;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -10,6 +12,7 @@ import javax.persistence.Table;
 @Table(name = "co_ttem_fact_rece")
 public class TemporalRecTable implements Serializable {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "TEM_FACT_RECE")
     private Integer id;
     @Column(name = "TEM_RECE_TRANS")

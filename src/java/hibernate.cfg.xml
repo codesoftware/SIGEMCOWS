@@ -31,6 +31,7 @@
         <mapping class="co.com.codesoftware.persistencia.entidad.facturacion.FacturaEntity"/>
         <mapping class="co.com.codesoftware.persistencia.entidad.facturacion.DetProduFacturaEntity"/>
         <mapping class="co.com.codesoftware.persistencia.entidad.facturacion.TemporalProdTable"/>
+        <mapping class="co.com.codesoftware.persistencia.entidad.facturacion.TemporalRecTable"/>
         
         <mapping class="co.com.codesoftware.persistencia.entidad.contabilidad.SubCuentaEntity"/>
         <mapping class="co.com.codesoftware.persistencia.entidad.contabilidad.MoviContableEntity"/>

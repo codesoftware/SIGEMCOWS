@@ -341,8 +341,6 @@ public class FacturacionLogica implements AutoCloseable {
                         for (TemporalRecTable receta : facturacion.getRecetas()) {
                             boolean validaItem = validaItemReceta(receta);
                             if (validaItem) {
-                                Integer id = this.getMaxIdReceta();
-                                receta.setId(id + 1);
                                 receta.setIdTrans(idTrans);
                                 sesion.save(receta);
                                 tx.commit();
@@ -679,8 +677,6 @@ public class FacturacionLogica implements AutoCloseable {
                         for (TemporalRecTable receta : facturacion.getRecetas()) {
                             boolean validaItem = validaItemReceta(receta);
                             if (validaItem) {
-                                Integer id = this.getMaxIdReceta();
-                                receta.setId(id + 1);
                                 receta.setIdTrans(idTrans);
                                 sesion.save(receta);
                                 tx.commit();
