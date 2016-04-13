@@ -1,6 +1,5 @@
 package co.com.codesoftware.persistencia.entidad.admin;
 
-import co.com.codesoftware.persistence.entity.administracion.RespuestaEntity;
 import java.io.Serializable;
 import java.util.Date;
 

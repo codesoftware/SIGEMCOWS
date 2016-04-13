@@ -8,13 +8,17 @@ package co.com.codesoftware.servicio.general;
 import co.com.codesoftware.logica.admin.ParametrosEmpresaLogic;
 import co.com.codesoftware.logica.admin.ResolucionFactLogica;
 import co.com.codesoftware.logica.admin.SedesLogica;
+import co.com.codesoftware.logica.facturacion.RemisionLogica;
 import co.com.codesoftware.persistencia.entidad.admin.ParametrosEmpresaEntity;
 import co.com.codesoftware.persistencia.entidad.admin.ResolucionFactEntity;
 import co.com.codesoftware.persistencia.entidad.admin.SedeEntity;
+import co.com.codesoftware.persistencia.entidad.facturacion.RemisionEntity;
 import java.util.List;
 import javax.jws.WebService;
 import javax.jws.WebMethod;
+import javax.jws.WebParam;
 import javax.jws.WebResult;
+import javax.xml.bind.annotation.XmlElement;
 
 /**
  *
@@ -82,6 +86,23 @@ public class GeneralWS {
     public List<ResolucionFactEntity> obtenerResolucionesFact() {
         try (ResolucionFactLogica objLogica = new ResolucionFactLogica()) {
             return objLogica.obtieneResolucionesFacturacion();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+    
+    /**
+     * Metodo con el cual obtienen las remisiones por medio del cliente
+     * compañia
+     *
+     * @param idCliente
+     * @return
+     */
+    @WebMethod(operationName = "obtenerRemisionesXCliente")
+    @WebResult(name = "remisiones")
+    public List<RemisionEntity> obtenerRemisionesXCliente(@XmlElement(required = true) @WebParam(name = "idCliente") Integer idCliente) {
+        try (RemisionLogica objLogica = new RemisionLogica()) {
+            return objLogica.obtieneRemisionesXCliente(idCliente);
         } catch (Exception e) {
             return null;
         }
