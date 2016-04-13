@@ -154,6 +154,8 @@ public class ProductoLogica implements AutoCloseable {
      * Funcion con la cual busco un producto por medio de su codigo y que tenga
      * precio en la sede
      *
+     * @param codigo
+     * @param idSede
      * @return
      */
     public PrecioProductoEntity buscoProductoEntityXCodigo(String codigo, Integer idSede) {

@@ -172,6 +172,18 @@ public class ProductoWS {
             return null;
         }
     }
+    
+    @WebMethod(operationName = "obtenerRecetaXCodigo")
+    @WebResult(name = "recetaEntity")
+    public PrecioRecetaEntity obtenerRecetaXCodigo(@WebParam(name = "codigo") String codigo,@WebParam(name = "sede")Integer sede){
+        PrecioRecetaEntity rta = new PrecioRecetaEntity();
+        try (RecetaLogica logica = new RecetaLogica()){
+            rta = logica.getRecetaXCodigo(codigo, sede);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
 
     /**
      * Funcion la cual busca un producto por medio de su codigo externo

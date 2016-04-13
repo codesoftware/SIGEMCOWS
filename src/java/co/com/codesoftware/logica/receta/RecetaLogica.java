@@ -7,7 +7,6 @@ package co.com.codesoftware.logica.receta;
 
 import co.com.codesoftware.persistencia.HibernateUtil;
 import co.com.codesoftware.persistencia.entidad.receta.PrecioRecetaEntity;
-import co.com.codesoftware.persistencia.entidad.receta.RecetaEntity;
 import java.util.List;
 import org.hibernate.FetchMode;
 import org.hibernate.HibernateException;
@@ -46,6 +45,36 @@ public class RecetaLogica implements AutoCloseable {
         return rta;
     }
 
+    /**
+     * funcion que obtiene las recetas por codigo
+     *
+     * @param codigo
+     * @param sede
+     * @return
+     */
+    public PrecioRecetaEntity getRecetaXCodigo(String codigo, Integer sede) {
+        PrecioRecetaEntity rta = new PrecioRecetaEntity();
+        try {
+            initOperation();
+            rta = (PrecioRecetaEntity) sesion.createCriteria(PrecioRecetaEntity.class).
+                    createAlias("receta", "rec").
+                    add(Restrictions.eq("rec.codigo", codigo)).
+                    add(Restrictions.eq("idSede", sede)).
+                    add(Restrictions.eq("estado", "A")).
+                    setFetchMode("receta", FetchMode.JOIN)
+                    .uniqueResult();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+    /**
+     * funcion que consulta las recetas por criterio
+     * @param sede
+     * @param criterio
+     * @return 
+     */
     public List<PrecioRecetaEntity> getRecetasXCriterio(Integer sede, String criterio) {
         List<PrecioRecetaEntity> receta = null;
         try {
