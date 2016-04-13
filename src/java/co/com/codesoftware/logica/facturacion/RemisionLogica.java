@@ -7,11 +7,13 @@ package co.com.codesoftware.logica.facturacion;
 
 import co.com.codesoftware.persistencia.HibernateUtil;
 import co.com.codesoftware.persistencia.entidad.facturacion.RemisionEntity;
+import java.util.Date;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Restrictions;
 
 /**
  *
@@ -25,7 +27,7 @@ public class RemisionLogica implements AutoCloseable{
      * @param idCliente
      * @return 
      */
-    public List<RemisionEntity> obtieneRemisionesXCliente(Integer idCliente){
+    public List<RemisionEntity> obtieneRemisionesXCliente(Integer idCliente, Date fechaIni, Date fechaFin){
         List<RemisionEntity> rta = null;
         try {
             this.initOperation();
@@ -33,6 +35,9 @@ public class RemisionLogica implements AutoCloseable{
             crit.setFetchMode("usuario.perfil", FetchMode.JOIN);
             crit.setFetchMode("usuario.persona", FetchMode.JOIN);
             crit.setFetchMode("usuario.sede", FetchMode.JOIN);
+            if(fechaIni != null && fechaFin != null){
+                crit.add(Restrictions.between("fechaCreacion", fechaIni, fechaFin));
+            }
             rta = crit.list();
         } catch (Exception e) {
             e.printStackTrace();

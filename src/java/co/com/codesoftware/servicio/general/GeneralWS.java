@@ -13,6 +13,7 @@ import co.com.codesoftware.persistencia.entidad.admin.ParametrosEmpresaEntity;
 import co.com.codesoftware.persistencia.entidad.admin.ResolucionFactEntity;
 import co.com.codesoftware.persistencia.entidad.admin.SedeEntity;
 import co.com.codesoftware.persistencia.entidad.facturacion.RemisionEntity;
+import java.util.Date;
 import java.util.List;
 import javax.jws.WebService;
 import javax.jws.WebMethod;
@@ -96,13 +97,17 @@ public class GeneralWS {
      * compañia
      *
      * @param idCliente
+     * @param fechaIni
+     * @param fechafin
      * @return
      */
     @WebMethod(operationName = "obtenerRemisionesXCliente")
     @WebResult(name = "remisiones")
-    public List<RemisionEntity> obtenerRemisionesXCliente(@XmlElement(required = true) @WebParam(name = "idCliente") Integer idCliente) {
+    public List<RemisionEntity> obtenerRemisionesXCliente(@XmlElement(required = true) @WebParam(name = "idCliente") Integer idCliente,
+                                                            @WebParam(name = "fechaIni") Date fechaIni,
+                                                            @WebParam(name = "fechafin") Date fechafin) {
         try (RemisionLogica objLogica = new RemisionLogica()) {
-            return objLogica.obtieneRemisionesXCliente(idCliente);
+            return objLogica.obtieneRemisionesXCliente(idCliente, fechaIni, fechafin);
         } catch (Exception e) {
             return null;
         }
