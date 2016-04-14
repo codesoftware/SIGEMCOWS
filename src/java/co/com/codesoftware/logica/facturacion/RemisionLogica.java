@@ -6,8 +6,11 @@
 package co.com.codesoftware.logica.facturacion;
 
 import co.com.codesoftware.persistencia.HibernateUtil;
+import co.com.codesoftware.persistencia.ReadFunction;
 import co.com.codesoftware.persistencia.entidad.facturacion.DetProdRemision;
 import co.com.codesoftware.persistencia.entidad.facturacion.RemisionEntity;
+import co.com.codesoftware.persistencia.utilities.DataType;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.hibernate.Criteria;
@@ -68,6 +71,27 @@ public class RemisionLogica implements AutoCloseable {
             crit.setFetchMode("producto.referencia", FetchMode.JOIN);
             crit.setFetchMode("producto.subcuenta", FetchMode.JOIN);
             rta = crit.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+    /**
+     * Funcion la cual llama al procedimiento para convertir una remision en factura
+     * @param idRemision
+     * @return 
+     */
+    public String realizarFacturaXRemision(Integer idRemision, Integer idTius){
+         String rta = "";
+        List<String> response = new ArrayList<>();
+        try (ReadFunction rf = new ReadFunction()){
+            rf.setNombreFuncion("FA_REMISION_FACTURA");
+            rf.setNumParam(2);
+            rf.addParametro(""+idTius, DataType.INT);
+            rf.addParametro(""+idRemision, DataType.INT);
+            rf.callFunctionJdbc();
+            response = rf.getRespuestaPg();
+            rta = response.get(0);
         } catch (Exception e) {
             e.printStackTrace();
         }
