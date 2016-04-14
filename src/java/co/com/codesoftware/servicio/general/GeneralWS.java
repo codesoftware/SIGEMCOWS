@@ -12,6 +12,7 @@ import co.com.codesoftware.logica.facturacion.RemisionLogica;
 import co.com.codesoftware.persistencia.entidad.admin.ParametrosEmpresaEntity;
 import co.com.codesoftware.persistencia.entidad.admin.ResolucionFactEntity;
 import co.com.codesoftware.persistencia.entidad.admin.SedeEntity;
+import co.com.codesoftware.persistencia.entidad.facturacion.DetProdRemision;
 import co.com.codesoftware.persistencia.entidad.facturacion.RemisionEntity;
 import java.util.Date;
 import java.util.List;
@@ -108,6 +109,23 @@ public class GeneralWS {
                                                             @WebParam(name = "fechafin") Date fechafin) {
         try (RemisionLogica objLogica = new RemisionLogica()) {
             return objLogica.obtieneRemisionesXCliente(idCliente, fechaIni, fechafin);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+    
+    /**
+     * Metodo con el cual obtienen el detalle de productos
+     * compañia
+     *
+     * @param idRemision
+     * @return
+     */
+    @WebMethod(operationName = "obtenerDetalleRemision")
+    @WebResult(name = "detalles")
+    public List<DetProdRemision> obtenerDetalleRemision(@XmlElement(required = true) @WebParam(name = "idRemision") Integer idRemision) {
+        try (RemisionLogica objLogica = new RemisionLogica()) {
+            return objLogica.buscaDetallesRemision(idRemision);
         } catch (Exception e) {
             return null;
         }
