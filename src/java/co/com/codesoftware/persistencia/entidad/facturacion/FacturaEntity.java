@@ -62,8 +62,8 @@ public class FacturaEntity implements Serializable {
     @Transient
     private List<DetProduFacturaEntity> detalleProductos;
     //private List<DetProduFacturaEntity> detalleProductos;
-//    @Transient
-//    private List<DetReceFacturaEntity> detalleRecetas;
+   @Transient
+    private List<DetReceFacturaEntity> detalleRecetas;
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fact_clien")
     private ClienteEntity cliente;
@@ -239,5 +239,14 @@ public class FacturaEntity implements Serializable {
     public void setDetalleProductos(List<DetProduFacturaEntity> detalleProductos) {
         this.detalleProductos = detalleProductos;
     }
+
+    public List<DetReceFacturaEntity> getDetalleRecetas() {
+        return detalleRecetas;
+    }
+
+    public void setDetalleRecetas(List<DetReceFacturaEntity> detalleRecetas) {
+        this.detalleRecetas = detalleRecetas;
+    }
+    
     
 }

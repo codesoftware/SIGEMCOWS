@@ -14,6 +14,7 @@ import co.com.codesoftware.persistencia.entidad.admin.ParametrosEmpresaEntity;
 import co.com.codesoftware.persistencia.entidad.admin.UsuarioEntity;
 import co.com.codesoftware.persistencia.entidad.contabilidad.MoviContableEntity;
 import co.com.codesoftware.persistencia.entidad.facturacion.DetProduFacturaEntity;
+import co.com.codesoftware.persistencia.entidad.facturacion.DetReceFacturaEntity;
 import co.com.codesoftware.persistencia.entidad.facturacion.FacturaEntity;
 import co.com.codesoftware.persistencia.entidad.facturacion.TemporalProdTable;
 import co.com.codesoftware.persistencia.entidad.facturacion.TemporalRecTable;
@@ -212,6 +213,9 @@ public class FacturacionLogica implements AutoCloseable {
                     }
                 }
                 //Obtengo las recetas
+                
+                factura.setDetalleRecetas(sesion.createCriteria(DetReceFacturaEntity.class).
+                        add(Restrictions.eq("factura", id)).list());
 //                Query query2 = sesion.createQuery("from DetReceFacturacionTable where idFact = :idFact ");
 //                query2.setParameter("idFact", id);
 //                List<DetReceFacturacionTable> aux2 = query2.list();
