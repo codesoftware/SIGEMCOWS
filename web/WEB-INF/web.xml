@@ -48,11 +48,6 @@
         <servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
-    <servlet>
-        <servlet-name>FacturacionEndPoint</servlet-name>
-        <servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
     <servlet-mapping>
         <servlet-name>UsuarioWS</servlet-name>
         <url-pattern>/UsuarioWS</url-pattern>
@@ -88,10 +83,6 @@
     <servlet-mapping>
         <servlet-name>ProductosEndPoint</servlet-name>
         <url-pattern>/ProductosEndPoint</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>FacturacionEndPoint</servlet-name>
-        <url-pattern>/FacturacionEndPoint</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
