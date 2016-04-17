@@ -12,6 +12,7 @@ import co.com.codesoftware.logica.facturacion.RemisionLogica;
 import co.com.codesoftware.persistencia.entidad.admin.ParametrosEmpresaEntity;
 import co.com.codesoftware.persistencia.entidad.admin.ResolucionFactEntity;
 import co.com.codesoftware.persistencia.entidad.admin.SedeEntity;
+import co.com.codesoftware.persistencia.entidad.facturacion.DetProdRemision;
 import co.com.codesoftware.persistencia.entidad.facturacion.RemisionEntity;
 import java.util.Date;
 import java.util.List;
@@ -43,7 +44,7 @@ public class GeneralWS {
             return null;
         }
     }
-    
+
     /**
      * Metodo que consulta todas las sedes que hay en el sistema
      *
@@ -59,10 +60,9 @@ public class GeneralWS {
         }
 
     }
-    
+
     /**
-     * Metodo con el cual se insertan las resoluciones de facturacion
-     * compañia
+     * Metodo con el cual se insertan las resoluciones de facturacion compañia
      *
      * @return
      */
@@ -75,10 +75,9 @@ public class GeneralWS {
             return null;
         }
     }
-    
+
     /**
-     * Metodo con el cual se insertan las resoluciones de facturacion
-     * compañia
+     * Metodo con el cual se insertan las resoluciones de facturacion compañia
      *
      * @return
      */
@@ -91,10 +90,9 @@ public class GeneralWS {
             return null;
         }
     }
-    
+
     /**
-     * Metodo con el cual obtienen las remisiones por medio del cliente
-     * compañia
+     * Metodo con el cual obtienen las remisiones por medio del cliente compañia
      *
      * @param idCliente
      * @param fechaIni
@@ -104,13 +102,50 @@ public class GeneralWS {
     @WebMethod(operationName = "obtenerRemisionesXCliente")
     @WebResult(name = "remisiones")
     public List<RemisionEntity> obtenerRemisionesXCliente(@XmlElement(required = true) @WebParam(name = "idCliente") Integer idCliente,
-                                                            @WebParam(name = "fechaIni") Date fechaIni,
-                                                            @WebParam(name = "fechafin") Date fechafin) {
+            @WebParam(name = "fechaIni") Date fechaIni,
+            @WebParam(name = "fechafin") Date fechafin) {
         try (RemisionLogica objLogica = new RemisionLogica()) {
             return objLogica.obtieneRemisionesXCliente(idCliente, fechaIni, fechafin);
         } catch (Exception e) {
             return null;
         }
     }
-    
+
+    /**
+     * Metodo con el cual obtienen el detalle de productos compañia
+     *
+     * @param idRemision
+     * @return
+     */
+    @WebMethod(operationName = "obtenerDetalleRemision")
+    @WebResult(name = "detalles")
+    public List<DetProdRemision> obtenerDetalleRemision(@XmlElement(required = true) @WebParam(name = "idRemision") Integer idRemision) {
+        try (RemisionLogica objLogica = new RemisionLogica()) {
+            return objLogica.buscaDetallesRemision(idRemision);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    /**
+     * Metodo con el cual obtienen el detalle de productos compañia
+     *
+     * @param idRemision
+     * @param idTius
+     * @return
+     */
+    @WebMethod(operationName = "realizarFacturaXRemision")
+    @WebResult(name = "respuesta")
+    public String realizarFacturaXRemision(@XmlElement(required = true) @WebParam(name = "idRemision") Integer idRemision,
+            @XmlElement(required = true) @WebParam(name = "idTius") Integer idTius) {
+        String rta = "";
+        try{
+            RemisionLogica objLogica = new RemisionLogica();
+            rta = objLogica.realizarFacturaXRemision(idRemision, idTius);
+        } catch (Exception e) {
+            return null;
+        }
+        return rta;
+    }
+
 }
