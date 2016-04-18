@@ -59,6 +59,8 @@ public class FacturaCompraEntity implements Serializable {
     @JoinColumn(name = "facom_sede")
     @OneToOne(fetch = FetchType.LAZY)
     private SedeEntity sede;
+    @Column(name = "facom_ajus")
+    private String ajusteFactura;
 
     public Integer getId() {
         return id;
@@ -162,6 +164,14 @@ public class FacturaCompraEntity implements Serializable {
 
     public void setSede(SedeEntity sede) {
         this.sede = sede;
+    }
+
+    public String getAjusteFactura() {
+        return ajusteFactura;
+    }
+
+    public void setAjusteFactura(String ajusteFactura) {
+        this.ajusteFactura = ajusteFactura;
     }
     
     

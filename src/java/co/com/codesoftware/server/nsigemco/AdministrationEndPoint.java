@@ -482,6 +482,7 @@ public class AdministrationEndPoint {
      * @param factura
      * @param pago
      * @param productos
+     * @param ajustePeso
      * @return 
      */
     @WebMethod(operationName = "insertaFacturaCompra")
