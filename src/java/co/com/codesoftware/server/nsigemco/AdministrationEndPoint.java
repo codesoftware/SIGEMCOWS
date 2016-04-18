@@ -31,7 +31,6 @@ import co.com.codesoftware.persistencia.entidad.inventario.ProductoEntity;
 import co.com.codesoftware.persistencia.entidad.inventario.ReferenciaEntity;
 import co.com.codesoftware.persistencia.entidad.contabilidad.SubCuentaEntity;
 import co.com.codesoftware.persistencia.entidad.pedido.PedidoEntity;
-import co.com.codesoftware.reportes.logica.ReportesLogic;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -517,22 +516,4 @@ public class AdministrationEndPoint {
         }
         return respuesta;
     }
-    
-    /**
-     * metodo que devuelve la ruta del reporte
-     * @param parametros
-     * @param datosReporte
-     * @return 
-     */
-    @WebMethod(operationName = "generaReportes")
-    public String generaReportes(List<MapaEntity> parametros,List<MapaEntity> datosReporte){
-        String rta = "";
-        try(ReportesLogic logic = new ReportesLogic();) {
-            rta = logic.generaReporte(parametros, datosReporte);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return rta;
-    }
-
 }

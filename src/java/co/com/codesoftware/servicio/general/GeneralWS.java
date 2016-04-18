@@ -9,6 +9,8 @@ import co.com.codesoftware.logica.admin.ParametrosEmpresaLogic;
 import co.com.codesoftware.logica.admin.ResolucionFactLogica;
 import co.com.codesoftware.logica.admin.SedesLogica;
 import co.com.codesoftware.logica.facturacion.RemisionLogica;
+import co.com.codesoftware.logica.reportes.ReporteLogica;
+import co.com.codesoftware.persistence.entities.MapaEntity;
 import co.com.codesoftware.persistencia.entidad.admin.ParametrosEmpresaEntity;
 import co.com.codesoftware.persistencia.entidad.admin.ResolucionFactEntity;
 import co.com.codesoftware.persistencia.entidad.admin.SedeEntity;
@@ -144,6 +146,23 @@ public class GeneralWS {
             rta = objLogica.realizarFacturaXRemision(idRemision, idTius);
         } catch (Exception e) {
             return null;
+        }
+        return rta;
+    }
+    
+    /**
+     * metodo que devuelve la ruta del reporte
+     * @param parametros
+     * @param datosReporte
+     * @return 
+     */
+    @WebMethod(operationName = "generaReportes")
+    public String generaReportes(List<MapaEntity> parametros,List<MapaEntity> datosReporte){
+        String rta = "";
+        try(ReporteLogica logica = new ReporteLogica()) {
+            rta = logica.generaReporte(parametros, datosReporte);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return rta;
     }

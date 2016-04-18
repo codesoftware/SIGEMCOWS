@@ -5,17 +5,22 @@
  */
 package co.com.codesoftware.logica.reportes;
 
+import co.com.codesoftware.persistence.entities.MapaEntity;
 import co.com.codesoftware.persistencia.HibernateUtil;
 import java.io.File;
 import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.naming.Context;
 import javax.naming.InitialContext;
+import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.export.JRXlsExporter;
 import net.sf.jasperreports.engine.util.JRLoader;
 import org.hibernate.Session;
 import org.hibernate.engine.spi.SessionImplementor;
@@ -192,6 +197,67 @@ public class ReporteLogica implements AutoCloseable{
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    
+    /**
+     * Funcion que genera los reportes
+     *
+     * @param datos
+     * @param parametrosReporte
+     * @return
+     */
+    public String generaReporte(List<MapaEntity> datos, List<MapaEntity> parametrosReporte) {
+        String ruta = "";
+        try {
+
+            Map<String, Object> parametros = convierteList((ArrayList<MapaEntity>) datos);
+            Map<String, Object> datosReporte = convierteList((ArrayList<MapaEntity>) parametrosReporte);
+            parametros.put("RUTALOGO", rutaRepoServ);
+            if (conectionJDBC()) {
+                JasperReport jasperReport = (JasperReport) JRLoader.loadObject(rutaRepoServ + datosReporte.get("nombreReporte") + ".jasper");
+
+                if ("pdf".equalsIgnoreCase(datosReporte.get("tipoReporte").toString())) {
+                    JasperPrint print = JasperFillManager.fillReport(jasperReport, parametros, con);
+                    ruta = rutaRepoServ + datosReporte.get("nombreReporte") + ".pdf";
+                    JasperExportManager.exportReportToPdfFile(print, ruta);
+                } else {
+                    String print = JasperFillManager.fillReportToFile(rutaRepoServ + datosReporte.get("nombreReporte") + ".jasper", parametros, con);
+                    ruta = rutaRepoServ + datosReporte.get("nombreReporte") + ".xls";
+                    JRXlsExporter exporter = new JRXlsExporter();
+                    exporter.setParameter(JRExporterParameter.INPUT_FILE,print);
+                    exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME,ruta);
+                    exporter.exportReport();
+                }
+            } else {
+                ruta = "error";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ruta;
+    }
+    /**
+     * metodo que convierte la lista en mapa
+     *
+     * @param lista
+     * @return
+     */
+    public HashMap<String, Object> convierteList(ArrayList<MapaEntity> lista) {
+        HashMap<String, Object> mapa = new HashMap<String, Object>();
+        try {
+            for (MapaEntity item : lista) {
+                if (item.getClave().equalsIgnoreCase("fechaInicial")) {
+                    mapa.put(item.getClave(), item.getValor().toString());
+                } else if (item.getClave().equalsIgnoreCase("fechaFinal")) {
+                    mapa.put(item.getClave(), item.getValor().toString());
+                } else {
+                    mapa.put(item.getClave(), item.getValor());
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return mapa;
     }
     
 }
