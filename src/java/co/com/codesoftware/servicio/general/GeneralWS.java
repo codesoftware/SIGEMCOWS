@@ -170,7 +170,7 @@ public class GeneralWS {
      * 
      * @return 
      */
-    @WebMethod(operationName = "generaReportes")
+    @WebMethod(operationName = "actualizarSede")
     public String actualizarSede(@XmlElement(required = true) @WebParam(name = "sede") SedeEntity sede){
         String rta = "";
         try (SedesLogica objLogica = new SedesLogica()){
