@@ -166,5 +166,18 @@ public class GeneralWS {
         }
         return rta;
     }
-
+    /**
+     * 
+     * @return 
+     */
+    @WebMethod(operationName = "generaReportes")
+    public String actualizarSede(@XmlElement(required = true) @WebParam(name = "sede") SedeEntity sede){
+        String rta = "";
+        try (SedesLogica objLogica = new SedesLogica()){
+            rta = objLogica.actualizaSede(sede);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
 }

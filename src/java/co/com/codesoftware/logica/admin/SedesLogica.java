@@ -31,6 +31,20 @@ public class SedesLogica implements AutoCloseable {
         }
         return sedes;
     }
+    /**
+     * Funcion con la cual actualizo una sede
+     * @return 
+     */
+    public String actualizaSede(SedeEntity sedeEntity){
+        String rta = ""; 
+        try {
+            this.initOperation();
+            sesion.update(sedeEntity);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
 
     /**
      * Funcion que incializa la sesion
