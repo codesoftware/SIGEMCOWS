@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="581" leftMargin="7" rightMargin="7" topMargin="7" bottomMargin="7" uuid="2a959b52-c0e0-48e5-8d83-f2313c882d1b">
+	<property name="ireport.zoom" value="1.1"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="32"/>
+	<parameter name="rutaImagen" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select (select UPPER(para_valor) from em_tpara where para_clave = 'NOMBREEMPRESA') nomEmp,
+(select 'NIT: '||para_valor from em_tpara where para_clave = 'NIT') nitEmp,
+(select para_valor from em_tpara where para_clave = 'DIRECCION') dirEmp,
+(select para_valor from em_tpara where para_clave = 'TELEFONOS') telEmp,
+(select 'ACTIVIDAD ECONOMICO: '|| para_valor from em_tpara where para_clave = 'ACTECONO') actEcono]]>
+	</queryString>
+	<field name="nomemp" class="java.lang.String"/>
+	<field name="nitemp" class="java.lang.String"/>
+	<field name="diremp" class="java.lang.String"/>
+	<field name="telemp" class="java.lang.String"/>
+	<field name="actecono" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="125" splitType="Stretch">
+			<frame>
+				<reportElement x="0" y="0" width="581" height="65" uuid="66174344-7dd2-457d-b6d9-c2846d6bb270"/>
+				<image>
+					<reportElement x="0" y="0" width="218" height="45" uuid="21de018f-1530-4633-83f2-c108a8afcd1f"/>
+					<imageExpression><![CDATA["logo.png"]]></imageExpression>
+				</image>
+				<textField>
+					<reportElement x="218" y="0" width="363" height="20" uuid="53598508-f142-451a-aacf-1d56cbe4c638"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="13" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{nomemp}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="218" y="20" width="363" height="15" uuid="fa48be7c-71fd-490a-bf27-cb158bc25225"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{nitemp}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="218" y="35" width="363" height="20" uuid="0fa8de85-3deb-42a4-830f-83b116a88e64"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[REMISION]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="413" y="55" width="168" height="10" uuid="0f30a5d6-af35-498a-b825-6a6636c1f131"/>
+					<textElement>
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{actecono}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="55" width="218" height="10" uuid="31f3839a-0217-4fda-9922-33f277c69447"/>
+					<textElement>
+						<font size="7" isBold="true"/>
+					</textElement>
+					<text><![CDATA[SOMOS REMIGIMEN COMUN]]></text>
+				</staticText>
+			</frame>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
