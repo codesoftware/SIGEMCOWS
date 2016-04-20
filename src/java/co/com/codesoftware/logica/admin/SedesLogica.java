@@ -40,8 +40,10 @@ public class SedesLogica implements AutoCloseable {
         try {
             this.initOperation();
             sesion.update(sedeEntity);
+            rta = "Ok";
         } catch (Exception e) {
             e.printStackTrace();
+            rta = "Error " + e;
         }
         return rta;
     }

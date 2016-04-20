@@ -168,6 +168,7 @@ public class GeneralWS {
     }
     /**
      * 
+     * @param sede
      * @return 
      */
     @WebMethod(operationName = "actualizarSede")

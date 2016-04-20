@@ -21,6 +21,8 @@ public class SedeEntity implements Serializable {
     private String telefono;
     @Column(name = "sede_bodega")
     private String sedeBodega;
+    @Column(name = "sede_rsfa")
+    private Integer resolucion;
 
     public Integer getId() {
         return id;
@@ -62,4 +64,11 @@ public class SedeEntity implements Serializable {
         this.sedeBodega = sedeBodega;
     }
 
+    public Integer getResolucion() {
+        return resolucion;
+    }
+
+    public void setResolucion(Integer resolucion) {
+        this.resolucion = resolucion;
+    }
 }
