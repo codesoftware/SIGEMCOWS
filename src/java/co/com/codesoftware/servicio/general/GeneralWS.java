@@ -160,7 +160,7 @@ public class GeneralWS {
     public String generaReportes(List<MapaEntity> parametros,List<MapaEntity> datosReporte){
         String rta = "";
         try(ReporteLogica logica = new ReporteLogica()) {
-            rta = logica.generaReporte(parametros, datosReporte);
+            rta = logica.generaReporteBase64(parametros, datosReporte);
         } catch (Exception e) {
             e.printStackTrace();
         }

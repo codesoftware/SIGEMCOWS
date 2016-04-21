@@ -2,8 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="581" leftMargin="7" rightMargin="7" topMargin="7" bottomMargin="7" uuid="2a959b52-c0e0-48e5-8d83-f2313c882d1b">
 	<property name="ireport.zoom" value="1.1"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="32"/>
-	<parameter name="rutaImagen" class="java.lang.String"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="RUTALOGO" class="java.lang.String"/>
+	<parameter name="remi_remi" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[select (select UPPER(para_valor) from em_tpara where para_clave = 'NOMBREEMPRESA') nomEmp,
 (select 'NIT: '||para_valor from em_tpara where para_clave = 'NIT') nitEmp,
@@ -25,7 +26,7 @@
 				<reportElement x="0" y="0" width="581" height="65" uuid="66174344-7dd2-457d-b6d9-c2846d6bb270"/>
 				<image>
 					<reportElement x="0" y="0" width="218" height="45" uuid="21de018f-1530-4633-83f2-c108a8afcd1f"/>
-					<imageExpression><![CDATA["logo.png"]]></imageExpression>
+					<imageExpression><![CDATA[$P{RUTALOGO} + "logo.png"]]></imageExpression>
 				</image>
 				<textField>
 					<reportElement x="218" y="0" width="363" height="20" uuid="53598508-f142-451a-aacf-1d56cbe4c638"/>
@@ -63,6 +64,10 @@
 					<text><![CDATA[SOMOS REMIGIMEN COMUN]]></text>
 				</staticText>
 			</frame>
+			<textField>
+				<reportElement x="192" y="92" width="100" height="20" uuid="84946259-369b-44b6-85fb-a044b8ab98b2"/>
+				<textFieldExpression><![CDATA[$P{remi_remi}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageHeader>
 	<columnHeader>

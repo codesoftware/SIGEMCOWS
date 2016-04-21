@@ -29,8 +29,8 @@ import org.hibernate.engine.spi.SessionImplementor;
  *
  * @author nicolas
  */
-public class ReporteLogica implements AutoCloseable{
-    
+public class ReporteLogica implements AutoCloseable {
+
     private Connection con;
     private Session session;
     private String rutaRepoServ;
@@ -43,7 +43,7 @@ public class ReporteLogica implements AutoCloseable{
             e.printStackTrace();
         }
     }
-    
+
     /**
      * Funcion con la cual se realiza un pdf con la factura solicitada teniendo
      * en cuenta el id de facturacion
@@ -108,7 +108,7 @@ public class ReporteLogica implements AutoCloseable{
             }
         } catch (Exception e) {
             e.printStackTrace();
-        } 
+        }
         return documento;
     }
 
@@ -140,7 +140,7 @@ public class ReporteLogica implements AutoCloseable{
         }
         return documento;
     }
-    
+
     /**
      * Funcion la cual llama al jasper para la creacion del pdf de la cotizacion
      *
@@ -156,13 +156,13 @@ public class ReporteLogica implements AutoCloseable{
             properties.put("rutaImagen", rutaRepoServ);
             JasperReport jasperReport = (JasperReport) JRLoader.loadObject(rutaRepoServ + "CotizacionCarta.jasper");
             JasperPrint print = JasperFillManager.fillReport(jasperReport, properties, con);
-            JasperExportManager.exportReportToPdfFile(print, rutaRepoServ + "cotizacion_"+pedido+".pdf");
+            JasperExportManager.exportReportToPdfFile(print, rutaRepoServ + "cotizacion_" + pedido + ".pdf");
             CodificaBase64 codifica64 = new CodificaBase64();
-            boolean codifico = codifica64.codificacionDocumento(rutaRepoServ + "cotizacion_"+pedido+".pdf");
+            boolean codifico = codifica64.codificacionDocumento(rutaRepoServ + "cotizacion_" + pedido + ".pdf");
             if (codifico) {
                 documento = codifica64.getDocumento();
                 codifica64.setDocumento(null);
-                File file = new File(rutaRepoServ + "cotizacion_"+pedido+".pdf");
+                File file = new File(rutaRepoServ + "cotizacion_" + pedido + ".pdf");
                 file.delete();
             }
         } catch (Exception e) {
@@ -188,8 +188,7 @@ public class ReporteLogica implements AutoCloseable{
             return false;
         }
     }
-    
-    
+
     @Override
     public void close() throws Exception {
         try {
@@ -198,7 +197,7 @@ public class ReporteLogica implements AutoCloseable{
             e.printStackTrace();
         }
     }
-    
+
     /**
      * Funcion que genera los reportes
      *
@@ -224,8 +223,8 @@ public class ReporteLogica implements AutoCloseable{
                     String print = JasperFillManager.fillReportToFile(rutaRepoServ + datosReporte.get("nombreReporte") + ".jasper", parametros, con);
                     ruta = rutaRepoServ + datosReporte.get("nombreReporte") + ".xls";
                     JRXlsExporter exporter = new JRXlsExporter();
-                    exporter.setParameter(JRExporterParameter.INPUT_FILE,print);
-                    exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME,ruta);
+                    exporter.setParameter(JRExporterParameter.INPUT_FILE, print);
+                    exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME, ruta);
                     exporter.exportReport();
                 }
             } else {
@@ -236,6 +235,7 @@ public class ReporteLogica implements AutoCloseable{
         }
         return ruta;
     }
+
     /**
      * metodo que convierte la lista en mapa
      *
@@ -259,5 +259,51 @@ public class ReporteLogica implements AutoCloseable{
         }
         return mapa;
     }
-    
+
+    /**
+     * Funcion que genera los reportes
+     *
+     * @param datos
+     * @param parametrosReporte
+     * @return
+     */
+    public String generaReporteBase64(List<MapaEntity> datos, List<MapaEntity> parametrosReporte) {
+        String ruta = null;
+        try {
+
+            Map<String, Object> parametros = convierteList((ArrayList<MapaEntity>) datos);
+            Map<String, Object> datosReporte = convierteList((ArrayList<MapaEntity>) parametrosReporte);
+            parametros.put("RUTALOGO", rutaRepoServ);
+            if (conectionJDBC()) {
+                JasperReport jasperReport = (JasperReport) JRLoader.loadObject(rutaRepoServ + datosReporte.get("nombreReporte") + ".jasper");
+
+                if ("pdf".equalsIgnoreCase(datosReporte.get("tipoReporte").toString())) {
+                    JasperPrint print = JasperFillManager.fillReport(jasperReport, parametros, con);
+                    ruta = rutaRepoServ + datosReporte.get("nombreReporte") + ".pdf";
+                    JasperExportManager.exportReportToPdfFile(print, ruta);
+                } else {
+                    String print = JasperFillManager.fillReportToFile(rutaRepoServ + datosReporte.get("nombreReporte") + ".jasper", parametros, con);
+                    ruta = rutaRepoServ + datosReporte.get("nombreReporte") + ".xls";
+                    JRXlsExporter exporter = new JRXlsExporter();
+                    exporter.setParameter(JRExporterParameter.INPUT_FILE, print);
+                    exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME, ruta);
+                    exporter.exportReport();
+                }
+                CodificaBase64 codifica64 = new CodificaBase64();
+                boolean codifico = codifica64.codificacionDocumento(ruta);
+                if (codifico) {
+                    ruta = codifica64.getDocumento();
+                    codifica64.setDocumento(null);
+                    File file = new File(ruta);
+                    file.delete();
+                }
+            } else {
+                ruta = null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ruta;
+    }
+
 }
