@@ -47,10 +47,11 @@ public class FacturacionLogica implements AutoCloseable {
 
     /**
      * metodo que consulta las facturas por fecha y por sede
+     *
      * @param fechaInicial
      * @param fechaFinal
      * @param sede
-     * @return 
+     * @return
      */
     public List<FacturaEntity> obtieneFacturasXSede(Date fechaInicial,
             Date fechaFinal,
@@ -59,12 +60,12 @@ public class FacturacionLogica implements AutoCloseable {
         try {
             initOperation();
             Integer iniFact = this.buscaConcecutivoFactura();
-            rta =sesion.createCriteria(FacturaEntity.class)
+            rta = sesion.createCriteria(FacturaEntity.class)
                     .setFetchMode("idSede", FetchMode.JOIN)
                     .setFetchMode("cliente", FetchMode.JOIN)
                     .createAlias("idSede", "sed").add(Restrictions.eq("sed.id", sede))
                     .add(Restrictions.between("fecha", fechaInicial, fechaFinal)).list();
-            for (FacturaEntity fac :rta) {
+            for (FacturaEntity fac : rta) {
                 fac.setIdFactVisual(fac.getId() + iniFact);
             }
         } catch (Exception e) {
@@ -213,7 +214,7 @@ public class FacturacionLogica implements AutoCloseable {
                     }
                 }
                 //Obtengo las recetas
-                
+
                 factura.setDetalleRecetas(sesion.createCriteria(DetReceFacturaEntity.class).
                         add(Restrictions.eq("factura", id)).list());
 //                Query query2 = sesion.createQuery("from DetReceFacturacionTable where idFact = :idFact ");
@@ -672,7 +673,6 @@ public class FacturacionLogica implements AutoCloseable {
                                 producto.setId(id + 1);
                                 producto.setIdTrans(idTrans);
                                 sesion.save(producto);
-                                tx.commit();
                                 iterator++;
                             }
                         }
@@ -683,7 +683,6 @@ public class FacturacionLogica implements AutoCloseable {
                             if (validaItem) {
                                 receta.setIdTrans(idTrans);
                                 sesion.save(receta);
-                                tx.commit();
                                 iterator++;
                             }
                         }
@@ -693,6 +692,7 @@ public class FacturacionLogica implements AutoCloseable {
                         if (facturacion.isDomicilio()) {
                             //Logica para enviar que la factura es domicilio
                         }
+                        tx.commit();
                         msn = this.llamaFuncionFacturacionAvanzada(facturacion, idTrans);
                         rta.setRespuesta(llamadoFunction);
                         rta.setIdFacturacion(this.idFactura);
@@ -755,7 +755,7 @@ public class FacturacionLogica implements AutoCloseable {
         }
         return rta;
     }
-    
+
     /**
      * Funcion que consulta los movimientos contables de una factura especifica
      *
@@ -766,35 +766,45 @@ public class FacturacionLogica implements AutoCloseable {
     public List<MoviContableEntity> consultaMovContableXFac(Integer idFactura, String estado) {
         List<MoviContableEntity> rta = null;
         try {
-            if("notcr".equalsIgnoreCase(estado)){
-                idFactura=llamaProcesoIdCancelacion(idFactura);
+            Integer idF = idFactura;
+            if ("notcr".equalsIgnoreCase(estado)) {
+                idFactura = llamaProcesoIdCancelacion(idFactura);
+                if (idFactura == -1) {
+                    idFactura = idF;
+                    idF = -1;
+                }
             }
             initOperation();
-            rta = sesion.createCriteria(MoviContableEntity.class)
-                    .add(Restrictions.eq("idLlave", idFactura))
-                    .add(Restrictions.eq("llave", estado))
-                    .addOrder(Order.asc("naturaleza"))
+            Criteria crit = sesion.createCriteria(MoviContableEntity.class)
+                    .add(Restrictions.eq("idLlave", idFactura));
+            if (idF != -1) {
+                crit.add(Restrictions.eq("llave", estado));
+            }
+            rta = crit.addOrder(Order.asc("naturaleza"))
                     .setFetchMode("subcuenta", FetchMode.JOIN)
                     .setFetchMode("tipoDocumento", FetchMode.JOIN)
                     .list();
+            
         } catch (Exception e) {
             e.printStackTrace();
         }
         return rta;
     }
+
     /**
-     * Funcion con 
+     * Funcion con
+     *
      * @param idFactura
-     * @return 
+     * @return
      */
     public Integer llamaProcesoIdCancelacion(Integer idFactura) {
-        Integer rta = null;
+        Integer rta = -1;
         try (ReadFunction rf = new ReadFunction()) {
             rf.setNombreFuncion("FA_ID_CONSULTA_NOTA");
             rf.setNumParam(1);
             rf.addParametro(idFactura.toString(), DataType.INT);
             boolean valida = rf.callFunctionJdbc();
-              if (valida) {
+            if (valida) {
                 rta = Integer.parseInt(rf.getRespuestaPg().get(0));
             } else {
                 rta = 0;
