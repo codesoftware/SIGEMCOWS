@@ -299,7 +299,6 @@ public class PedidoWS {
         String rta = null;
         try (PedidoLogica objLogic = new PedidoLogica()) {
             rta = objLogic.llamaFuncionRemisionar(idPedido, idTius);
-            System.out.println("Este es el id del pedido: " + idPedido);
         } catch (Exception e) {
             e.printStackTrace();
         }
