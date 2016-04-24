@@ -81,13 +81,14 @@ public class RemisionLogica implements AutoCloseable {
      * @param idRemision
      * @return 
      */
-    public String realizarFacturaXRemision(Integer idRemision, Integer idTius){
+    public String realizarFacturaXRemision(Integer idRemision, Integer idTius,Integer idRsfa){
          String rta = "";
         List<String> response = new ArrayList<>();
         try (ReadFunction rf = new ReadFunction()){
             rf.setNombreFuncion("FA_REMISION_FACTURA");
-            rf.setNumParam(2);
+            rf.setNumParam(3);
             rf.addParametro(""+idTius, DataType.INT);
+            rf.addParametro(""+idRemision, DataType.INT);
             rf.addParametro(""+idRemision, DataType.INT);
             rf.callFunctionJdbc();
             response = rf.getRespuestaPg();

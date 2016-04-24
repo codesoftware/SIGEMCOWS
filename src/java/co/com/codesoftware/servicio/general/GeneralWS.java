@@ -139,11 +139,12 @@ public class GeneralWS {
     @WebMethod(operationName = "realizarFacturaXRemision")
     @WebResult(name = "respuesta")
     public String realizarFacturaXRemision(@XmlElement(required = true) @WebParam(name = "idRemision") Integer idRemision,
-            @XmlElement(required = true) @WebParam(name = "idTius") Integer idTius) {
+            @XmlElement(required = true) @WebParam(name = "idTius") Integer idTius,
+            @XmlElement(required = true) @WebParam(name = "idRsfa") Integer idRsfa) {
         String rta = "";
         try{
             RemisionLogica objLogica = new RemisionLogica();
-            rta = objLogica.realizarFacturaXRemision(idRemision, idTius);
+            rta = objLogica.realizarFacturaXRemision(idRemision, idTius,idRsfa);
         } catch (Exception e) {
             return null;
         }

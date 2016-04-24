@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="226" pageHeight="2160" columnWidth="214" leftMargin="1" rightMargin="11" topMargin="7" bottomMargin="7" uuid="396ba8d0-ab46-4cae-a719-866dff7b0291">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="48"/>
 	<parameter name="fact_fact" class="java.lang.String">
 		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
 	</parameter>
@@ -56,7 +56,9 @@ COALESCE((select para_valor from em_tpara where para_clave = 'CORREOFACT'),'NO A
 (SELECT '$' || to_char(fact_ajpeso,'9,999,999,999.00') from fa_tfact where fact_fact  = cast($P{fact_fact} as int))REDONDEO,
 (select Coalesce(para_valor,' ') from em_tpara where para_clave = 'ACRONIMO') MENSAJE,
 (select Coalesce(para_valor,' ') from em_tpara where para_clave = 'RESOLUCION') MSNRESOLUCION,
-(select Coalesce(para_valor,' ') from em_tpara where para_clave = 'PRENUMFACT') PRENUMFACT]]>
+(select rsfa_prefij from fa_tfact, fa_trsfa where fact_rsfa = rsfa_rsfa and fact_fact = cast($P{fact_fact} as int)) PRENUMFACT,
+(select ' Fecha ' || to_char(rsfa_fechainic,'dd/mm/yyyy') fechaReso from fa_tfact, fa_trsfa where fact_rsfa = rsfa_rsfa and fact_fact = cast($P{fact_fact} as int)) fechaReso
+]]>
 	</queryString>
 	<field name="nombre" class="java.lang.String"/>
 	<field name="nit" class="java.lang.String"/>
@@ -85,6 +87,7 @@ COALESCE((select para_valor from em_tpara where para_clave = 'CORREOFACT'),'NO A
 	<field name="mensaje" class="java.lang.String"/>
 	<field name="msnresolucion" class="java.lang.String"/>
 	<field name="prenumfact" class="java.lang.String"/>
+	<field name="fechareso" class="java.lang.String"/>
 	<title>
 		<band height="335" splitType="Stretch">
 			<textField>
@@ -236,11 +239,11 @@ COALESCE((select para_valor from em_tpara where para_clave = 'CORREOFACT'),'NO A
 				<imageExpression><![CDATA[$P{RUTA_LOGOFACT}]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="0" y="70" width="215" height="12" uuid="e3f17efd-3ef0-49f8-aeb6-f49ef4b94109"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<reportElement x="0" y="70" width="102" height="12" uuid="e3f17efd-3ef0-49f8-aeb6-f49ef4b94109"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>
-				<text><![CDATA[Res. DIAN No 320001340007 FECHA 2015/11/27]]></text>
+				<text><![CDATA[Res. DIAN No 320001340007]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="82" width="134" height="13" uuid="fc9e5cc2-9981-470e-946b-03a619de3c1d"/>
@@ -351,6 +354,13 @@ COALESCE((select para_valor from em_tpara where para_clave = 'CORREOFACT'),'NO A
 					<font size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{redondeo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="102" y="70" width="112" height="12" uuid="bde3ee8f-dabf-41ef-bda3-41993e8e673c"/>
+				<textElement verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fechareso}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>

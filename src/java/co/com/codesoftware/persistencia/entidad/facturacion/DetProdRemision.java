@@ -38,6 +38,8 @@ public class DetProdRemision implements Serializable {
     private Integer cantidad;
     @Column(name = "drem_estado")
     private String estado;
+    @Column(name = "drem_codext")
+    private String codigoExterno;
 
     public Integer getId() {
         return id;
@@ -87,4 +89,11 @@ public class DetProdRemision implements Serializable {
         this.estado = estado;
     }
 
+    public String getCodigoExterno() {
+        return codigoExterno;
+    }
+
+    public void setCodigoExterno(String codigoExterno) {
+        this.codigoExterno = codigoExterno;
+    }
 }
