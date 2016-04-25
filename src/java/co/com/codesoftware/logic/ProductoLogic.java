@@ -143,7 +143,11 @@ public class ProductoLogic implements AutoCloseable {
         try {
             this.initOperation();
             Criteria crit = sesion.createCriteria(ProductoEntity.class)
-                    .add(Restrictions.like("codigoExterno", codExterno, MatchMode.ANYWHERE));
+                    .add(Restrictions.like("codigoExt", codExterno, MatchMode.ANYWHERE).ignoreCase())
+                    .setFetchMode("referencia", FetchMode.JOIN)
+                    .setFetchMode("marca", FetchMode.JOIN)
+                    .setFetchMode("categoria", FetchMode.JOIN)
+                    .setFetchMode("subcuenta", FetchMode.JOIN); 
             respuesta = crit.list();
         } catch (Exception e) {
             e.printStackTrace();
