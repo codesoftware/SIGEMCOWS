@@ -75,6 +75,7 @@ public class GeneralWS {
         try (ResolucionFactLogica objLogica = new ResolucionFactLogica()) {
             return objLogica.insertaResolucion(objEntity);
         } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }
@@ -85,6 +86,7 @@ public class GeneralWS {
         try (ResolucionFactLogica objLogica = new ResolucionFactLogica()) {
             return objLogica.actualizarResolucion(objEntity);
         } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }
