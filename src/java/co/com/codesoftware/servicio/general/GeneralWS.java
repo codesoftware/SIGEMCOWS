@@ -66,13 +66,24 @@ public class GeneralWS {
     /**
      * Metodo con el cual se insertan las resoluciones de facturacion compañia
      *
+     * @param objEntity
      * @return
      */
     @WebMethod(operationName = "insertarResolucion")
     @WebResult(name = "respuesta")
-    public String insertarResolucion(ResolucionFactEntity objEntity) {
+    public String insertarResolucion(@XmlElement(required = true) @WebParam(name = "objEntity") ResolucionFactEntity objEntity) {
         try (ResolucionFactLogica objLogica = new ResolucionFactLogica()) {
             return objLogica.insertaResolucion(objEntity);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+    
+    @WebMethod(operationName = "actualizaResolucion")
+    @WebResult(name = "respuesta")
+    public String actualizaResolucion(@XmlElement(required = true) @WebParam(name = "objEntity") ResolucionFactEntity objEntity) {
+        try (ResolucionFactLogica objLogica = new ResolucionFactLogica()) {
+            return objLogica.actualizarResolucion(objEntity);
         } catch (Exception e) {
             return null;
         }

@@ -45,6 +45,23 @@ public class ResolucionFactLogica implements AutoCloseable{
         return rta;
     }
     /**
+     * Funcion con la cual actualizo una resolucion de facturacion
+     * @param resolucionEntity
+     * @return 
+     */
+    public String actualizarResolucion(ResolucionFactEntity resolucionEntity){
+        String rta = "";
+        try {
+            this.initOperation();
+            sesion.update(resolucionEntity);
+            rta = "Ok";
+        } catch (Exception e) {
+            e.printStackTrace();
+            rta = "Error " +e ;
+        }
+        return rta;
+    }
+    /**
      * Funcion con la cual obtengo todas las resoluciones de facturacion que se encuentran en el sistema
      * @return 
      */

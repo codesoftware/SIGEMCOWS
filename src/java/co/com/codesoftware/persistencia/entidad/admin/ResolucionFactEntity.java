@@ -43,6 +43,8 @@ public class ResolucionFactEntity implements Serializable{
     private Date fecha;
     @Column(name = "rsfa_comentario")
     private String comentario;
+    @Column(name = "rsfa_numdian")
+    private String noResolucion;
 
     public Integer getId() {
         return id;
@@ -107,4 +109,14 @@ public class ResolucionFactEntity implements Serializable{
     public void setComentario(String comentario) {
         this.comentario = comentario;
     }    
+
+    public String getNoResolucion() {
+        return noResolucion;
+    }
+
+    public void setNoResolucion(String noResolucion) {
+        this.noResolucion = noResolucion;
+    }
+    
+    
 }
