@@ -153,11 +153,12 @@ public class GeneralWS {
     @WebResult(name = "respuesta")
     public String realizarFacturaXRemision(@XmlElement(required = true) @WebParam(name = "idRemision") Integer idRemision,
             @XmlElement(required = true) @WebParam(name = "idTius") Integer idTius,
-            @XmlElement(required = true) @WebParam(name = "idRsfa") Integer idRsfa) {
+            @XmlElement(required = true) @WebParam(name = "idRsfa") Integer idRsfa,
+            @XmlElement(required = true) @WebParam(name = "diasPlazo") Integer diasPlazo) {
         String rta = "";
         try{
             RemisionLogica objLogica = new RemisionLogica();
-            rta = objLogica.realizarFacturaXRemision(idRemision, idTius,idRsfa);
+            rta = objLogica.realizarFacturaXRemision(idRemision, idTius,idRsfa,diasPlazo);
         } catch (Exception e) {
             return null;
         }
