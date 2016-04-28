@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="581" leftMargin="7" rightMargin="7" topMargin="7" bottomMargin="7" uuid="2a959b52-c0e0-48e5-8d83-f2313c882d1b">
 	<property name="ireport.zoom" value="1.1"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="192"/>
 	<parameter name="RUTALOGO" class="java.lang.String"/>
 	<parameter name="remi_remi" class="java.lang.String"/>
 	<queryString>
@@ -10,18 +10,39 @@
 (select 'NIT: '||para_valor from em_tpara where para_clave = 'NIT') nitEmp,
 (select para_valor from em_tpara where para_clave = 'DIRECCION') dirEmp,
 (select para_valor from em_tpara where para_clave = 'TELEFONOS') telEmp,
-(select 'ACTIVIDAD ECONOMICO: '|| para_valor from em_tpara where para_clave = 'ACTECONO') actEcono]]>
+(select 'ACTIVIDAD ECONOMICO: '|| para_valor from em_tpara where para_clave = 'ACTECONO') actEcono,
+'NIT/CEDULA : '||clien_cedula || '   ' clien_cedula,clien_apellidos || ''|| clien_nombres cliente_nombre  ,clien_direccion, clien_telefono, 'C' || clien_clien clien_clien,
+to_char(remi_fecha, 'dd/mm/yyyy HH:MI AM') remi_fecha, remi_remi,remi_pladfac || ' DIAS' remi_pladfac, 'PE'||remi_pedi remi_pedi,
+row_number() OVER (ORDER BY remi_remi) AS item
+from in_tremi, us_tclien, in_tdrem
+where remi_remi = cast($P{remi_remi}as int)
+and remi_clien = clien_clien
+and remi_remi = drem_remi]]>
 	</queryString>
 	<field name="nomemp" class="java.lang.String"/>
 	<field name="nitemp" class="java.lang.String"/>
 	<field name="diremp" class="java.lang.String"/>
 	<field name="telemp" class="java.lang.String"/>
 	<field name="actecono" class="java.lang.String"/>
+	<field name="clien_cedula" class="java.lang.String"/>
+	<field name="cliente_nombre" class="java.lang.String"/>
+	<field name="clien_direccion" class="java.lang.String"/>
+	<field name="clien_telefono" class="java.lang.String">
+		<fieldDescription><![CDATA[Telefono del cliente]]></fieldDescription>
+	</field>
+	<field name="clien_clien" class="java.lang.String">
+		<fieldDescription><![CDATA[Identificador primario de la tabla]]></fieldDescription>
+	</field>
+	<field name="remi_fecha" class="java.lang.String"/>
+	<field name="remi_remi" class="java.lang.Long"/>
+	<field name="remi_pladfac" class="java.lang.String"/>
+	<field name="remi_pedi" class="java.lang.String"/>
+	<field name="item" class="java.lang.Long"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<pageHeader>
-		<band height="125" splitType="Stretch">
+		<band height="215" splitType="Stretch">
 			<frame>
 				<reportElement x="0" y="0" width="581" height="65" uuid="66174344-7dd2-457d-b6d9-c2846d6bb270"/>
 				<image>
@@ -64,9 +85,238 @@
 					<text><![CDATA[SOMOS REMIGIMEN COMUN]]></text>
 				</staticText>
 			</frame>
+			<frame>
+				<reportElement x="0" y="65" width="581" height="100" uuid="51bf38a7-16d5-4fe5-aabb-ade91f037ecb"/>
+				<staticText>
+					<reportElement x="0" y="0" width="300" height="20" uuid="ccc3b068-e852-4014-8b94-4a7d23312d2a"/>
+					<box>
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="11" isBold="true"/>
+					</textElement>
+					<text><![CDATA[INFORMACION DEL CLIENTE]]></text>
+				</staticText>
+				<frame>
+					<reportElement x="0" y="20" width="300" height="80" uuid="f83a9390-80de-439b-aa87-ce84d9368290"/>
+					<box>
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textField>
+						<reportElement x="11" y="0" width="289" height="20" uuid="b360c60f-e7e0-4de6-9b8e-38fd4191f27b"/>
+						<textElement verticalAlignment="Middle"/>
+						<textFieldExpression><![CDATA[$F{cliente_nombre}]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement x="11" y="20" width="289" height="20" uuid="d745e979-2175-4a0c-bb75-888e75be0c6a"/>
+						<textElement verticalAlignment="Middle"/>
+						<textFieldExpression><![CDATA[$F{clien_direccion}]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement x="11" y="40" width="289" height="20" uuid="f9e3e68a-463e-4fd3-bf82-ffc00dfdfa4b"/>
+						<textElement verticalAlignment="Middle"/>
+						<textFieldExpression><![CDATA[$F{clien_telefono}]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement x="11" y="60" width="289" height="20" uuid="00caad7f-b881-429d-8808-309bb87a12ea"/>
+						<textElement textAlignment="Right" verticalAlignment="Middle"/>
+						<textFieldExpression><![CDATA[$F{clien_cedula}]]></textFieldExpression>
+					</textField>
+				</frame>
+				<staticText>
+					<reportElement x="300" y="0" width="120" height="20" uuid="aa87722e-3cd3-4ba3-94f2-5b4525f714a7"/>
+					<box>
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="11" isBold="true"/>
+					</textElement>
+					<text><![CDATA[CODIGO CLIENTE]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="300" y="60" width="120" height="20" uuid="53bafc4a-4f71-40fd-aa30-dee81940a736"/>
+					<box>
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="11" isBold="true"/>
+					</textElement>
+					<text><![CDATA[FECHA REMISION]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="300" y="20" width="120" height="40" uuid="eb8ea150-abbc-462a-9cc2-09399af6f3c1"/>
+					<box>
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="13" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{clien_clien}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="300" y="80" width="120" height="20" uuid="1e0bad65-dfe2-423b-8edb-ae009233fb1a"/>
+					<box>
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="13" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{remi_fecha}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="420" y="0" width="161" height="20" uuid="b5508807-653c-4807-a080-87ad950e5f9a"/>
+					<box>
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="11" isBold="true"/>
+					</textElement>
+					<text><![CDATA[NUMERO REMISION]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="420" y="20" width="161" height="40" uuid="a0de5d2f-6cdf-4609-b58e-a3e96f006e81"/>
+					<box>
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="13" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{remi_remi}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="420" y="60" width="161" height="20" uuid="6ea3f884-5e05-4d42-af15-ee482b9a634a"/>
+					<box>
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="11" isBold="true"/>
+					</textElement>
+					<text><![CDATA[VALOR FLETES]]></text>
+				</staticText>
+				<frame>
+					<reportElement x="420" y="80" width="161" height="20" uuid="35b14738-64cc-46c0-b9c3-1e5a0f99ba3a"/>
+					<box>
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+				</frame>
+			</frame>
+			<staticText>
+				<reportElement x="0" y="170" width="237" height="20" uuid="8f58e847-28a0-4cbe-a08b-4be650a6d578"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Condiciones de pago]]></text>
+			</staticText>
 			<textField>
-				<reportElement x="192" y="92" width="100" height="20" uuid="84946259-369b-44b6-85fb-a044b8ab98b2"/>
-				<textFieldExpression><![CDATA[$P{remi_remi}]]></textFieldExpression>
+				<reportElement x="0" y="190" width="237" height="25" uuid="abf3de12-e7f0-46a4-9077-9b40b006e329"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{remi_pladfac}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="237" y="170" width="248" height="20" uuid="c741f7f5-aaf3-4689-b213-d38a55be01b0"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Pedido No.]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="237" y="190" width="248" height="25" uuid="15c33547-ae21-448d-b7a8-b5c668c5c4b2"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{remi_pedi}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="485" y="170" width="96" height="20" uuid="b59b3709-e769-471e-894e-e0bfe58ec978"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Pag No.]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="485" y="190" width="96" height="25" uuid="b634940a-febc-4a3a-a485-8631b4c0e3b0"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>
