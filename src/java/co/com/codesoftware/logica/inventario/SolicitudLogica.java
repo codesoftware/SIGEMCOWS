@@ -38,6 +38,9 @@ public class SolicitudLogica implements AutoCloseable {
         try {
             initOperation();
             sesion.save(solicitud);
+            //sol = consultaSolicitudXFecha(solicitud.getFecha(), solicitud.getSede().getId(), solicitud.getUsuario().getId());
+            respuesta.setMensajeRespuesta("OK");
+            respuesta.setCodigoRespuesta(1);
         } catch (Exception e) {
             e.printStackTrace();
             respuesta.setCodigoRespuesta(0);
@@ -46,6 +49,8 @@ public class SolicitudLogica implements AutoCloseable {
         }
         return respuesta;
     }
+    
+    
 
     /**
      * metodo que inserta los productos de una solicitud
@@ -121,6 +126,23 @@ public class SolicitudLogica implements AutoCloseable {
             e.printStackTrace();
         }
         return respuesta;
+    }
+    
+    public SolicitudEntity consultaSolicitudXFecha(Date fecha,Integer sede, Integer usuario){
+        SolicitudEntity solicitud = new SolicitudEntity();
+        try {
+            initOperation();
+            solicitud= (SolicitudEntity) sesion.createCriteria(SolicitudEntity.class)
+                    .add(Restrictions.eq("fecha",fecha))
+                    .createAlias("sede","sed")
+                    .createAlias("usuario", "usu")
+                    .add(Restrictions.eq("sede.id", sede))
+                    .add(Restrictions.eq("usu.id", usuario))
+                    .uniqueResult();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return solicitud;
     }
 
     /**

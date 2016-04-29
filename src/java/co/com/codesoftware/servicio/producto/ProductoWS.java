@@ -338,5 +338,22 @@ public class ProductoWS {
         }
         return respuesta;
     }
+    
+    /**
+     * metodo  que consulta la solicitud por filtros
+     * @param solicitud
+     * @return 
+     */
+    @WebMethod(operationName = "obtenerSolicitudXfiltro")
+     @WebResult(name = "solicitud")
+    public SolicitudEntity obtenerSolicitudXfiltro(@WebParam(name = "solicitud") SolicitudEntity solicitud){
+        SolicitudEntity solicitudEntity = new SolicitudEntity();
+        try (SolicitudLogica logica = new SolicitudLogica()){
+            solicitudEntity = logica.consultaSolicitudXFecha(solicitud.getFecha(), solicitud.getSede().getId(),solicitud.getUsuario().getId());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return solicitudEntity;
+    }
 
 }

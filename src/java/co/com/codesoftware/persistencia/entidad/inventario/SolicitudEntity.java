@@ -5,8 +5,7 @@
  */
 package co.com.codesoftware.persistencia.entidad.inventario;
 
-import co.com.codesoftware.persistencia.entidad.admin.SedeEntity;
-import co.com.codesoftware.persistencia.entidad.admin.UsuarioEntity;
+
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Column;
@@ -20,7 +19,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import org.hibernate.annotations.Fetch;
+import co.com.codesoftware.persistencia.entidad.admin.SedeEntity;
+import co.com.codesoftware.persistencia.entidad.admin.UsuarioEntity;
 
 /**
  *
