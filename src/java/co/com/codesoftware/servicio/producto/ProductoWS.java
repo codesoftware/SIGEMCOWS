@@ -295,7 +295,8 @@ public class ProductoWS {
     @WebResult(name = "respuestaEntity")
     public RespuestaEntity insertaProductosSolicitud(@WebParam(name = "productosSolicitud")List<SolicitudProdEntity> productos){
         RespuestaEntity rta = new RespuestaEntity();
-        try (SolicitudLogica logica = new SolicitudLogica()){
+        try {
+            SolicitudLogica logica = new SolicitudLogica();
             rta = logica.insertaProductosSolicitud(productos);
         } catch (Exception e) {
             e.printStackTrace();

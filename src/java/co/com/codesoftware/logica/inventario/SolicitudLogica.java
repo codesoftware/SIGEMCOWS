@@ -61,9 +61,10 @@ public class SolicitudLogica implements AutoCloseable {
     public RespuestaEntity insertaProductosSolicitud(List<SolicitudProdEntity> productos) {
         RespuestaEntity respuesta = new RespuestaEntity();
         try {
-            initOperation();
             for (SolicitudProdEntity item : productos) {
+                initOperation();
                 sesion.save(item);
+                close();
             }
              respuesta.setCodigoRespuesta(1);
             respuesta.setMensajeRespuesta("OK");

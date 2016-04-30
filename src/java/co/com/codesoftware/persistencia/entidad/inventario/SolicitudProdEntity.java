@@ -36,11 +36,11 @@ public class SolicitudProdEntity implements Serializable {
     @JoinColumn(name = "sopd_soli")
     @OneToOne(fetch = FetchType.LAZY)
     private SolicitudEntity solicitud;
-    @JoinColumn(name = "sopd_cant")
+    @Column(name = "sopd_cant")
     private Integer cantidadSolicitada;
-    @JoinColumn(name = "sopd_cenv")
+    @Column(name = "sopd_cenv")
     private Integer cantidadEnvidada;
-    @JoinColumn(name = "sopd_cbod")
+    @Column(name = "sopd_cbod")
     private Integer cantidadSede;
     @JoinColumn(name = "sopd_sede")
     @OneToOne(fetch = FetchType.LAZY)
