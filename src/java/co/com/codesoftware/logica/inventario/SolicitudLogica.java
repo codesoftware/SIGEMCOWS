@@ -65,6 +65,9 @@ public class SolicitudLogica implements AutoCloseable {
             for (SolicitudProdEntity item : productos) {
                 sesion.save(item);
             }
+             respuesta.setCodigoRespuesta(1);
+            respuesta.setMensajeRespuesta("OK");
+            respuesta.setDescripcionRespuesta("OK");
         } catch (Exception e) {
             e.printStackTrace();
             respuesta.setCodigoRespuesta(0);
