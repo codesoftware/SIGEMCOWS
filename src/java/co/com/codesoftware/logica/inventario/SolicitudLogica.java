@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -89,7 +90,12 @@ public class SolicitudLogica implements AutoCloseable {
      * @return
      */
     public List<SolicitudEntity> consultaSolicitudesXFiltro(Date fechaInicial, Date fechaFinal, String estado, Integer usuario, Integer sede) {
-        List<SolicitudEntity> respuesta = new ArrayList<>();
+        System.out.println(fechaInicial);
+        System.out.println(fechaFinal);
+        System.out.println(estado);
+        System.out.println(sede);
+        System.out.println(usuario);
+        List<SolicitudEntity> respuesta = null;
         try {
             initOperation();
             Criteria crit = sesion.createCriteria(SolicitudEntity.class);
@@ -106,7 +112,9 @@ public class SolicitudLogica implements AutoCloseable {
             if (sede != null && sede != 0) {
                 crit.createAlias("sede", "sede").add(Restrictions.eq("sede.id", sede));
             }
-            respuesta = crit.list();
+            respuesta = crit.setFetchMode("sede", FetchMode.JOIN)
+                    .setFetchMode("usuario", FetchMode.JOIN)
+                    .list();
         } catch (Exception e) {
             e.printStackTrace();
         }
