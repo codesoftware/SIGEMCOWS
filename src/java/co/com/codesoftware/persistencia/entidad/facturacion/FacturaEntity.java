@@ -22,6 +22,7 @@ import javax.persistence.OneToOne;
 @Entity
 @Table(name = "fa_tfact")
 public class FacturaEntity implements Serializable {
+
     @Id
     @Column(name = "fact_fact")
     private Integer id;
@@ -61,16 +62,15 @@ public class FacturaEntity implements Serializable {
     private SedeEntity idSede;
     @Transient
     private List<DetProduFacturaEntity> detalleProductos;
-    //private List<DetProduFacturaEntity> detalleProductos;
-   @Transient
+    @Transient
     private List<DetReceFacturaEntity> detalleRecetas;
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fact_clien")
     private ClienteEntity cliente;
     @Transient
     private Date fechaExacta;
-    @Transient
-    private Integer idFactVisual;
+    @Column(name = "fact_cons")
+    private Integer consecutivo; 
 
     public Integer getId() {
         return id;
@@ -207,21 +207,13 @@ public class FacturaEntity implements Serializable {
     public void setIdSede(SedeEntity idSede) {
         this.idSede = idSede;
     }
-    
+
     public Date getFechaExacta() {
         return fechaExacta;
     }
 
     public void setFechaExacta(Date fechaExacta) {
         this.fechaExacta = fechaExacta;
-    }
-
-    public Integer getIdFactVisual() {
-        return idFactVisual;
-    }
-
-    public void setIdFactVisual(Integer idFactVisual) {
-        this.idFactVisual = idFactVisual;
     }
 
     public ClienteEntity getCliente() {
@@ -247,6 +239,12 @@ public class FacturaEntity implements Serializable {
     public void setDetalleRecetas(List<DetReceFacturaEntity> detalleRecetas) {
         this.detalleRecetas = detalleRecetas;
     }
-    
-    
+
+    public Integer getConsecutivo() {
+        return consecutivo;
+    }
+
+    public void setConsecutivo(Integer consecutivo) {
+        this.consecutivo = consecutivo;
+    }
 }

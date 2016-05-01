@@ -65,9 +65,6 @@ public class FacturacionLogica implements AutoCloseable {
                     .setFetchMode("cliente", FetchMode.JOIN)
                     .createAlias("idSede", "sed").add(Restrictions.eq("sed.id", sede))
                     .add(Restrictions.between("fecha", fechaInicial, fechaFinal)).addOrder(Order.desc("id")).list();
-            for (FacturaEntity fac : rta) {
-                fac.setIdFactVisual(fac.getId() + iniFact);
-            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -127,9 +124,6 @@ public class FacturacionLogica implements AutoCloseable {
             }
             crit.addOrder(Order.desc("id"));
             facturas = crit.list();
-            for (FacturaEntity fac : facturas) {
-                fac.setIdFactVisual(fac.getId() + iniFact);
-            }
         } catch (Exception e) {
             e.printStackTrace();
         }
