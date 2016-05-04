@@ -23,25 +23,18 @@ and dtre_fact =  cast($P{fact_fact_table} as int)]]>
 	<columnHeader>
 		<band height="20">
 			<staticText>
-				<reportElement x="3" y="0" width="62" height="20" uuid="c823c1a6-b84c-4d22-aecf-5803c7ad9922"/>
-				<textElement verticalAlignment="Middle">
-					<font size="9" isBold="true"/>
-				</textElement>
-				<text><![CDATA[CODIGO]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="65" y="0" width="54" height="20" uuid="faa97c49-c313-4cf7-9d74-f879499c3f75"/>
+				<reportElement x="3" y="0" width="54" height="20" uuid="faa97c49-c313-4cf7-9d74-f879499c3f75"/>
 				<textElement verticalAlignment="Middle">
 					<font size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[CANTIDAD]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="119" y="0" width="97" height="20" uuid="7bc413cc-7b00-47d7-ba91-f45d42e6cb9c"/>
+				<reportElement x="57" y="0" width="159" height="20" uuid="7bc413cc-7b00-47d7-ba91-f45d42e6cb9c"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="9" isBold="true"/>
 				</textElement>
-				<text><![CDATA[VALOR]]></text>
+				<text><![CDATA[DESCRIPCION]]></text>
 			</staticText>
 		</band>
 	</columnHeader>

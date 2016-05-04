@@ -13,6 +13,7 @@ import co.com.codesoftware.persistencia.entidad.inventario.ProductoEntity;
 import co.com.codesoftware.persistencia.utilities.DataType;
 import co.com.codesoftware.persistencia.utilities.RespuestaEntity;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
@@ -36,8 +37,7 @@ public class ConteoLogica implements AutoCloseable {
     private String idFactura;
     private String mensaje;
 
-    
-    public RespuestaEntity insProdConteo(Integer codigoConteo, String codigoProducto, Integer cantidad, String codigoBarras,String ubicacion){
+    public RespuestaEntity insProdConteo(Integer codigoConteo, String codigoProducto, Integer cantidad, String codigoBarras, String ubicacion) {
         RespuestaEntity res = new RespuestaEntity();
         try {
             String descripcion = this.llamaFuncionConteo(codigoConteo, codigoProducto, cantidad, codigoBarras, ubicacion);
@@ -49,10 +49,11 @@ public class ConteoLogica implements AutoCloseable {
             res.setCodigoRespuesta(0);
             res.setDescripcionRespuesta(e.getMessage());
             res.setMensajeRespuesta(e.toString());
-            
+
         }
         return res;
     }
+
     /**
      *
      * @param codigoConteo
@@ -188,6 +189,12 @@ public class ConteoLogica implements AutoCloseable {
         return estado;
     }
 
+    /**
+     * Funcion con la cual obtengo el numero maximo del producto conteo para la
+     * insercion de la misma
+     *
+     * @return
+     */
     public Integer selectMaxProductoConteo() {
         Integer resultado = 1;
         try {
@@ -214,24 +221,29 @@ public class ConteoLogica implements AutoCloseable {
         }
         List<ConteoEntity> respuesta = null;
         try {
-            respuesta = sesion.createCriteria(ConteoEntity.class)
-                    .add(Restrictions.eq("estado", estado)).list();
-
+            Criteria crit = sesion.createCriteria(ConteoEntity.class);
+            if (!"-1".equalsIgnoreCase(estado)) {
+                crit.add(Restrictions.eq("estado", estado));
+            }
+            crit.addOrder(Order.desc("id"));
+            respuesta = crit.list();
         } catch (Exception e) {
             e.printStackTrace();
         }
         return respuesta;
     }
+
     /**
      * Funcion que llama el procedimiento almacenado pra el conteo
+     *
      * @param codigoConteo
      * @param codigoProducto
      * @param cantidad
      * @param codigoBarras
      * @param ubicacion
-     * @return 
+     * @return
      */
-    public String llamaFuncionConteo(Integer codigoConteo, String codigoProducto, Integer cantidad, String codigoBarras,String ubicacion) {
+    public String llamaFuncionConteo(Integer codigoConteo, String codigoProducto, Integer cantidad, String codigoBarras, String ubicacion) {
         String rta = "";
         List<String> response = new ArrayList<>();
         try (ReadFunction rf = new ReadFunction()) {
@@ -242,7 +254,7 @@ public class ConteoLogica implements AutoCloseable {
             rf.addParametro("" + codigoBarras, DataType.TEXT);
             rf.addParametro("" + ubicacion, DataType.TEXT);
             rf.addParametro("0", DataType.TEXT);
-            rf.addParametro(""+codigoConteo, DataType.INT);
+            rf.addParametro("" + codigoConteo, DataType.INT);
             rf.callFunctionJdbc();
             response = rf.getRespuestaPg();
             String respuesta = response.get(0);
@@ -250,7 +262,7 @@ public class ConteoLogica implements AutoCloseable {
                 respuesta = respuesta.replaceAll("Error", "");
                 rta = respuesta;
                 llamadoFunction = "error";
-            } else {             
+            } else {
                 llamadoFunction = respuesta;
                 rta = respuesta;
             }
@@ -264,61 +276,101 @@ public class ConteoLogica implements AutoCloseable {
 
     /**
      * Funcion que consulta un producto especifico del conteo
+     *
      * @param conteo
      * @param codigoExterno
-     * @return 
+     * @return
      */
-    public ProductoConteoEntity consultaProductoConteo(Integer conteo,String codigoExterno){
+    public ProductoConteoEntity consultaProductoConteo(Integer conteo, String codigoExterno) {
         ProductoConteoEntity rta = null;
         try {
             initOperation();
             Criteria crit = sesion.createCriteria(ProductoConteoEntity.class)
                     .createAlias("conteo", "con")
                     .createAlias("producto", "prd")
-                    .add(Restrictions.eq("con.id",conteo))
+                    .add(Restrictions.eq("con.id", conteo))
                     .add(Restrictions.eq("prd.codigoExt", codigoExterno));
-            crit.setFetchMode("conteo", FetchMode.JOIN); 
-            crit.setFetchMode("producto", FetchMode.JOIN); 
-            crit.setFetchMode("producto.referencia", FetchMode.JOIN); 
-            crit.setFetchMode("producto.marca", FetchMode.JOIN); 
-            crit.setFetchMode("producto.categoria", FetchMode.JOIN); 
-            crit.setFetchMode("producto.subcuenta", FetchMode.JOIN); 
+            crit.setFetchMode("conteo", FetchMode.JOIN);
+            crit.setFetchMode("producto", FetchMode.JOIN);
+            crit.setFetchMode("producto.referencia", FetchMode.JOIN);
+            crit.setFetchMode("producto.marca", FetchMode.JOIN);
+            crit.setFetchMode("producto.categoria", FetchMode.JOIN);
+            crit.setFetchMode("producto.subcuenta", FetchMode.JOIN);
             rta = (ProductoConteoEntity) crit.uniqueResult();
         } catch (Exception e) {
             e.printStackTrace();
         }
         return rta;
-    } 
-    
+    }
+
     /**
      * metodo que consulta todos los productos de un conteo
+     *
      * @param conteo
-     * @return 
+     * @return
      */
-     public List<ProductoConteoEntity> consultaProductosConteo(Integer conteo){
-         List<ProductoConteoEntity> rta = null;
+    public List<ProductoConteoEntity> consultaProductosConteo(Integer conteo) {
+        List<ProductoConteoEntity> rta = null;
         try {
             this.initOperation();
             Criteria crit = sesion.createCriteria(ProductoConteoEntity.class);
             crit.createAlias("conteo", "con");
             crit.createAlias("producto", "prod");
-            crit.add(Restrictions.eq("con.id",conteo));
-            crit.setFetchMode("conteo", FetchMode.JOIN); 
-            crit.setFetchMode("producto", FetchMode.JOIN); 
-            crit.setFetchMode("producto.referencia", FetchMode.JOIN); 
-            crit.setFetchMode("producto.marca", FetchMode.JOIN); 
-            crit.setFetchMode("producto.categoria", FetchMode.JOIN); 
-            crit.setFetchMode("producto.subcuenta", FetchMode.JOIN); 
+            crit.add(Restrictions.eq("con.id", conteo));
+            crit.setFetchMode("conteo", FetchMode.JOIN);
+            crit.setFetchMode("producto", FetchMode.JOIN);
+            crit.setFetchMode("producto.referencia", FetchMode.JOIN);
+            crit.setFetchMode("producto.marca", FetchMode.JOIN);
+            crit.setFetchMode("producto.categoria", FetchMode.JOIN);
+            crit.setFetchMode("producto.subcuenta", FetchMode.JOIN);
             crit.addOrder(Order.desc("id"));
             rta = crit.list();
-                    
+
         } catch (Exception e) {
             e.printStackTrace();
-          
+
         }
         return rta;
-    } 
-    
+    }
+
+    /**
+     * Funcion con la cual inserto un conteo
+     *
+     * @param conteoEntity
+     * @return
+     */
+    public String insertaConteo(ConteoEntity conteoEntity) {
+        String rta = "";
+        try {
+            this.initOperation();
+            Integer id = selectMaxConteo();
+            conteoEntity.setId(id);
+            conteoEntity.setEstado("A");
+            conteoEntity.setFecha(new Date());
+            sesion.save(conteoEntity);
+            rta = "Ok";
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+    /**
+     * Funcion con la cual obtengo el max de un conteo
+     * @return 
+     */
+    public Integer selectMaxConteo() {
+        Integer resultado = 1;
+        try {
+            Criteria crit = sesion.createCriteria(ConteoEntity.class)
+                    .setProjection(Projections.max("id"));
+            resultado = (Integer) crit.uniqueResult() + 1;
+        } catch (Exception e) {
+            resultado = 1;
+            e.printStackTrace();
+        }
+        return resultado;
+    }
+
     private void initOperation() throws HibernateException {
         sesion = HibernateUtil.getSessionFactory().openSession();
         tx = sesion.beginTransaction();
