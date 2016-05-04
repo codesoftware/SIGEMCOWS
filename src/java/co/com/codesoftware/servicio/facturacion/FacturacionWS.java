@@ -121,7 +121,8 @@ public class FacturacionWS {
     @WebResult(name = "respuestaFacturacion")
     public RespuestaFacturacion facturarAvanzado(@XmlElement(required = true) @WebParam(name = "Facturacion") FacturacionGenEntity facturacion) {
         RespuestaFacturacion rta = null;
-        try (FacturacionLogica objLogic = new FacturacionLogica()) {
+        try{
+            FacturacionLogica objLogic = new FacturacionLogica();
             rta = objLogic.generaFacturacionAvanzada(facturacion);
         } catch (Exception e) {
             e.printStackTrace();

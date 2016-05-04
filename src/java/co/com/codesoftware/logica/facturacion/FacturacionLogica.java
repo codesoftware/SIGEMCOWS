@@ -273,9 +273,13 @@ public class FacturacionLogica implements AutoCloseable {
     @Override
     public void close() throws Exception {
         try {
+            if (tx != null) {
+                tx.commit();
+            }
             if (sesion != null) {
                 sesion.close();
             }
+
         } catch (Exception e) {
             System.err.println("Error al cerrar la sesion del cliente hibernate " + e);
         }
@@ -457,7 +461,9 @@ public class FacturacionLogica implements AutoCloseable {
     public Integer getSecunceTransId() {
         Integer result = null;
         try {
+            this.initOperation();
             result = (Integer) sesion.createSQLQuery("select cast(nextval('co_temp_tran_factu_sec')as int) ").uniqueResult();
+            this.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -657,17 +663,19 @@ public class FacturacionLogica implements AutoCloseable {
             if (this.validaListasRecibidad(facturacion)) {
                 boolean valida = this.validaInformacionPreFacturacion(facturacion, rta);
                 if (valida) {
-                    initOperation();
                     idTrans = this.getSecunceTransId();
+                    this.close();
                     if (facturacion.getProductos() != null) {
                         for (TemporalProdTable producto : facturacion.getProductos()) {
                             boolean validaItem = validaItemProducto(producto);
                             if (validaItem) {
+                                this.initOperation();
                                 Integer id = this.getMaxId();
                                 producto.setId(id + 1);
                                 producto.setIdTrans(idTrans);
                                 sesion.save(producto);
                                 iterator++;
+                                this.close();
                             }
                         }
                     }
@@ -675,9 +683,11 @@ public class FacturacionLogica implements AutoCloseable {
                         for (TemporalRecTable receta : facturacion.getRecetas()) {
                             boolean validaItem = validaItemReceta(receta);
                             if (validaItem) {
+                                this.initOperation();
                                 receta.setIdTrans(idTrans);
                                 sesion.save(receta);
                                 iterator++;
+                                this.close();
                             }
                         }
 
@@ -686,7 +696,6 @@ public class FacturacionLogica implements AutoCloseable {
                         if (facturacion.isDomicilio()) {
                             //Logica para enviar que la factura es domicilio
                         }
-                        tx.commit();
                         msn = this.llamaFuncionFacturacionAvanzada(facturacion, idTrans);
                         rta.setRespuesta(llamadoFunction);
                         rta.setIdFacturacion(this.idFactura);
@@ -778,7 +787,7 @@ public class FacturacionLogica implements AutoCloseable {
                     .setFetchMode("subcuenta", FetchMode.JOIN)
                     .setFetchMode("tipoDocumento", FetchMode.JOIN)
                     .list();
-            
+
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -76,21 +76,24 @@ public class RemisionLogica implements AutoCloseable {
         }
         return rta;
     }
+
     /**
-     * Funcion la cual llama al procedimiento para convertir una remision en factura
+     * Funcion la cual llama al procedimiento para convertir una remision en
+     * factura
+     *
      * @param idRemision
-     * @return 
+     * @return
      */
-    public String realizarFacturaXRemision(Integer idRemision, Integer idTius,Integer idRsfa,Integer diasPlazo){
-         String rta = "";
+    public String realizarFacturaXRemision(Integer idRemision, Integer idTius, Integer idRsfa, Integer diasPlazo) {
+        String rta = "";
         List<String> response = new ArrayList<>();
-        try (ReadFunction rf = new ReadFunction()){
+        try (ReadFunction rf = new ReadFunction()) {
             rf.setNombreFuncion("FA_REMISION_FACTURA");
             rf.setNumParam(4);
-            rf.addParametro(""+idTius, DataType.INT);
-            rf.addParametro(""+idRemision, DataType.INT);
-            rf.addParametro(""+idRemision, DataType.INT);
-            rf.addParametro(""+diasPlazo, DataType.INT);
+            rf.addParametro("" + idTius, DataType.INT);
+            rf.addParametro("" + idRemision, DataType.INT);
+            rf.addParametro("" + idRemision, DataType.INT);
+            rf.addParametro("" + diasPlazo, DataType.INT);
             rf.callFunctionJdbc();
             response = rf.getRespuestaPg();
             rta = response.get(0);
@@ -112,6 +115,9 @@ public class RemisionLogica implements AutoCloseable {
     @Override
     public void close() throws Exception {
         try {
+            if (tx != null) {
+                tx.commit();
+            }
             if (sesion != null) {
                 sesion.close();
             }
