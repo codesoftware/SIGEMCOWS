@@ -240,7 +240,7 @@ public class ProductoWS {
     @WebResult(name = "ExistenciaXSedeEntity")
     public ExistenciaXSedeEntity obtenerCantidadesXSede(@XmlElement(required = true) @WebParam(name = "sede_sede") Integer sede,
             @XmlElement(required = true) @WebParam(name = "idDska") Integer idProducto) {
-        ExistenciaXSedeEntity resultado = null;
+        ExistenciaXSedeEntity resultado = new ExistenciaXSedeEntity();
         try (ProductoLogica logic = new ProductoLogica()) {
             resultado = logic.consultaCantidad(sede, idProducto);
         } catch (Exception e) {
@@ -358,6 +358,18 @@ public class ProductoWS {
             e.printStackTrace();
         }
         return solicitudEntity;
+    }
+    
+    @WebMethod(operationName = "actualizaSolicitud")
+     @WebResult(name="RespuestaEntity")
+    public RespuestaEntity actualizaSolicitud(@WebParam(name = "idUsuario")Integer idUsuario,@WebParam(name = "productosSolicitud") List<SolicitudProdEntity> productos){
+        RespuestaEntity respuesta = new RespuestaEntity();
+        try {
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return respuesta;
     }
             
 }
