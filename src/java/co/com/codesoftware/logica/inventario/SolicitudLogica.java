@@ -50,8 +50,6 @@ public class SolicitudLogica implements AutoCloseable {
         }
         return respuesta;
     }
-    
-    
 
     /**
      * metodo que inserta los productos de una solicitud
@@ -67,7 +65,7 @@ public class SolicitudLogica implements AutoCloseable {
                 sesion.save(item);
                 close();
             }
-             respuesta.setCodigoRespuesta(1);
+            respuesta.setCodigoRespuesta(1);
             respuesta.setMensajeRespuesta("OK");
             respuesta.setDescripcionRespuesta("OK");
         } catch (Exception e) {
@@ -139,14 +137,22 @@ public class SolicitudLogica implements AutoCloseable {
         }
         return respuesta;
     }
-    
-    public SolicitudEntity consultaSolicitudXFecha(Date fecha,Integer sede, Integer usuario){
+
+    /**
+     * funcion que consulta las solicitudes por fecha
+     *
+     * @param fecha
+     * @param sede
+     * @param usuario
+     * @return
+     */
+    public SolicitudEntity consultaSolicitudXFecha(Date fecha, Integer sede, Integer usuario) {
         SolicitudEntity solicitud = new SolicitudEntity();
         try {
             initOperation();
-            solicitud= (SolicitudEntity) sesion.createCriteria(SolicitudEntity.class)
-                    .add(Restrictions.eq("fecha",fecha))
-                    .createAlias("sede","sed")
+            solicitud = (SolicitudEntity) sesion.createCriteria(SolicitudEntity.class)
+                    .add(Restrictions.eq("fecha", fecha))
+                    .createAlias("sede", "sed")
                     .createAlias("usuario", "usu")
                     .add(Restrictions.eq("sede.id", sede))
                     .add(Restrictions.eq("usu.id", usuario))
@@ -155,6 +161,60 @@ public class SolicitudLogica implements AutoCloseable {
             e.printStackTrace();
         }
         return solicitud;
+    }
+
+    /**
+     * metoddo que actualiza los productos de una solicitud
+     *
+     * @param productos
+     * @return
+     */
+    public RespuestaEntity actualizaProductosSolicitud(List<SolicitudProdEntity> productos) {
+        RespuestaEntity respuesta = new RespuestaEntity();
+        try {
+            for (SolicitudProdEntity item : productos) {
+                initOperation();
+                sesion.update(item);
+                close();
+            }
+            //respuesta = actualizaSolicitud("E", productos.get(0).getSolicitud());
+            respuesta.setCodigoRespuesta(1);
+            respuesta.setDescripcionRespuesta("OK");
+            respuesta.setMensajeRespuesta("OK");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            respuesta.setCodigoRespuesta(0);
+            respuesta.setDescripcionRespuesta(e.getMessage());
+            respuesta.setMensajeRespuesta(e.toString());
+        }
+        return respuesta;
+    }
+
+    /**
+     * funcion que actualiza el estado de la solicitud
+     *
+     * @param estado
+     * @param solicitud
+     * @return
+     */
+    public RespuestaEntity actualizaSolicitud(String estado, SolicitudEntity solicitud) {
+        RespuestaEntity respuesta = new RespuestaEntity();
+        try {
+            initOperation();
+            solicitud.setEstado(estado);
+            sesion.update(solicitud);
+            close();
+            respuesta.setCodigoRespuesta(1);
+            respuesta.setDescripcionRespuesta("OK");
+            respuesta.setMensajeRespuesta("OK");
+        } catch (Exception e) {
+            e.printStackTrace();
+            respuesta.setCodigoRespuesta(0);
+            respuesta.setDescripcionRespuesta(e.getMessage());
+            respuesta.setMensajeRespuesta(e.toString());
+        }
+        return respuesta;
     }
 
     /**

@@ -360,12 +360,19 @@ public class ProductoWS {
         return solicitudEntity;
     }
     
+    /**
+     * metodo que actualiza los productos de una solicitud
+     * @param idUsuario
+     * @param productos
+     * @return 
+     */
     @WebMethod(operationName = "actualizaSolicitud")
      @WebResult(name="RespuestaEntity")
     public RespuestaEntity actualizaSolicitud(@WebParam(name = "idUsuario")Integer idUsuario,@WebParam(name = "productosSolicitud") List<SolicitudProdEntity> productos){
         RespuestaEntity respuesta = new RespuestaEntity();
         try {
-            
+           SolicitudLogica logica = new SolicitudLogica();
+           respuesta = logica.actualizaProductosSolicitud(productos);
         } catch (Exception e) {
             e.printStackTrace();
         }
