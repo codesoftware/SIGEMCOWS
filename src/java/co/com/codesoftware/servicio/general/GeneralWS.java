@@ -16,6 +16,7 @@ import co.com.codesoftware.persistencia.entidad.admin.ResolucionFactEntity;
 import co.com.codesoftware.persistencia.entidad.admin.SedeEntity;
 import co.com.codesoftware.persistencia.entidad.facturacion.DetProdRemision;
 import co.com.codesoftware.persistencia.entidad.facturacion.RemisionEntity;
+import co.com.codesoftware.persistencia.entidad.generico.facturacion.RelFacRemiGenEntity;
 import java.util.Date;
 import java.util.List;
 import javax.jws.WebService;
@@ -191,6 +192,23 @@ public class GeneralWS {
         String rta = "";
         try (SedesLogica objLogica = new SedesLogica()){
             rta = objLogica.actualizaSede(sede);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+    /**
+     * Funcion con la cual obtengo los dos principales identificadores de una remision
+     * @param tipoDoc
+     * @param id
+     * @return 
+     */
+    @WebMethod(operationName = "buscaDocumentosPagosRemi")
+    public RelFacRemiGenEntity buscaDocumentosPagosRemi(@XmlElement(required = true) @WebParam(name = "tipoDoc") String tipoDoc, 
+            @XmlElement(required = true) @WebParam(name = "idDocumento") Integer id ){
+        RelFacRemiGenEntity rta = null;
+        try (RemisionLogica objLogica = new RemisionLogica()){
+            rta = objLogica.buscaRemisionXTipoDoc(tipoDoc, id);
         } catch (Exception e) {
             e.printStackTrace();
         }

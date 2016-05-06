@@ -9,6 +9,7 @@ import co.com.codesoftware.persistencia.HibernateUtil;
 import co.com.codesoftware.persistencia.ReadFunction;
 import co.com.codesoftware.persistencia.entidad.facturacion.DetProdRemision;
 import co.com.codesoftware.persistencia.entidad.facturacion.RemisionEntity;
+import co.com.codesoftware.persistencia.entidad.generico.facturacion.RelFacRemiGenEntity;
 import co.com.codesoftware.persistencia.utilities.DataType;
 import java.util.ArrayList;
 import java.util.Date;
@@ -97,6 +98,40 @@ public class RemisionLogica implements AutoCloseable {
             rf.callFunctionJdbc();
             response = rf.getRespuestaPg();
             rta = response.get(0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+
+    /**
+     * Funcion con la cual busco los dos principales id's para la realizaccion
+     * de los pagos de remisiones
+     *
+     * @param tipoDoc
+     * @param idDocumento
+     * @return
+     */
+    public RelFacRemiGenEntity buscaRemisionXTipoDoc(String tipoDoc, Integer idDocumento) {
+        RelFacRemiGenEntity rta = null;
+        try {
+            this.initOperation();
+            Criteria crit = sesion.createCriteria(RemisionEntity.class);
+            if("FA".equalsIgnoreCase(tipoDoc)){
+                crit.add(Restrictions.eq("idFactura", idDocumento));
+            }else{
+                crit.add(Restrictions.eq("id", idDocumento));
+            }
+            RemisionEntity respuesta = (RemisionEntity) crit.uniqueResult();
+            rta = new RelFacRemiGenEntity();
+            if(respuesta == null){
+                rta.setMensaje("Error la factura no existe o no tiene una remision asociada");
+            }else{
+                rta.setMensaje("Ok");
+                rta.setEstado(respuesta.getEstado());
+                rta.setIdFactura(respuesta.getIdFactura());
+                rta.setIdRemision(respuesta.getId());
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
