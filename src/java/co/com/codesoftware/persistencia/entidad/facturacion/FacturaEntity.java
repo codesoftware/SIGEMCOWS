@@ -70,7 +70,11 @@ public class FacturaEntity implements Serializable {
     @Transient
     private Date fechaExacta;
     @Column(name = "fact_cons")
-    private Integer consecutivo; 
+    private Integer consecutivo;
+    @Column(name = "fact_rsfa")
+    private Integer resolucion;
+    @Column(name = "fact_vlr_acobrar")
+    private BigDecimal valorCobrar;
 
     public Integer getId() {
         return id;
@@ -246,5 +250,21 @@ public class FacturaEntity implements Serializable {
 
     public void setConsecutivo(Integer consecutivo) {
         this.consecutivo = consecutivo;
+    }
+
+    public Integer getResolucion() {
+        return resolucion;
+    }
+
+    public void setResolucion(Integer resolucion) {
+        this.resolucion = resolucion;
+    }
+
+    public BigDecimal getValorCobrar() {
+        return valorCobrar;
+    }
+
+    public void setValorCobrar(BigDecimal valorCobrar) {
+        this.valorCobrar = valorCobrar;
     }
 }
