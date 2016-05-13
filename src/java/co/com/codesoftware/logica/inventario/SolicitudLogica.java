@@ -6,8 +6,10 @@
 package co.com.codesoftware.logica.inventario;
 
 import co.com.codesoftware.persistencia.HibernateUtil;
+import co.com.codesoftware.persistencia.ReadFunction;
 import co.com.codesoftware.persistencia.entidad.inventario.SolicitudEntity;
 import co.com.codesoftware.persistencia.entidad.inventario.SolicitudProdEntity;
+import co.com.codesoftware.persistencia.utilities.DataType;
 import co.com.codesoftware.persistencia.utilities.RespuestaEntity;
 import java.util.ArrayList;
 import java.util.Date;
@@ -169,7 +171,7 @@ public class SolicitudLogica implements AutoCloseable {
      * @param productos
      * @return
      */
-    public RespuestaEntity actualizaProductosSolicitud(List<SolicitudProdEntity> productos) {
+    public RespuestaEntity actualizaProductosSolicitud(List<SolicitudProdEntity> productos,Integer idUsuario) {
         RespuestaEntity respuesta = new RespuestaEntity();
         try {
             for (SolicitudProdEntity item : productos) {
@@ -178,9 +180,7 @@ public class SolicitudLogica implements AutoCloseable {
                 close();
             }
             //respuesta = actualizaSolicitud("E", productos.get(0).getSolicitud());
-            respuesta.setCodigoRespuesta(1);
-            respuesta.setDescripcionRespuesta("OK");
-            respuesta.setMensajeRespuesta("OK");
+            respuesta=ejecutaProcedimientoSolicitud(idUsuario, productos.get(0).getSolicitud().getId());
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -218,10 +218,40 @@ public class SolicitudLogica implements AutoCloseable {
     }
 
     /**
-     * metodo que inicia la factoria de conexiones hibernate
+     * funcion que llama al procedimiento de solicitudes
      *
-     * @throws HibernateException
+     * @param idUsuario
+     * @param idSede
+     * @return
      */
+    public RespuestaEntity ejecutaProcedimientoSolicitud(Integer idUsuario, Integer idSede) {
+        RespuestaEntity respuesta = new RespuestaEntity();
+       List<String> response = new ArrayList<>();
+        try (ReadFunction rf = new ReadFunction()){
+            rf.setNombreFuncion("FA_ENVIASOLICITUD");
+            rf.setNumParam(2);
+            rf.addParametro(idUsuario.toString(), DataType.INT);
+            rf.addParametro(idSede.toString(), DataType.INT);
+            boolean valida = rf.callFunctionJdbc();
+            if(valida){
+                respuesta.setDescripcionRespuesta(rf.getRespuestaPg().get(0));
+                respuesta.setCodigoRespuesta(1);
+            }else{
+                respuesta.setDescripcionRespuesta("Error al realizar solicitud ");
+                respuesta.setCodigoRespuesta(0);
+            }            
+        } catch (Exception e) {
+             respuesta.setDescripcionRespuesta("Error"+e.getMessage());
+                respuesta.setCodigoRespuesta(0);
+            e.printStackTrace();
+        }
+        return respuesta;
+        }
+        /**
+         * metodo que inicia la factoria de conexiones hibernate
+         *
+         * @throws HibernateException
+         */
     private void initOperation() throws HibernateException {
         sesion = HibernateUtil.getSessionFactory().openSession();
         tx = sesion.beginTransaction();

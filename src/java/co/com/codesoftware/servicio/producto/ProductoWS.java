@@ -372,7 +372,7 @@ public class ProductoWS {
         RespuestaEntity respuesta = new RespuestaEntity();
         try {
            SolicitudLogica logica = new SolicitudLogica();
-           respuesta = logica.actualizaProductosSolicitud(productos);
+           respuesta = logica.actualizaProductosSolicitud(productos,idUsuario);
         } catch (Exception e) {
             e.printStackTrace();
         }
