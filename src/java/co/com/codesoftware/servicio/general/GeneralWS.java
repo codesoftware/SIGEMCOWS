@@ -16,6 +16,7 @@ import co.com.codesoftware.persistencia.entidad.admin.ResolucionFactEntity;
 import co.com.codesoftware.persistencia.entidad.admin.SedeEntity;
 import co.com.codesoftware.persistencia.entidad.facturacion.DetProdRemision;
 import co.com.codesoftware.persistencia.entidad.facturacion.RemisionEntity;
+import co.com.codesoftware.persistencia.entidad.generico.facturacion.RelFacRemiGenEntity;
 import java.util.Date;
 import java.util.List;
 import javax.jws.WebService;
@@ -66,14 +67,27 @@ public class GeneralWS {
     /**
      * Metodo con el cual se insertan las resoluciones de facturacion compañia
      *
+     * @param objEntity
      * @return
      */
     @WebMethod(operationName = "insertarResolucion")
     @WebResult(name = "respuesta")
-    public String insertarResolucion(ResolucionFactEntity objEntity) {
+    public String insertarResolucion(@XmlElement(required = true) @WebParam(name = "objEntity") ResolucionFactEntity objEntity) {
         try (ResolucionFactLogica objLogica = new ResolucionFactLogica()) {
             return objLogica.insertaResolucion(objEntity);
         } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
+    @WebMethod(operationName = "actualizaResolucion")
+    @WebResult(name = "respuesta")
+    public String actualizaResolucion(@XmlElement(required = true) @WebParam(name = "objEntity") ResolucionFactEntity objEntity) {
+        try (ResolucionFactLogica objLogica = new ResolucionFactLogica()) {
+            return objLogica.actualizarResolucion(objEntity);
+        } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }
@@ -139,11 +153,13 @@ public class GeneralWS {
     @WebMethod(operationName = "realizarFacturaXRemision")
     @WebResult(name = "respuesta")
     public String realizarFacturaXRemision(@XmlElement(required = true) @WebParam(name = "idRemision") Integer idRemision,
-            @XmlElement(required = true) @WebParam(name = "idTius") Integer idTius) {
+            @XmlElement(required = true) @WebParam(name = "idTius") Integer idTius,
+            @XmlElement(required = true) @WebParam(name = "idRsfa") Integer idRsfa,
+            @XmlElement(required = true) @WebParam(name = "diasPlazo") Integer diasPlazo) {
         String rta = "";
         try{
             RemisionLogica objLogica = new RemisionLogica();
-            rta = objLogica.realizarFacturaXRemision(idRemision, idTius);
+            rta = objLogica.realizarFacturaXRemision(idRemision, idTius,idRsfa,diasPlazo);
         } catch (Exception e) {
             return null;
         }
@@ -176,6 +192,23 @@ public class GeneralWS {
         String rta = "";
         try (SedesLogica objLogica = new SedesLogica()){
             rta = objLogica.actualizaSede(sede);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+    /**
+     * Funcion con la cual obtengo los dos principales identificadores de una remision
+     * @param tipoDoc
+     * @param id
+     * @return 
+     */
+    @WebMethod(operationName = "buscaDocumentosPagosRemi")
+    public RelFacRemiGenEntity buscaDocumentosPagosRemi(@XmlElement(required = true) @WebParam(name = "tipoDoc") String tipoDoc, 
+            @XmlElement(required = true) @WebParam(name = "idDocumento") Integer id ){
+        RelFacRemiGenEntity rta = null;
+        try (RemisionLogica objLogica = new RemisionLogica()){
+            rta = objLogica.buscaRemisionXTipoDoc(tipoDoc, id);
         } catch (Exception e) {
             e.printStackTrace();
         }

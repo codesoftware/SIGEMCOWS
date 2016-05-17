@@ -5,6 +5,7 @@
  */
 package co.com.codesoftware.persistencia.entidad.inventario;
 
+import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,7 +20,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "in_tcopr")
-public class ConteoEntity {
+public class ConteoEntity implements Serializable{
     @Id
     @Column(name = "copr_copr")
     private Integer id;
@@ -28,7 +29,7 @@ public class ConteoEntity {
     @Column(name="copr_tius")
     private Integer tius;
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name="copr_fecha")
+    @Column(name="copr_fecha",columnDefinition = "Date default SYSDATE")
     private Date fecha;
     @Column(name="copr_sede")
     private Integer sede;

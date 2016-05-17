@@ -64,5 +64,7 @@
         <mapping class="co.com.codesoftware.persistencia.entidad.receta.PrecioRecetaEntity"/>
         <mapping class="co.com.codesoftware.persistencia.entidad.facturacion.DetReceFacturaEntity"/>
         <mapping class="co.com.codesoftware.persistencia.entidad.facturacion.TemporalRecTable"/>
+        <mapping class="co.com.codesoftware.persistencia.entidad.inventario.SolicitudEntity"/>
+        <mapping class="co.com.codesoftware.persistencia.entidad.inventario.SolicitudProdEntity"/>
     </session-factory>
 </hibernate-configuration>

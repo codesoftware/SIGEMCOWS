@@ -59,7 +59,7 @@ public class FacturaCompraLogic implements AutoCloseable {
                         respuesta.setCodigoRespuesta(1);
                         respuesta.setDescripcionRespuesta("OK PRODUCTOS");
                         respuesta.setMensajeRespuesta("OK PRODUCTOS");
-                    }else{
+                    } else {
                         respuesta.setCodigoRespuesta(0);
                         respuesta.setDescripcionRespuesta(validaProc);
                         respuesta.setMensajeRespuesta(validaProc);
@@ -94,6 +94,7 @@ public class FacturaCompraLogic implements AutoCloseable {
     public RespuestaEntity insertaPagoFC(List<PagoFacCompraEntity> pagos, Integer idFacturaCompra) {
         RespuestaEntity respuesta = new RespuestaEntity();
         try {
+            System.out.println("id"+idFacturaCompra);
             for (PagoFacCompraEntity item : pagos) {
                 item.setId(selecMaxPago());
                 initOperation();
@@ -101,6 +102,7 @@ public class FacturaCompraLogic implements AutoCloseable {
                 sesion.save(item);
                 close();
             }
+            
             respuesta.setCodigoRespuesta(1);
         } catch (Exception e) {
             e.printStackTrace();
@@ -128,6 +130,7 @@ public class FacturaCompraLogic implements AutoCloseable {
                 sesion.save(item);
                 close();
             }
+            
             respuesta.setCodigoRespuesta(1);
         } catch (Exception e) {
             respuesta.setCodigoRespuesta(0);
@@ -149,6 +152,7 @@ public class FacturaCompraLogic implements AutoCloseable {
             initOperation();
             resultado = (Long) sesion.createCriteria(FacturaCompraEntity.class)
                     .setProjection(Projections.rowCount()).uniqueResult() + 1;
+            close();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -223,6 +227,7 @@ public class FacturaCompraLogic implements AutoCloseable {
     public Integer selecMaxPago() {
         Long resultado = new Long(1);
         try {
+
             initOperation();
             resultado = (Long) sesion.createCriteria(PagoFacCompraEntity.class)
                     .setProjection(Projections.rowCount()).uniqueResult() + 1;
@@ -280,6 +285,7 @@ public class FacturaCompraLogic implements AutoCloseable {
     public void close() throws Exception {
         if (tx != null) {
             tx.commit();
+            tx=null;
         }
         if (sesion != null) {
             sesion.close();

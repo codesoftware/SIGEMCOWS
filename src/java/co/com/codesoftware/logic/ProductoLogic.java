@@ -143,7 +143,11 @@ public class ProductoLogic implements AutoCloseable {
         try {
             this.initOperation();
             Criteria crit = sesion.createCriteria(ProductoEntity.class)
-                    .add(Restrictions.like("codigoExterno", codExterno, MatchMode.ANYWHERE));
+                    .add(Restrictions.like("codigoExt", codExterno, MatchMode.ANYWHERE).ignoreCase())
+                    .setFetchMode("referencia", FetchMode.JOIN)
+                    .setFetchMode("marca", FetchMode.JOIN)
+                    .setFetchMode("categoria", FetchMode.JOIN)
+                    .setFetchMode("subcuenta", FetchMode.JOIN); 
             respuesta = crit.list();
         } catch (Exception e) {
             e.printStackTrace();
@@ -209,13 +213,15 @@ public class ProductoLogic implements AutoCloseable {
         try (ReadFunction rf = new ReadFunction();) {
 
             rf.setNombreFuncion("IN_REGISTRA_PRODUCTO");
-            rf.setNumParam(6);
+            rf.setNumParam(8);
             rf.addParametro("" + objEntity.getReferencia().getId(), co.com.codesoftware.persistencia.utilities.DataType.INT.INT);
             rf.addParametro(objEntity.getDescripcion().toUpperCase(), DataType.TEXT);
             rf.addParametro("" + objEntity.getMarca().getId(), DataType.INT);
             rf.addParametro("" + objEntity.getCategoria().getId(), DataType.INT);
             rf.addParametro(objEntity.getCodigoExt(), DataType.TEXT);
             rf.addParametro(objEntity.getUbicacion(), DataType.TEXT);
+            rf.addParametro("N", DataType.TEXT);
+            rf.addParametro(objEntity.getCodigoBarras(), DataType.TEXT);
             boolean valida = rf.callFunctionJdbc();
             rf.ListResponsePg();
             if (valida) {

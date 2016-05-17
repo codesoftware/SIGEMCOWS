@@ -98,5 +98,23 @@ public class ConteoWS {
         }
         return rta;
     }
+    
+    /**
+     * Metodo en el cual insertamos un conteo en el sistema
+     *
+     * @param conteo
+     * @return
+     */
+    @WebMethod(operationName = "insertaConteo")
+    @WebResult(name = "respuesta")
+    public String insertaConteo(@WebParam(name = "conteo") ConteoEntity conteo) {
+        String rta = null;
+        try (ConteoLogica logic = new ConteoLogica()) {
+            rta = logic.insertaConteo(conteo);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
 
 }

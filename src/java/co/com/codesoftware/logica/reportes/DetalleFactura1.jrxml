@@ -23,32 +23,25 @@ and dtre_fact =  cast($P{fact_fact_table} as int)]]>
 	<columnHeader>
 		<band height="20">
 			<staticText>
-				<reportElement x="3" y="0" width="43" height="20" uuid="c823c1a6-b84c-4d22-aecf-5803c7ad9922"/>
-				<textElement verticalAlignment="Middle">
-					<font size="9" isBold="true"/>
-				</textElement>
-				<text><![CDATA[CODIGO]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="46" y="0" width="56" height="20" uuid="faa97c49-c313-4cf7-9d74-f879499c3f75"/>
+				<reportElement x="3" y="0" width="54" height="20" uuid="faa97c49-c313-4cf7-9d74-f879499c3f75"/>
 				<textElement verticalAlignment="Middle">
 					<font size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[CANTIDAD]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="102" y="0" width="114" height="20" uuid="7bc413cc-7b00-47d7-ba91-f45d42e6cb9c"/>
+				<reportElement x="57" y="0" width="159" height="20" uuid="7bc413cc-7b00-47d7-ba91-f45d42e6cb9c"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="9" isBold="true"/>
 				</textElement>
-				<text><![CDATA[VALOR]]></text>
+				<text><![CDATA[DESCRIPCION]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="24" splitType="Stretch">
+		<band height="36" splitType="Stretch">
 			<textField>
-				<reportElement x="3" y="0" width="43" height="12" uuid="878465e2-05b2-4eea-9b47-3c9d4cfbf9e1"/>
+				<reportElement x="3" y="24" width="116" height="12" uuid="878465e2-05b2-4eea-9b47-3c9d4cfbf9e1"/>
 				<box>
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -62,7 +55,7 @@ and dtre_fact =  cast($P{fact_fact_table} as int)]]>
 				<textFieldExpression><![CDATA[$F{codigo}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="3" y="12" width="213" height="12" uuid="9ae61ca5-b4e0-42da-a42a-19377c72ba34"/>
+				<reportElement x="57" y="0" width="159" height="24" uuid="9ae61ca5-b4e0-42da-a42a-19377c72ba34"/>
 				<box>
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -71,12 +64,12 @@ and dtre_fact =  cast($P{fact_fact_table} as int)]]>
 					<rightPen lineWidth="0.0"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font size="7"/>
+					<font size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="46" y="0" width="56" height="12" uuid="56d76b81-5028-4c44-bc51-2b73fc2fc5c6"/>
+				<reportElement x="3" y="0" width="54" height="24" uuid="56d76b81-5028-4c44-bc51-2b73fc2fc5c6"/>
 				<box>
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -90,7 +83,7 @@ and dtre_fact =  cast($P{fact_fact_table} as int)]]>
 				<textFieldExpression><![CDATA[$F{can}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="102" y="0" width="114" height="12" uuid="76c9b40d-e967-402c-a267-427c0a3d47f0"/>
+				<reportElement x="119" y="24" width="97" height="12" uuid="76c9b40d-e967-402c-a267-427c0a3d47f0"/>
 				<box>
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>

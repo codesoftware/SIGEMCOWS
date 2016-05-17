@@ -50,6 +50,8 @@ public class RemisionEntity implements Serializable{
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "remi_fecha")
     private Date fechaCreacion;
+    @Column(name = "remi_fact")
+    private Integer idFactura;
 
     public Integer getId() {
         return id;
@@ -122,6 +124,12 @@ public class RemisionEntity implements Serializable{
     public void setFechaCreacion(Date fechaCreacion) {
         this.fechaCreacion = fechaCreacion;
     }
-    
-    
+
+    public Integer getIdFactura() {
+        return idFactura;
+    }
+
+    public void setIdFactura(Integer idFactura) {
+        this.idFactura = idFactura;
+    }
 }

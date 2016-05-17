@@ -17,6 +17,7 @@
         <mapping class="co.com.codesoftware.persistencia.entidad.admin.SedeEntity"/>
         <mapping class="co.com.codesoftware.persistencia.entidad.admin.ParametrosEmpresaEntity"/>
         <mapping class="co.com.codesoftware.persistencia.entidad.admin.ClienteEntity"/>
+        <mapping class="co.com.codesoftware.persistencia.entidad.admin.ResolucionFactEntity"/>
 
         <mapping class="co.com.codesoftware.persistencia.entidad.inventario.CategoriaEntity"/>
         <mapping class="co.com.codesoftware.persistencia.entidad.inventario.ConteoEntity"/>
@@ -60,7 +61,12 @@
         <mapping class="co.com.codesoftware.persistence.entity.facturacion.ImagenFacturaEntity"/>
         <mapping class="co.com.codesoftware.persistencia.entidad.receta.RecetaEntity"/>
         <mapping class="co.com.codesoftware.persistencia.entidad.receta.PrecioRecetaEntity"/>
+<<<<<<< HEAD
         <mapping class="co.com.codesoftware.persistencia.entidad.facturacion.DetReceFacturaEntity"/>
         <mapping class="co.com.codesoftware.persistencia.entidad.facturacion.TemporalRecTable"/>
+=======
+        <mapping class="co.com.codesoftware.persistencia.entidad.inventario.SolicitudEntity"/>
+        <mapping class="co.com.codesoftware.persistencia.entidad.inventario.SolicitudProdEntity"/>
+>>>>>>> 76882e0568bdb01dd894de1b01dd3810d9d34aac
     </session-factory>
 </hibernate-configuration>

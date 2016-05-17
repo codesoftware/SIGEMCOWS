@@ -9,6 +9,7 @@ import co.com.codesoftware.persistencia.HibernateUtil;
 import co.com.codesoftware.persistencia.ReadFunction;
 import co.com.codesoftware.persistencia.entidad.facturacion.DetProdRemision;
 import co.com.codesoftware.persistencia.entidad.facturacion.RemisionEntity;
+import co.com.codesoftware.persistencia.entidad.generico.facturacion.RelFacRemiGenEntity;
 import co.com.codesoftware.persistencia.utilities.DataType;
 import java.util.ArrayList;
 import java.util.Date;
@@ -76,22 +77,61 @@ public class RemisionLogica implements AutoCloseable {
         }
         return rta;
     }
+
     /**
-     * Funcion la cual llama al procedimiento para convertir una remision en factura
+     * Funcion la cual llama al procedimiento para convertir una remision en
+     * factura
+     *
      * @param idRemision
-     * @return 
+     * @return
      */
-    public String realizarFacturaXRemision(Integer idRemision, Integer idTius){
-         String rta = "";
+    public String realizarFacturaXRemision(Integer idRemision, Integer idTius, Integer idRsfa, Integer diasPlazo) {
+        String rta = "";
         List<String> response = new ArrayList<>();
-        try (ReadFunction rf = new ReadFunction()){
+        try (ReadFunction rf = new ReadFunction()) {
             rf.setNombreFuncion("FA_REMISION_FACTURA");
-            rf.setNumParam(2);
-            rf.addParametro(""+idTius, DataType.INT);
-            rf.addParametro(""+idRemision, DataType.INT);
+            rf.setNumParam(4);
+            rf.addParametro("" + idTius, DataType.INT);
+            rf.addParametro("" + idRemision, DataType.INT);
+            rf.addParametro("" + idRemision, DataType.INT);
+            rf.addParametro("" + diasPlazo, DataType.INT);
             rf.callFunctionJdbc();
             response = rf.getRespuestaPg();
             rta = response.get(0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+
+    /**
+     * Funcion con la cual busco los dos principales id's para la realizaccion
+     * de los pagos de remisiones
+     *
+     * @param tipoDoc
+     * @param idDocumento
+     * @return
+     */
+    public RelFacRemiGenEntity buscaRemisionXTipoDoc(String tipoDoc, Integer idDocumento) {
+        RelFacRemiGenEntity rta = null;
+        try {
+            this.initOperation();
+            Criteria crit = sesion.createCriteria(RemisionEntity.class);
+            if("FA".equalsIgnoreCase(tipoDoc)){
+                crit.add(Restrictions.eq("idFactura", idDocumento));
+            }else{
+                crit.add(Restrictions.eq("id", idDocumento));
+            }
+            RemisionEntity respuesta = (RemisionEntity) crit.uniqueResult();
+            rta = new RelFacRemiGenEntity();
+            if(respuesta == null){
+                rta.setMensaje("Error la factura no existe o no tiene una remision asociada");
+            }else{
+                rta.setMensaje("Ok");
+                rta.setEstado(respuesta.getEstado());
+                rta.setIdFactura(respuesta.getIdFactura());
+                rta.setIdRemision(respuesta.getId());
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -110,6 +150,9 @@ public class RemisionLogica implements AutoCloseable {
     @Override
     public void close() throws Exception {
         try {
+            if (tx != null) {
+                tx.commit();
+            }
             if (sesion != null) {
                 sesion.close();
             }
