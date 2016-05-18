@@ -17,6 +17,7 @@ import co.com.codesoftware.persistencia.entidad.admin.SedeEntity;
 import co.com.codesoftware.persistencia.entidad.facturacion.DetProdRemision;
 import co.com.codesoftware.persistencia.entidad.facturacion.RemisionEntity;
 import co.com.codesoftware.persistencia.entidad.generico.facturacion.RelFacRemiGenEntity;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import javax.jws.WebService;
@@ -209,6 +210,30 @@ public class GeneralWS {
         RelFacRemiGenEntity rta = null;
         try (RemisionLogica objLogica = new RemisionLogica()){
             rta = objLogica.buscaRemisionXTipoDoc(tipoDoc, id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+    /**
+     * Funcion con la cual registro un abono a una remision
+     * @param idTius
+     * @param idFact
+     * @param valorPago
+     * @param tipoPago
+     * @param pagoTotal
+     * @return 
+     */
+    @WebMethod(operationName = "ejecutaPagoRemision")
+    public String ejecutaPagoRemision(@XmlElement(required = true) @WebParam(name = "idTius") Integer idTius,
+            @XmlElement(required = true) @WebParam(name = "idFact") Integer idFact, 
+            @XmlElement(required = true) @WebParam(name = "valorPago") BigDecimal valorPago, 
+            @XmlElement(required = true) @WebParam(name = "tipoPago") String tipoPago,
+            @XmlElement(required = true) @WebParam(name = "pagoTotal") String pagoTotal){
+        String rta = "";
+        try {
+            RemisionLogica objLogica = new RemisionLogica();
+            rta = objLogica.realizaPagoRemision(idTius, idFact, valorPago, tipoPago, pagoTotal);
         } catch (Exception e) {
             e.printStackTrace();
         }
