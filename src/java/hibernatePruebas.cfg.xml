@@ -18,6 +18,7 @@
         <mapping class="co.com.codesoftware.persistencia.entidad.admin.ParametrosEmpresaEntity"/>
         <mapping class="co.com.codesoftware.persistencia.entidad.admin.ClienteEntity"/>
         <mapping class="co.com.codesoftware.persistencia.entidad.admin.ResolucionFactEntity"/>
+        <mapping class="co.com.codesoftware.persistencia.entidad.admin.DepartamentoEntity"/>
 
         <mapping class="co.com.codesoftware.persistencia.entidad.inventario.CategoriaEntity"/>
         <mapping class="co.com.codesoftware.persistencia.entidad.inventario.ConteoEntity"/>

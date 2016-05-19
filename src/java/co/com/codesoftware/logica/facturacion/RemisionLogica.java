@@ -121,7 +121,7 @@ public class RemisionLogica implements AutoCloseable {
     public String realizaPagoRemision(Integer idTius,
             Integer idFact,
             BigDecimal valorPago,
-            String  tipoPago,
+            String tipoPago,
             String pagoTotal) {
         String rta = "";
         List<String> response = new ArrayList<>();
