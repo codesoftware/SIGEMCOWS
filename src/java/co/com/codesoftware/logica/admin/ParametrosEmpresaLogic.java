@@ -2,6 +2,7 @@ package co.com.codesoftware.logica.admin;
 
 import co.com.codesoftware.persistencia.HibernateUtil;
 import co.com.codesoftware.persistencia.entidad.admin.ParametrosEmpresaEntity;
+import java.util.Date;
 import java.util.List;
 import org.hibernate.Criteria;
 
@@ -52,7 +53,11 @@ public class ParametrosEmpresaLogic implements AutoCloseable {
                     rta = "Error El parametro no coincide con la clave";
                 }
             }else{
-                rta = "Error El parametro que desea actualizar no existe";
+                parametro = new ParametrosEmpresaEntity();
+                parametro.setFecha(new Date());
+                parametro.setClave(clave);
+                parametro.setValor(valor);
+                sesion.save(parametro);
             }
         } catch (Exception e) {
             e.printStackTrace();

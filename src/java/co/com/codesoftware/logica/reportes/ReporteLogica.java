@@ -5,8 +5,10 @@
  */
 package co.com.codesoftware.logica.reportes;
 
+import co.com.codesoftware.logica.admin.ParametrosEmpresaLogic;
 import co.com.codesoftware.persistence.entities.MapaEntity;
 import co.com.codesoftware.persistencia.HibernateUtil;
+import co.com.codesoftware.persistencia.entidad.admin.ParametrosEmpresaEntity;
 import java.io.File;
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -87,7 +89,15 @@ public class ReporteLogica implements AutoCloseable {
      */
     private synchronized String generaJasper(String fact_fact) {
         String documento = null;
+        String nombreJasper="";
         try {
+            String tiporegimen = this.obtieneTipoRegimen();
+            System.out.println("Este es el tipo Regimen: " + tiporegimen);
+            if("CO".equalsIgnoreCase(tiporegimen)){
+                nombreJasper = "Factura.jasper";
+            }else if("SI".equalsIgnoreCase(tiporegimen)){
+                nombreJasper = "FacturaSimple.jasper";
+            }
             this.conectionJDBC();
             Map<String, Object> properties = new HashMap<String, Object>();
             properties.put("fact_fact", fact_fact);
@@ -96,7 +106,7 @@ public class ReporteLogica implements AutoCloseable {
             properties.put("RUTA_LOGOFACT", imagenLogo);
             //JasperReport jasperReport = (JasperReport) JRLoader.loadObject("D:\\proyectos\\codeSoftware\\SAFWSNB\\SAFWS\\src\\java\\co\\com\\codesoftware\\logic\\report\\Factura.jasper");
             System.out.println("Ruta: " + rutaRepoServ + "Factura.jasper");
-            JasperReport jasperReport = (JasperReport) JRLoader.loadObject(rutaRepoServ + "Factura.jasper");
+            JasperReport jasperReport = (JasperReport) JRLoader.loadObject(rutaRepoServ + nombreJasper);
             JasperPrint print = JasperFillManager.fillReport(jasperReport, properties, con);
             JasperExportManager.exportReportToPdfFile(print, rutaRepoServ + "prueba.pdf");
             CodificaBase64 codifica64 = new CodificaBase64();
@@ -111,6 +121,30 @@ public class ReporteLogica implements AutoCloseable {
             e.printStackTrace();
         }
         return documento;
+    }
+
+    /**
+     * Funcion con la cual obtengo el tipo de regimen que tiene parametrizado el
+     * sistema
+     *
+     * @return
+     */
+    private String obtieneTipoRegimen() {
+        String rta = null;
+        try(ParametrosEmpresaLogic objLogica = new ParametrosEmpresaLogic()){
+            List<ParametrosEmpresaEntity> lista = objLogica.obtienePrametrosEmpresa();
+            for(ParametrosEmpresaEntity item : lista){
+                if("TIPOREGIMEN".equalsIgnoreCase(item.getClave())){
+                    rta = item.getValor();
+                }
+            }
+            if(rta == null){
+                rta = "CO";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
     }
 
     /**
