@@ -6,6 +6,7 @@
 package co.com.codesoftware.logica.admin;
 
 import co.com.codesoftware.persistencia.HibernateUtil;
+import co.com.codesoftware.persistencia.entidad.admin.CiudadEntity;
 import co.com.codesoftware.persistencia.entidad.admin.DepartamentoEntity;
 import java.util.List;
 import org.hibernate.Criteria;
@@ -32,6 +33,24 @@ public class UbicacionLogica implements AutoCloseable {
         try {
             this.initOperation();
             Criteria crit = sesion.createCriteria(DepartamentoEntity.class);
+            rta = crit.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+    
+    /**
+     * Funcion con la cual obtengo la ciudad parametrizada en el
+     * sistema
+     *
+     * @return
+     */
+    public List<CiudadEntity> obtieneCiudad() {
+        List<CiudadEntity> rta = null;
+        try {
+            this.initOperation();
+            Criteria crit = sesion.createCriteria(CiudadEntity.class);
             rta = crit.list();
         } catch (Exception e) {
             e.printStackTrace();

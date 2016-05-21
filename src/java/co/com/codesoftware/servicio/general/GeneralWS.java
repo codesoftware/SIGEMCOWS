@@ -12,6 +12,7 @@ import co.com.codesoftware.logica.admin.UbicacionLogica;
 import co.com.codesoftware.logica.facturacion.RemisionLogica;
 import co.com.codesoftware.logica.reportes.ReporteLogica;
 import co.com.codesoftware.persistence.entities.MapaEntity;
+import co.com.codesoftware.persistencia.entidad.admin.CiudadEntity;
 import co.com.codesoftware.persistencia.entidad.admin.DepartamentoEntity;
 import co.com.codesoftware.persistencia.entidad.admin.ParametrosEmpresaEntity;
 import co.com.codesoftware.persistencia.entidad.admin.ResolucionFactEntity;
@@ -266,4 +267,45 @@ public class GeneralWS {
         }
         return rta;
     }
+    
+    /**
+     * Funcion con la cual obtengo la ciudad parametrizadas en el
+     * sistema
+     *
+     * @return
+     */
+    @WebMethod(operationName = "obtenerCiudades")
+    @WebResult(name = "listaCiudades")
+    public List<CiudadEntity> obtenerCiudades() {
+        List<CiudadEntity> rta = null;
+        try (UbicacionLogica objLogica = new UbicacionLogica()){
+            rta = objLogica.obtieneCiudad();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+    
+    /**
+     * Funcion con la cual actualizo un parametro del 
+     * sistema
+     *
+     * @param clave
+     * @param nuevoValor
+     * @return
+     */
+    @WebMethod(operationName = "actualizaParametro")
+    @WebResult(name = "listaCiudades")
+    public String actualizaParametro(@XmlElement(required = true) @WebParam(name = "clave")String clave,
+            @XmlElement(required = true) @WebParam(name = "nuevoValor")String nuevoValor ) {
+        String rta = null;
+        try (ParametrosEmpresaLogic objLogica = new ParametrosEmpresaLogic()){
+            rta = objLogica.actualizaParametros(clave, nuevoValor);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+    
+    
 }
