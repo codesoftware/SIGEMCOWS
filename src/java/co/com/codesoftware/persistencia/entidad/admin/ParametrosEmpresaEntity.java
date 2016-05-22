@@ -5,6 +5,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -14,6 +16,7 @@ import javax.persistence.TemporalType;
 @Table(name = "em_tpara")
 public class ParametrosEmpresaEntity implements Serializable {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "para_para")
     private Integer id;
     @Temporal(TemporalType.DATE)

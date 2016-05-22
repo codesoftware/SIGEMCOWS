@@ -2,12 +2,14 @@ package co.com.codesoftware.logica.admin;
 
 import co.com.codesoftware.persistencia.HibernateUtil;
 import co.com.codesoftware.persistencia.entidad.admin.ParametrosEmpresaEntity;
+import java.util.Date;
 import java.util.List;
 import org.hibernate.Criteria;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Restrictions;
 
 public class ParametrosEmpresaLogic implements AutoCloseable {
 
@@ -28,6 +30,38 @@ public class ParametrosEmpresaLogic implements AutoCloseable {
             rta = crit.list();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+        return rta;
+    }
+    /**
+     * Funcion con la cual actualizo un parametro en el sistema
+     * @param id
+     * @param clave
+     * @param valor
+     * @return 
+     */
+    public String actualizaParametros(String clave ,String valor){
+        String rta = "Ok";
+        try {
+            this.initOperation();
+            ParametrosEmpresaEntity parametro =(ParametrosEmpresaEntity) sesion.createCriteria(ParametrosEmpresaEntity.class).add(Restrictions.eq("clave", clave).ignoreCase()).uniqueResult();
+            if(parametro != null){
+                if(parametro.getClave().equalsIgnoreCase(clave)){
+                    parametro.setValor(valor);
+                    sesion.update(parametro);
+                }else{
+                    rta = "Error El parametro no coincide con la clave";
+                }
+            }else{
+                parametro = new ParametrosEmpresaEntity();
+                parametro.setFecha(new Date());
+                parametro.setClave(clave);
+                parametro.setValor(valor);
+                sesion.save(parametro);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            rta = "Error " + e;
         }
         return rta;
     }

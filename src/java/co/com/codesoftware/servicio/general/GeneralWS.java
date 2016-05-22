@@ -8,15 +8,19 @@ package co.com.codesoftware.servicio.general;
 import co.com.codesoftware.logica.admin.ParametrosEmpresaLogic;
 import co.com.codesoftware.logica.admin.ResolucionFactLogica;
 import co.com.codesoftware.logica.admin.SedesLogica;
+import co.com.codesoftware.logica.admin.UbicacionLogica;
 import co.com.codesoftware.logica.facturacion.RemisionLogica;
 import co.com.codesoftware.logica.reportes.ReporteLogica;
 import co.com.codesoftware.persistence.entities.MapaEntity;
+import co.com.codesoftware.persistencia.entidad.admin.CiudadEntity;
+import co.com.codesoftware.persistencia.entidad.admin.DepartamentoEntity;
 import co.com.codesoftware.persistencia.entidad.admin.ParametrosEmpresaEntity;
 import co.com.codesoftware.persistencia.entidad.admin.ResolucionFactEntity;
 import co.com.codesoftware.persistencia.entidad.admin.SedeEntity;
 import co.com.codesoftware.persistencia.entidad.facturacion.DetProdRemision;
 import co.com.codesoftware.persistencia.entidad.facturacion.RemisionEntity;
 import co.com.codesoftware.persistencia.entidad.generico.facturacion.RelFacRemiGenEntity;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import javax.jws.WebService;
@@ -80,7 +84,7 @@ public class GeneralWS {
             return null;
         }
     }
-    
+
     @WebMethod(operationName = "actualizaResolucion")
     @WebResult(name = "respuesta")
     public String actualizaResolucion(@XmlElement(required = true) @WebParam(name = "objEntity") ResolucionFactEntity objEntity) {
@@ -157,61 +161,151 @@ public class GeneralWS {
             @XmlElement(required = true) @WebParam(name = "idRsfa") Integer idRsfa,
             @XmlElement(required = true) @WebParam(name = "diasPlazo") Integer diasPlazo) {
         String rta = "";
-        try{
+        try {
             RemisionLogica objLogica = new RemisionLogica();
-            rta = objLogica.realizarFacturaXRemision(idRemision, idTius,idRsfa,diasPlazo);
+            rta = objLogica.realizarFacturaXRemision(idRemision, idTius, idRsfa, diasPlazo);
         } catch (Exception e) {
             return null;
         }
         return rta;
     }
-    
+
     /**
      * metodo que devuelve la ruta del reporte
+     *
      * @param parametros
      * @param datosReporte
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "generaReportes")
-    public String generaReportes(List<MapaEntity> parametros,List<MapaEntity> datosReporte){
+    public String generaReportes(List<MapaEntity> parametros, List<MapaEntity> datosReporte) {
         String rta = "";
-        try(ReporteLogica logica = new ReporteLogica()) {
+        try (ReporteLogica logica = new ReporteLogica()) {
             rta = logica.generaReporteBase64(parametros, datosReporte);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return rta;
     }
+
     /**
-     * 
+     *
      * @param sede
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "actualizarSede")
-    public String actualizarSede(@XmlElement(required = true) @WebParam(name = "sede") SedeEntity sede){
+    public String actualizarSede(@XmlElement(required = true) @WebParam(name = "sede") SedeEntity sede) {
         String rta = "";
-        try (SedesLogica objLogica = new SedesLogica()){
+        try (SedesLogica objLogica = new SedesLogica()) {
             rta = objLogica.actualizaSede(sede);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return rta;
     }
+
     /**
-     * Funcion con la cual obtengo los dos principales identificadores de una remision
+     * Funcion con la cual obtengo los dos principales identificadores de una
+     * remision
+     *
      * @param tipoDoc
      * @param id
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "buscaDocumentosPagosRemi")
-    public RelFacRemiGenEntity buscaDocumentosPagosRemi(@XmlElement(required = true) @WebParam(name = "tipoDoc") String tipoDoc, 
-            @XmlElement(required = true) @WebParam(name = "idDocumento") Integer id ){
+    public RelFacRemiGenEntity buscaDocumentosPagosRemi(@XmlElement(required = true) @WebParam(name = "tipoDoc") String tipoDoc,
+            @XmlElement(required = true) @WebParam(name = "idDocumento") Integer id) {
         RelFacRemiGenEntity rta = null;
-        try (RemisionLogica objLogica = new RemisionLogica()){
+        try (RemisionLogica objLogica = new RemisionLogica()) {
             rta = objLogica.buscaRemisionXTipoDoc(tipoDoc, id);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return rta;
     }
+
+    /**
+     * Funcion con la cual registro un abono a una remision
+     *
+     * @param idTius
+     * @param idFact
+     * @param valorPago
+     * @param tipoPago
+     * @param pagoTotal
+     * @return
+     */
+    @WebMethod(operationName = "ejecutaPagoRemision")
+    public String ejecutaPagoRemision(@XmlElement(required = true) @WebParam(name = "idTius") Integer idTius,
+            @XmlElement(required = true) @WebParam(name = "idFact") Integer idFact,
+            @XmlElement(required = true) @WebParam(name = "valorPago") BigDecimal valorPago,
+            @XmlElement(required = true) @WebParam(name = "tipoPago") String tipoPago,
+            @XmlElement(required = true) @WebParam(name = "pagoTotal") String pagoTotal) {
+        String rta = "";
+        try {
+            RemisionLogica objLogica = new RemisionLogica();
+            rta = objLogica.realizaPagoRemision(idTius, idFact, valorPago, tipoPago, pagoTotal);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+
+    /**
+     * Funcion con la cual obtengo los departamentos parametrizados en el
+     * sistema
+     *
+     * @return
+     */
+    @WebMethod(operationName = "obtenerDepartamentos")
+    @WebResult(name = "listaDepartamentos")
+    public List<DepartamentoEntity> obtenerDepartamentos() {
+        List<DepartamentoEntity> rta = null;
+        try (UbicacionLogica objLogica = new UbicacionLogica()){
+            rta = objLogica.obtieneDepartamentos();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+    
+    /**
+     * Funcion con la cual obtengo la ciudad parametrizadas en el
+     * sistema
+     *
+     * @return
+     */
+    @WebMethod(operationName = "obtenerCiudades")
+    @WebResult(name = "listaCiudades")
+    public List<CiudadEntity> obtenerCiudades() {
+        List<CiudadEntity> rta = null;
+        try (UbicacionLogica objLogica = new UbicacionLogica()){
+            rta = objLogica.obtieneCiudad();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+    
+    /**
+     * Funcion con la cual actualizo un parametro del 
+     * sistema
+     *
+     * @param clave
+     * @param nuevoValor
+     * @return
+     */
+    @WebMethod(operationName = "actualizaParametro")
+    @WebResult(name = "listaCiudades")
+    public String actualizaParametro(@XmlElement(required = true) @WebParam(name = "clave")String clave,
+            @XmlElement(required = true) @WebParam(name = "nuevoValor")String nuevoValor ) {
+        String rta = null;
+        try (ParametrosEmpresaLogic objLogica = new ParametrosEmpresaLogic()){
+            rta = objLogica.actualizaParametros(clave, nuevoValor);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+    
+    
 }

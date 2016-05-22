@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="226" pageHeight="2160" columnWidth="214" leftMargin="1" rightMargin="11" topMargin="7" bottomMargin="7" uuid="396ba8d0-ab46-4cae-a719-866dff7b0291">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="248"/>
+	<parameter name="fact_fact" class="java.lang.String">
+		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["D:\\proyectos\\codeSoftware\\SAFWSNB\\SAFWS\\web\\REPORTES\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="RUTA_LOGOFACT" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT  COALESCE((select para_valor from em_tpara where para_clave = 'NOMBREEMPRESA'),'NO APLICA') NOMBRE,
+         'NIT: '||COALESCE((select para_valor from em_tpara where para_clave = 'NIT'),'NO APLICA') NIT,
+        COALESCE((select case when para_valor = 'SI' then 'REGIMEN SIMPLIFICADO' ELSE 'REGIMEN COMUN' END from em_tpara where para_clave = 'TIPOREGIMEN'),'NO APLICA') REGIMEN,
+        COALESCE((select para_valor from em_tpara where para_clave = 'DIRECCION'),'NO APLICA')DIRECCION,                COALESCE((select para_valor from em_tpara where para_clave = 'ACTECONO'),'NO APLICA')ACTECONO, 
+COALESCE((select para_valor from em_tpara where para_clave = 'CORREOFACT'),'NO APLICA')CORREOFACT,
+        COALESCE((select para_valor from em_tpara where para_clave = 'TELEFONOS'),'NO APLICA')TELEFONOS,
+        COALESCE((SELECT SEDE_DIRECCION || ' TELEFONO: ' || SEDE_TELEFONO FROM EM_TSEDE, FA_TFACT WHERE FACT_FACT = cast($P{fact_fact} as int) AND SEDE_SEDE = fact_sede),'NO APLICA')CIUDAD,
+        COALESCE((select cast(para_valor as int)+cast($P{fact_fact} as int) from em_tpara where para_clave = 'FACTURA'),0)NUM,
+        (SELECT sed.sede_nombre || ' - ' || (select CIUD_NOMBRE from em_tpara , ub_tciud where para_clave = 'CIUDAD' and cast(para_valor as bigint) = CIUD_CIUD)
+                || ' / ' || (select depa_nombre from em_tpara ,ub_tdepa where para_clave = 'DEPEMPRESA' and cast(para_valor as bigint) = depa_depa)
+           FROM em_tsede sed,fa_tfact fac
+          WHERE fac.fact_fact = cast($P{fact_fact} as int)
+            AND fac.fact_sede = sed.sede_sede ) ubicacion,
+        (SELECT PER.PERS_NOMBRE 
+           FROM us_tpers per, us_ttius us, fa_tfact fac
+          WHERE fac.fact_fact = cast($P{fact_fact} as int)  
+            AND us.tius_tius = fac.fact_tius 
+            AND per.pers_pers = us.tius_pers
+        )vendedor,
+        (SELECT PER.PERS_NOMBRE
+           FROM us_tpers per, us_ttius us, in_tpedi pedi
+          WHERE pedi.pedi_fact = cast($P{fact_fact} as int)  
+            AND us.tius_tius = pedi.pedi_usu 
+            AND per.pers_pers = us.tius_pers
+        )pedido,
+        (SELECT to_char(fact_fechaex,'DD/MM/YYYY HH:MI PM') from fa_tfact where fact_fact  = cast($P{fact_fact} as int))FECHA,
+        (SELECT (clien_nombres||' '||clien_apellidos) 
+           FROM us_tclien, fa_tfact 
+          WHERE fact_clien = clien_clien 
+            AND fact_fact = cast($P{fact_fact} as int))CLIENTE,
+       (SELECT  clien_cedula cedulacliente 
+          FROM us_tclien, fa_tfact 
+         WHERE fact_clien = clien_clien 
+           AND fact_fact = cast($P{fact_fact} as int) )CEDULACLIENTE,
+(SELECT '$' || to_char(fact_vlr_iva,'9,999,999,999.00') from fa_tfact where fact_fact  = cast($P{fact_fact} as int))TOTIVA,
+(SELECT '$' ||  to_char(fact_vlr_total,'9,999,999,999.00') from fa_tfact where fact_fact  = cast($P{fact_fact} as int))SUBTOTAL,
+(SELECT '$' || to_char(cast((fact_vlr_total+fact_vlr_iva) as numeric),'9,999,999,999.00') from fa_tfact where fact_fact  = cast($P{fact_fact} as int))TOTAL,
+(SELECT '$' || to_char(cast((fact_vlr_dcto) as numeric),'9,999,999,999.00') from fa_tfact where fact_fact  = cast($P{fact_fact} as int))descunento,
+(SELECT '$' || to_char(FACT_VLR_EFECTIVO,'9,999,999,999.00') from fa_tfact where fact_fact  = cast($P{fact_fact} as int))PGOEFEC,
+(SELECT '$' || to_char(FACT_VLR_TARJETA,'9,999,999,999.00') from fa_tfact where fact_fact  = cast($P{fact_fact} as int))PGOTARJETA,
+(SELECT case when FACT_RETEFUN = 'S' then 'SI' ELSE 'NO' END from fa_tfact where fact_fact  = cast($P{fact_fact} as int))RETEFUENTE,
+(SELECT '$' || to_char(FACT_VLRRTFU,'9,999,999,999.00') from fa_tfact where fact_fact  = cast($P{fact_fact} as int))VALOR_RETE,
+(SELECT '$' || to_char((fact_ajpeso+fact_vlr_total+fact_vlr_iva)-(FACT_VLRRTFU),'9,999,999,999.00') from fa_tfact where fact_fact  = cast($P{fact_fact} as int))PAGUE,
+(SELECT '$' || to_char(fact_ajpeso,'9,999,999,999.00') from fa_tfact where fact_fact  = cast($P{fact_fact} as int))REDONDEO,
+(select Coalesce(para_valor,' ') from em_tpara where para_clave = 'ACRONIMO') MENSAJE,
+(select Coalesce(para_valor,' ') from em_tpara where para_clave = 'RESOLUCION') MSNRESOLUCION,
+(select rsfa_prefij from fa_tfact, fa_trsfa where fact_rsfa = rsfa_rsfa and fact_fact = cast($P{fact_fact} as int)) PRENUMFACT,
+(select ' Fecha ' || to_char(rsfa_fechainic,'dd/mm/yyyy') fechaReso from fa_tfact, fa_trsfa where fact_rsfa = rsfa_rsfa and fact_fact = cast($P{fact_fact} as int)) fechaReso]]>
+	</queryString>
+	<field name="nombre" class="java.lang.String"/>
+	<field name="nit" class="java.lang.String"/>
+	<field name="regimen" class="java.lang.String"/>
+	<field name="direccion" class="java.lang.String"/>
+	<field name="actecono" class="java.lang.String"/>
+	<field name="correofact" class="java.lang.String"/>
+	<field name="telefonos" class="java.lang.String"/>
+	<field name="ciudad" class="java.lang.String"/>
+	<field name="num" class="java.lang.Integer"/>
+	<field name="ubicacion" class="java.lang.String"/>
+	<field name="vendedor" class="java.lang.String"/>
+	<field name="pedido" class="java.lang.String"/>
+	<field name="fecha" class="java.lang.String"/>
+	<field name="cliente" class="java.lang.String"/>
+	<field name="cedulacliente" class="java.lang.String"/>
+	<field name="totiva" class="java.lang.String"/>
+	<field name="subtotal" class="java.lang.String"/>
+	<field name="total" class="java.lang.String"/>
+	<field name="descunento" class="java.lang.String"/>
+	<field name="pgoefec" class="java.lang.String"/>
+	<field name="pgotarjeta" class="java.lang.String"/>
+	<field name="retefuente" class="java.lang.String"/>
+	<field name="valor_rete" class="java.lang.String"/>
+	<field name="pague" class="java.lang.String"/>
+	<field name="redondeo" class="java.lang.String"/>
+	<field name="mensaje" class="java.lang.String"/>
+	<field name="msnresolucion" class="java.lang.String"/>
+	<field name="prenumfact" class="java.lang.String"/>
+	<field name="fechareso" class="java.lang.String"/>
+	<title>
+		<band height="240" splitType="Stretch">
+			<textField>
+				<reportElement x="-1" y="67" width="215" height="15" uuid="3e3cea59-d8a1-47c5-8aec-0d1ffea4b7db"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nit}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="-2" y="217" width="215" height="12" uuid="88b5bbde-b74c-45bd-860e-c4ad279640b4"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ciudad}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="50" y="97" width="165" height="10" uuid="0ad1ed6a-9fa7-4888-b24f-2544d8c858c3"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="97" width="50" height="10" uuid="18d152e7-af44-4bb5-815d-6f89d490c8cd"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FECHA:  ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="50" y="109" width="164" height="10" uuid="d565b957-ddf1-4f52-8228-2994cf16b372"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cliente}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="50" y="119" width="165" height="10" uuid="010692fa-d79f-479f-b359-1fcc748f3612"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="SansSerif" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cedulacliente}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="144" width="215" height="1" uuid="74fc8105-0726-4471-a9c5-741e8d269b03"/>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="1" y="200" width="212" height="1" uuid="d42e2e49-b68f-45dc-9b1a-7a84579cfbfe"/>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="10" y="146" width="70" height="15" uuid="18d86fd5-961a-4fef-b674-0d6220d1390f"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SUBTOTAL:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="84" y="147" width="130" height="14" uuid="c66f3d65-ecbc-442f-b9c8-5729c62005cc"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{subtotal}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="109" width="50" height="10" uuid="dee0a86e-e181-4310-9f5d-77ea56484ac9"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CLIENTE:  ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="119" width="50" height="10" uuid="a67183cb-8468-4627-b976-eb91a1360fbb"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NIT/CEDULA:  ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-1" y="129" width="61" height="10" uuid="b9c7f07d-ed21-404c-88e0-3eab2e2c8766"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FACT No:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="-1" y="205" width="215" height="12" uuid="e3b7afc2-b229-411f-b86b-83354c141c39"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ubicacion}]]></textFieldExpression>
+			</textField>
+			<image hAlign="Center">
+				<reportElement x="0" y="0" width="215" height="40" uuid="cb898473-19d9-4397-9261-ea97bb5c5855"/>
+				<imageExpression><![CDATA[$P{RUTA_LOGOFACT}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="0" y="40" width="215" height="15" uuid="59c3321b-2559-45cd-9e84-f4d23a2681b4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="60" y="129" width="151" height="10" uuid="ad66e0cc-3bc9-4c2f-8fe6-490dcd95dd8f"/>
+				<textElement verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{num}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="10" y="176" width="70" height="15" uuid="a246791d-04c9-4d4d-8cf9-c4d7f5673ef7"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PAGUE:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="86" y="177" width="130" height="14" uuid="30ed3657-0ee5-49dd-bb68-02b38c311ceb"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pague}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="82" width="216" height="15" uuid="98dd5b61-7bb0-4061-b955-5ea077f45292"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true" isItalic="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{correofact}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="10" y="161" width="70" height="15" uuid="b689db02-a986-4201-a2e1-691e7b79fe24"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[RED. CINCUENTENA:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="88" y="161" width="128" height="15" uuid="a7127f02-1d6c-4e2e-9ecc-bd05631563bd"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{redondeo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="55" width="214" height="12" uuid="fe60adec-7ba4-4d05-b91f-493a7f13a77f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{regimen}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="-2" y="229" width="215" height="1" uuid="64127512-c7d3-4e22-8176-0a1ff761542f"/>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+		</band>
+	</title>
+	<detail>
+		<band height="126" splitType="Stretch">
+			<subreport>
+				<reportElement x="-1" y="2" width="198" height="124" uuid="f6eb2444-9fd2-48fa-8d89-e234d0ffa15e"/>
+				<subreportParameter name="fact_fact_table">
+					<subreportParameterExpression><![CDATA[$P{fact_fact}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR}+"DetalleFactura1.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+</jasperReport>

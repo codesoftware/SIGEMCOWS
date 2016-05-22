@@ -6,70 +6,51 @@
 package co.com.codesoftware.logica.admin;
 
 import co.com.codesoftware.persistencia.HibernateUtil;
-import co.com.codesoftware.persistencia.entidad.admin.ResolucionFactEntity;
-import java.util.Date;
+import co.com.codesoftware.persistencia.entidad.admin.CiudadEntity;
+import co.com.codesoftware.persistencia.entidad.admin.DepartamentoEntity;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.criterion.Order;
 
 /**
  *
- * @author nicolas
+ * @author ACER
  */
-public class ResolucionFactLogica implements AutoCloseable{
+public class UbicacionLogica implements AutoCloseable {
     
     private Session sesion;
     private Transaction tx;
+
+    /**
+     * Funcion con la cual obtengo los departamentos parametrizados en el
+     * sistema
+     *
+     * @return
+     */
+    public List<DepartamentoEntity> obtieneDepartamentos() {
+        List<DepartamentoEntity> rta = null;
+        try {
+            this.initOperation();
+            Criteria crit = sesion.createCriteria(DepartamentoEntity.class);
+            rta = crit.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
     
     /**
-     * Funcion con la cula inserto las resoluciones de facturacion
-     * @param resolucionEntity
-     * @return 
+     * Funcion con la cual obtengo la ciudad parametrizada en el
+     * sistema
+     *
+     * @return
      */
-    public String insertaResolucion(ResolucionFactEntity resolucionEntity){
-        String rta = "";
+    public List<CiudadEntity> obtieneCiudad() {
+        List<CiudadEntity> rta = null;
         try {
             this.initOperation();
-            resolucionEntity.setConsecutivo(0);
-            Date c = new Date();
-            resolucionEntity.setFecha(c);
-            sesion.save(resolucionEntity);
-            rta = "Ok";
-        } catch (Exception e) {
-            e.printStackTrace();
-            rta = "Error " +e ;
-        }
-        return rta;
-    }
-    /**
-     * Funcion con la cual actualizo una resolucion de facturacion
-     * @param resolucionEntity
-     * @return 
-     */
-    public String actualizarResolucion(ResolucionFactEntity resolucionEntity){
-        String rta = "";
-        try {
-            this.initOperation();
-            sesion.update(resolucionEntity);
-            rta = "Ok";
-        } catch (Exception e) {
-            e.printStackTrace();
-            rta = "Error " +e ;
-        }
-        return rta;
-    }
-    /**
-     * Funcion con la cual obtengo todas las resoluciones de facturacion que se encuentran en el sistema
-     * @return 
-     */
-    public List<ResolucionFactEntity> obtieneResolucionesFacturacion(){
-        List<ResolucionFactEntity> rta = null;
-        try {
-            this.initOperation();
-            Criteria crit = sesion.createCriteria(ResolucionFactEntity.class);
-            crit.addOrder(Order.desc("id"));
+            Criteria crit = sesion.createCriteria(CiudadEntity.class);
             rta = crit.list();
         } catch (Exception e) {
             e.printStackTrace();
@@ -109,5 +90,5 @@ public class ResolucionFactLogica implements AutoCloseable{
             }
         }
     }
-    
+
 }
