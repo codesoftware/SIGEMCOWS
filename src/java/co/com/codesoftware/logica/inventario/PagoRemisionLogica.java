@@ -13,6 +13,7 @@ import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 /**
@@ -55,6 +56,7 @@ public class PagoRemisionLogica implements AutoCloseable {
             this.initOperation();
             Criteria crit = this.sesion.createCriteria(DetallePagoRemision.class);
             crit.add(Restrictions.eq("idPago", idPago));
+            crit.addOrder(Order.desc("id"));
             rta = crit.list();
         } catch (Exception e) {
             e.printStackTrace();

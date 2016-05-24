@@ -101,6 +101,9 @@ public class SolicitudLogica implements AutoCloseable {
             Criteria crit = sesion.createCriteria(SolicitudEntity.class);
             if (fechaInicial != null && fechaFinal != null) {
                 crit.add(Restrictions.ge("fecha", fechaInicial));
+                fechaFinal.setHours(23);
+                fechaFinal.setMinutes(59);
+                fechaFinal.setSeconds(59);
                 crit.add(Restrictions.lt("fecha", fechaFinal));
             }
             if (estado != null && !"".equalsIgnoreCase(estado)) {
