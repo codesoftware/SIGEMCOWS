@@ -17,6 +17,7 @@
         <mapping class="co.com.codesoftware.persistencia.entidad.admin.SedeEntity"/>
         <mapping class="co.com.codesoftware.persistencia.entidad.admin.ParametrosEmpresaEntity"/>
         <mapping class="co.com.codesoftware.persistencia.entidad.admin.ClienteEntity"/>
+        <mapping class="co.com.codesoftware.persistencia.entidad.admin.ResolucionFactEntity"/>
         <mapping class="co.com.codesoftware.persistencia.entidad.admin.DepartamentoEntity"/>
         <mapping class="co.com.codesoftware.persistencia.entidad.admin.CiudadEntity"/>
 
@@ -29,10 +30,14 @@
         <mapping class="co.com.codesoftware.persistencia.entidad.inventario.PrecioProductoEntity"/>
         <mapping class="co.com.codesoftware.persistencia.entidad.inventario.PromPonderaEntity"/>
         <mapping class="co.com.codesoftware.persistencia.entidad.inventario.ExistenciaXSedeEntity"/>
+        <mapping class="co.com.codesoftware.persistencia.entidad.inventario.PagoRemisionEntity"/>
+        <mapping class="co.com.codesoftware.persistencia.entidad.inventario.DetallePagoRemision"/>
         
         <mapping class="co.com.codesoftware.persistencia.entidad.facturacion.FacturaEntity"/>
         <mapping class="co.com.codesoftware.persistencia.entidad.facturacion.DetProduFacturaEntity"/>
         <mapping class="co.com.codesoftware.persistencia.entidad.facturacion.TemporalProdTable"/>
+        <mapping class="co.com.codesoftware.persistencia.entidad.facturacion.RemisionEntity"/>
+        <mapping class="co.com.codesoftware.persistencia.entidad.facturacion.DetProdRemision"/>
         
         <mapping class="co.com.codesoftware.persistencia.entidad.contabilidad.SubCuentaEntity"/>
         <mapping class="co.com.codesoftware.persistencia.entidad.contabilidad.MoviContableEntity"/>
@@ -59,5 +64,11 @@
         <mapping class="co.com.codesoftware.persistence.entity.productos.MovimientoInventarioEntity"/>
         <mapping class="co.com.codesoftware.persistence.entity.facturacion.HistorialFacturaEntity"/>
         <mapping class="co.com.codesoftware.persistence.entity.facturacion.ImagenFacturaEntity"/>
+        <mapping class="co.com.codesoftware.persistencia.entidad.receta.RecetaEntity"/>
+        <mapping class="co.com.codesoftware.persistencia.entidad.receta.PrecioRecetaEntity"/>
+        <mapping class="co.com.codesoftware.persistencia.entidad.facturacion.DetReceFacturaEntity"/>
+        <mapping class="co.com.codesoftware.persistencia.entidad.facturacion.TemporalRecTable"/>
+        <mapping class="co.com.codesoftware.persistencia.entidad.inventario.SolicitudEntity"/>
+        <mapping class="co.com.codesoftware.persistencia.entidad.inventario.SolicitudProdEntity"/>
     </session-factory>
 </hibernate-configuration>

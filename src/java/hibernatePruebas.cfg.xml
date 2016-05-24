@@ -30,6 +30,8 @@
         <mapping class="co.com.codesoftware.persistencia.entidad.inventario.PrecioProductoEntity"/>
         <mapping class="co.com.codesoftware.persistencia.entidad.inventario.PromPonderaEntity"/>
         <mapping class="co.com.codesoftware.persistencia.entidad.inventario.ExistenciaXSedeEntity"/>
+        <mapping class="co.com.codesoftware.persistencia.entidad.inventario.PagoRemisionEntity"/>
+        <mapping class="co.com.codesoftware.persistencia.entidad.inventario.DetallePagoRemision"/>
         
         <mapping class="co.com.codesoftware.persistencia.entidad.facturacion.FacturaEntity"/>
         <mapping class="co.com.codesoftware.persistencia.entidad.facturacion.DetProduFacturaEntity"/>
