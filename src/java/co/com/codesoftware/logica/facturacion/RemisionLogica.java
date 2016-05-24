@@ -130,7 +130,7 @@ public class RemisionLogica implements AutoCloseable {
             rf.setNumParam(5);
             rf.addParametro("" + idTius, DataType.INT);
             rf.addParametro("" + idFact, DataType.INT);
-            rf.addParametro(valorPago.toString(), DataType.NUMERIC);
+            rf.addParametro(valorPago.toString(), DataType.BIGDECIMAL);
             rf.addParametro("" + tipoPago, DataType.TEXT);
             rf.addParametro("" + pagoTotal, DataType.TEXT);
             rf.callFunctionJdbc();
