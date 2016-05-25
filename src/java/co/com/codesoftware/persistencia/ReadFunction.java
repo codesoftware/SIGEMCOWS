@@ -4,6 +4,7 @@ import co.com.codesoftware.persistencia.utilities.ParamFunction;
 import co.com.codesoftware.persistencia.utilities.DataType;
 import java.math.BigDecimal;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -111,11 +112,16 @@ public class ReadFunction implements AutoCloseable {
                             ps.setDouble(i, Double.parseDouble(parametro.getName()));
                         } else if (parametro.getDataType().toString().equalsIgnoreCase("BIGDECIMAL")) {
                             ps.setBigDecimal(i, new BigDecimal(parametro.getName()));
+                        } else if (parametro.getDataType().toString().equalsIgnoreCase("DATE")){
+                            long auxFecha = Long.parseLong(parametro.getName());
+                            Date fecha = new Date(auxFecha);
+                            ps.setDate(i, fecha);
+                            //ps.setNull(i, Types.DATE);
                         }
                         i++;
                     }
                 }
-                //System.out.println("Sql : "  + ps.toString());
+                System.out.println("Sql : "  + ps.toString());
                 ResultSet rs = ps.executeQuery();
                 while (rs.next()) {
                     rtaPg = rs.getString(1);

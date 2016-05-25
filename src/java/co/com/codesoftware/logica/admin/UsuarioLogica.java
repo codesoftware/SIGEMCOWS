@@ -7,6 +7,7 @@ package co.com.codesoftware.logica.admin;
 
 import co.com.codesoftware.persistencia.HibernateUtil;
 import co.com.codesoftware.persistencia.ReadFunction;
+import co.com.codesoftware.persistencia.entidad.admin.PerfilEntity;
 import co.com.codesoftware.persistencia.entidad.admin.UsuarioEntity;
 import co.com.codesoftware.persistencia.utilities.DataType;
 import java.util.ArrayList;
@@ -158,6 +159,47 @@ public class UsuarioLogica implements AutoCloseable {
             this.initOperation();
             Criteria crit = this.sesion.createCriteria(UsuarioEntity.class);
             rta = crit.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+    /**
+     * Funcion con el cual obtengo los perfiles del sistema
+     * @return 
+     */
+    public List<PerfilEntity> obtenerPerfiles(){
+        List<PerfilEntity> rta = null;
+        try {
+            this.initOperation();
+            rta = this.sesion.createCriteria(PerfilEntity.class).list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+    /**
+     * Funcion con la cual actualizo el usuario
+     * @return 
+     */
+    public String actualizaUsuarioEntity(UsuarioEntity usuario){
+        String rta = "";
+        List<String> response = new ArrayList<>();
+        try (ReadFunction rf = new ReadFunction()){
+            rf.setNombreFuncion("US_FACTUALIZA_USUARIO");
+            rf.setNumParam(9);
+            rf.addParametro(usuario.getPersona().getNombre(), DataType.TEXT);
+            rf.addParametro(usuario.getPersona().getApellido(), DataType.TEXT);
+            rf.addParametro(usuario.getPersona().getCedula(), DataType.TEXT);
+            rf.addParametro(usuario.getPersona().getCorreo(), DataType.TEXT);
+            rf.addParametro(usuario.getPersona().getFecha_nac().getTime()+"", DataType.DATE);
+            rf.addParametro(usuario.getPerfil().getId().toString(), DataType.INT);
+            rf.addParametro(usuario.getPerfil().getEstado(), DataType.TEXT);
+            rf.addParametro(usuario.getUsuario(), DataType.TEXT);
+            rf.addParametro(usuario.getSede().getId().toString(), DataType.INT);
+            rf.callFunctionJdbc();
+            response = rf.getRespuestaPg();
+            rta = response.get(0);
         } catch (Exception e) {
             e.printStackTrace();
         }
