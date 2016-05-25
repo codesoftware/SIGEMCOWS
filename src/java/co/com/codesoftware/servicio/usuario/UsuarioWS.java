@@ -143,4 +143,19 @@ public class UsuarioWS {
             return null;
         }
     }
+    /**
+     * Funcion con la cual obtengo los usuarios de la aplicacion
+     * @return 
+     */
+    @WebMethod(operationName = "obtenerUsuarios")
+    @WebResult(name = "listaUsuarios")
+    public List<UsuarioEntity> obtenerUsuarios(){
+        List<UsuarioEntity> rta = null;
+        try (UsuarioLogica objLogica = new UsuarioLogica()){
+            rta = objLogica.obtenerUsuarios();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
 }

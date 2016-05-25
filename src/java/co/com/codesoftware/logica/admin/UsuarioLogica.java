@@ -148,5 +148,20 @@ public class UsuarioLogica implements AutoCloseable {
         }
         return usuario;
     }
+    /**
+     * Funcion con la cual obtengo todos los usuarios de la aplicacion
+     * @return 
+     */
+    public List<UsuarioEntity> obtenerUsuarios(){
+        List<UsuarioEntity> rta = null;
+        try {
+            this.initOperation();
+            Criteria crit = this.sesion.createCriteria(UsuarioEntity.class);
+            rta = crit.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
     
 }
