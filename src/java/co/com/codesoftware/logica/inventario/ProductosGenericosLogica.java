@@ -11,6 +11,7 @@ import co.com.codesoftware.persistencia.entidad.inventario.PrecioProductoEntity;
 import co.com.codesoftware.persistencia.entidad.inventario.ProductoEntity;
 import co.com.codesoftware.persistencia.entidad.receta.PrecioRecetaEntity;
 import co.com.codesoftware.persistencia.utilities.TypeProduct;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,7 +73,7 @@ public class ProductosGenericosLogica {
                     rta = new ArrayList<>();
                 }
                 for (ProductoEntity producto : productos) {
-                    rta.add(this.mapeaGenericObjectProducto(producto));
+                    rta.add(this.mapeaGenericObjectProductoEntity(producto));
                 }
             }
         } catch (Exception e) {
@@ -169,13 +170,13 @@ public class ProductosGenericosLogica {
       private ProductoGenericoEntity mapeaGenericObjectProductoEntity(ProductoEntity precioProductoEntity) {
         ProductoGenericoEntity rta = new ProductoGenericoEntity();
         try {
-            rta.setCodigo(precioProductoEntity.getProducto().getCodigo());
-            rta.setCodigoExterno(precioProductoEntity.getProducto().getCodigoExt());
-            rta.setCodigoBarras(precioProductoEntity.getProducto().getCodigoBarras());
-            rta.setId(precioProductoEntity.getProducto().getId());
-            rta.setNombre(precioProductoEntity.getProducto().getNombre());
-            rta.setDescripcion(precioProductoEntity.getProducto().getDescripcion());
-            rta.setPrecio(precioProductoEntity.getPrecio());
+            rta.setCodigo(precioProductoEntity.getCodigo());
+            rta.setCodigoExterno(precioProductoEntity.getCodigoExt());
+            rta.setCodigoBarras(precioProductoEntity.getCodigoBarras());
+            rta.setId(precioProductoEntity.getId());
+            rta.setNombre(precioProductoEntity.getNombre());
+            rta.setDescripcion(precioProductoEntity.getDescripcion());
+            rta.setPrecio(new BigDecimal(0));
             rta.setTipoProducto(TypeProduct.PRODUCTO);
         } catch (Exception e) {
             e.printStackTrace();
