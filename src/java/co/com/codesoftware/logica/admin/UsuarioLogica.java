@@ -180,6 +180,7 @@ public class UsuarioLogica implements AutoCloseable {
     }
     /**
      * Funcion con la cual actualizo el usuario
+     * @param usuario
      * @return 
      */
     public String actualizaUsuarioEntity(UsuarioEntity usuario){
@@ -194,8 +195,37 @@ public class UsuarioLogica implements AutoCloseable {
             rf.addParametro(usuario.getPersona().getCorreo(), DataType.TEXT);
             rf.addParametro(usuario.getPersona().getFecha_nac().getTime()+"", DataType.DATE);
             rf.addParametro(usuario.getPerfil().getId().toString(), DataType.INT);
-            rf.addParametro(usuario.getPerfil().getEstado(), DataType.TEXT);
+            rf.addParametro(usuario.getEstado(), DataType.TEXT);
             rf.addParametro(usuario.getUsuario(), DataType.TEXT);
+            rf.addParametro(usuario.getSede().getId().toString(), DataType.INT);
+            rf.callFunctionJdbc();
+            response = rf.getRespuestaPg();
+            rta = response.get(0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+    
+    /**
+     * Funcion con la cual inserto el usuario
+     * @param usuario
+     * @return 
+     */
+    public String insertarUsuarioEntity(UsuarioEntity usuario){
+        String rta = "";
+        List<String> response = new ArrayList<>();
+        try (ReadFunction rf = new ReadFunction()){
+            rf.setNombreFuncion("US_FINSERTA_USUA");
+            rf.setNumParam(9);
+            rf.addParametro(usuario.getPersona().getNombre(), DataType.TEXT);
+            rf.addParametro(usuario.getPersona().getApellido(), DataType.TEXT);
+            rf.addParametro(usuario.getPersona().getCedula(), DataType.TEXT);
+            rf.addParametro(usuario.getPersona().getCorreo(), DataType.TEXT);
+            rf.addParametro(usuario.getPersona().getFecha_nac().getTime()+"", DataType.DATE);
+            rf.addParametro(usuario.getUsuario(), DataType.TEXT);
+            rf.addParametro("1234", DataType.TEXT);
+            rf.addParametro(usuario.getPerfil().getId().toString(), DataType.INT);
             rf.addParametro(usuario.getSede().getId().toString(), DataType.INT);
             rf.callFunctionJdbc();
             response = rf.getRespuestaPg();

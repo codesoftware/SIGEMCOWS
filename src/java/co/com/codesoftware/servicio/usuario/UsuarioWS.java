@@ -181,11 +181,28 @@ public class UsuarioWS {
      */
     @WebMethod(operationName = "actualizarUsuario")
     @WebResult(name = "respuesta")
-    public String actualizarUsuario(UsuarioEntity usuario){
+    public String actualizarUsuario(@XmlElement(required = true)@WebParam(name = "usuario") UsuarioEntity usuario){
         String rta = "";
         try {
             UsuarioLogica objLogica = new UsuarioLogica();
             rta = objLogica.actualizaUsuarioEntity(usuario);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+    /**
+     * Funcion con la cual inserto un usuario en el sistema
+     * @param usuario
+     * @return 
+     */
+    @WebMethod(operationName = "insertaUsuario")
+    @WebResult(name = "respuesta")
+    public String insertaUsuario(@XmlElement(required = true)@WebParam(name = "usuario") UsuarioEntity usuario){;
+        String rta = "";
+        try {
+            UsuarioLogica objLogica = new UsuarioLogica();
+            rta = objLogica.insertarUsuarioEntity(usuario);
         } catch (Exception e) {
             e.printStackTrace();
         }
