@@ -52,6 +52,17 @@ public class ProductoWS {
             return null;
         }
     }
+    @WebMethod(operationName = "obtenerProductosXSede")
+    @WebResult(name = "ListGeneric")
+    public List<ProductoGenericoEntity> obtenerProductosXSede(@XmlElement(required = true) @WebParam(name = "sede_sede") Integer sede_sede) {
+        try {
+            ProductosGenericosLogica logica = new ProductosGenericosLogica();
+            return logica.obtieneProductosXSede(sede_sede);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     @WebMethod(operationName = "obtieneRecetasXSede")
     @WebResult(name = "ListaReceta")

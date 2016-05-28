@@ -8,8 +8,10 @@ package co.com.codesoftware.logica.inventario;
 import co.com.codesoftware.logica.receta.RecetaLogica;
 import co.com.codesoftware.persistencia.entidad.generico.producto.ProductoGenericoEntity;
 import co.com.codesoftware.persistencia.entidad.inventario.PrecioProductoEntity;
+import co.com.codesoftware.persistencia.entidad.inventario.ProductoEntity;
 import co.com.codesoftware.persistencia.entidad.receta.PrecioRecetaEntity;
 import co.com.codesoftware.persistencia.utilities.TypeProduct;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,9 +30,9 @@ public class ProductosGenericosLogica {
      */
     public List<ProductoGenericoEntity> obtieneProductosYRecetas(Integer sede_sede) {
         List<ProductoGenericoEntity> rta = null;
-        try (ProductoLogica productsLogic = new ProductoLogica();){
-            RecetaLogica recetaLogic = new RecetaLogica();            
-            List<PrecioRecetaEntity> recetas = recetaLogic.getRecetas(sede_sede);            
+        try (ProductoLogica productsLogic = new ProductoLogica();) {
+            RecetaLogica recetaLogic = new RecetaLogica();
+            List<PrecioRecetaEntity> recetas = recetaLogic.getRecetas(sede_sede);
             List<PrecioProductoEntity> productos = productsLogic.obtieneProductosConPrecioXSede(sede_sede);
             if (recetas != null) {
                 if (recetas != null & recetas.size() > 0) {
@@ -55,7 +57,31 @@ public class ProductosGenericosLogica {
         }
         return rta;
     }
-    
+
+    /**
+     * metoo que consulta los productos por sede en particular
+     *
+     * @param sede_sede
+     * @return
+     */
+    public List<ProductoGenericoEntity> obtieneProductosXSede(Integer sede_sede) {
+        List<ProductoGenericoEntity> rta = null;
+        try (ProductoLogica productsLogic = new ProductoLogica();) {
+            List<ProductoEntity> productos = productsLogic.obtieneProductosXSede(sede_sede);
+            if (productos != null & productos.size() > 0) {
+                if (rta == null) {
+                    rta = new ArrayList<>();
+                }
+                for (ProductoEntity producto : productos) {
+                    rta.add(this.mapeaGenericObjectProductoEntity(producto));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+
     /**
      * Funcion encargada de realizar la busqueda de productos y recetas aptos
      * para su facturacion
@@ -66,7 +92,7 @@ public class ProductosGenericosLogica {
      */
     public List<ProductoGenericoEntity> buscaProductosRecetasXCriterio(Integer sede_sede, String criterio) {
         List<ProductoGenericoEntity> rta = null;
-        try (ProductoLogica productsLogic = new ProductoLogica();){
+        try (ProductoLogica productsLogic = new ProductoLogica();) {
             RecetaLogica recetaLogica = new RecetaLogica();
             List<PrecioRecetaEntity> recetas = recetaLogica.getRecetasXCriterio(sede_sede, criterio);
             List<PrecioProductoEntity> productos = productsLogic.obtieneProductosConPrecioXSedeYCrit(sede_sede, criterio);
@@ -80,7 +106,7 @@ public class ProductosGenericosLogica {
                     }
                 }
             }
-             if (productos != null & productos.size() > 0) {
+            if (productos != null & productos.size() > 0) {
                 if (rta == null) {
                     rta = new ArrayList<>();
                 }
@@ -141,6 +167,26 @@ public class ProductosGenericosLogica {
         return rta;
     }
     
+      private ProductoGenericoEntity mapeaGenericObjectProductoEntity(ProductoEntity precioProductoEntity) {
+        ProductoGenericoEntity rta = new ProductoGenericoEntity();
+        try {
+            rta.setCodigo(precioProductoEntity.getCodigo());
+            rta.setCodigoExterno(precioProductoEntity.getCodigoExt());
+            rta.setCodigoBarras(precioProductoEntity.getCodigoBarras());
+            rta.setId(precioProductoEntity.getId());
+            rta.setNombre(precioProductoEntity.getNombre());
+            rta.setDescripcion(precioProductoEntity.getDescripcion());
+            rta.setPrecio(new BigDecimal(0));
+            rta.setTipoProducto(TypeProduct.PRODUCTO);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+
+    
+
+    
 //    /**
 //     * Funcion encargada de realizar la busqueda de productos y recetas aptos
 //     * para su facturacion
@@ -178,5 +224,4 @@ public class ProductosGenericosLogica {
 //        }
 //        return rta;
 //    }
-
 }

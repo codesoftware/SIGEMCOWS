@@ -2,14 +2,13 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="226" pageHeight="2160" columnWidth="214" leftMargin="1" rightMargin="11" topMargin="7" bottomMargin="7" uuid="396ba8d0-ab46-4cae-a719-866dff7b0291">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="248"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="fact_fact" class="java.lang.String">
 		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
 	</parameter>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["D:\\proyectos\\codeSoftware\\SAFWSNB\\SAFWS\\web\\REPORTES\\"]]></defaultValueExpression>
 	</parameter>
-	<parameter name="RUTA_LOGOFACT" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT  COALESCE((select para_valor from em_tpara where para_clave = 'NOMBREEMPRESA'),'NO APLICA') NOMBRE,
          'NIT: '||COALESCE((select para_valor from em_tpara where para_clave = 'NIT'),'NO APLICA') NIT,
@@ -18,7 +17,7 @@
 COALESCE((select para_valor from em_tpara where para_clave = 'CORREOFACT'),'NO APLICA')CORREOFACT,
         COALESCE((select para_valor from em_tpara where para_clave = 'TELEFONOS'),'NO APLICA')TELEFONOS,
         COALESCE((SELECT SEDE_DIRECCION || ' TELEFONO: ' || SEDE_TELEFONO FROM EM_TSEDE, FA_TFACT WHERE FACT_FACT = cast($P{fact_fact} as int) AND SEDE_SEDE = fact_sede),'NO APLICA')CIUDAD,
-        COALESCE((select cast(para_valor as int)+cast($P{fact_fact} as int) from em_tpara where para_clave = 'FACTURA'),0)NUM,
+       (select cast(fact_cons as int) from fa_tfact where fact_fact = cast($P{fact_fact}as int))NUM,
         (SELECT sed.sede_nombre || ' - ' || (select CIUD_NOMBRE from em_tpara , ub_tciud where para_clave = 'CIUDAD' and cast(para_valor as bigint) = CIUD_CIUD)
                 || ' / ' || (select depa_nombre from em_tpara ,ub_tdepa where para_clave = 'DEPEMPRESA' and cast(para_valor as bigint) = depa_depa)
            FROM em_tsede sed,fa_tfact fac
@@ -187,10 +186,6 @@ COALESCE((select para_valor from em_tpara where para_clave = 'CORREOFACT'),'NO A
 				</textElement>
 				<textFieldExpression><![CDATA[$F{ubicacion}]]></textFieldExpression>
 			</textField>
-			<image hAlign="Center">
-				<reportElement x="0" y="0" width="215" height="40" uuid="cb898473-19d9-4397-9261-ea97bb5c5855"/>
-				<imageExpression><![CDATA[$P{RUTA_LOGOFACT}]]></imageExpression>
-			</image>
 			<textField>
 				<reportElement x="0" y="40" width="215" height="15" uuid="59c3321b-2559-45cd-9e84-f4d23a2681b4"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>

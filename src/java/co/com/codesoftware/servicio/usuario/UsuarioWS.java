@@ -8,6 +8,7 @@ package co.com.codesoftware.servicio.usuario;
 import co.com.codesoftware.logica.admin.ClienteLogica;
 import co.com.codesoftware.logica.admin.UsuarioLogica;
 import co.com.codesoftware.persistencia.entidad.admin.ClienteEntity;
+import co.com.codesoftware.persistencia.entidad.admin.PerfilEntity;
 import co.com.codesoftware.persistencia.entidad.admin.UsuarioEntity;
 import java.util.List;
 import javax.jws.WebService;
@@ -142,5 +143,69 @@ public class UsuarioWS {
             e.printStackTrace();
             return null;
         }
+    }
+    /**
+     * Funcion con la cual obtengo los usuarios de la aplicacion
+     * @return 
+     */
+    @WebMethod(operationName = "obtenerUsuarios")
+    @WebResult(name = "listaUsuarios")
+    public List<UsuarioEntity> obtenerUsuarios(){
+        List<UsuarioEntity> rta = null;
+        try (UsuarioLogica objLogica = new UsuarioLogica()){
+            rta = objLogica.obtenerUsuarios();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+    /**
+     * Funcion con la cual obtengo los perfiles de la aplicacion
+     * @return 
+     */
+    @WebMethod(operationName = "obtenerPerfiles")
+    @WebResult(name = "listaPerfiles")
+    public List<PerfilEntity> obtenerPerfiles(){
+        List<PerfilEntity> rta = null;
+        try (UsuarioLogica objLogica = new UsuarioLogica()){
+            rta = objLogica.obtenerPerfiles();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+    /**
+     * Funcion con la cual actualizo un usuario
+     * @param usuario
+     * @return 
+     */
+    @WebMethod(operationName = "actualizarUsuario")
+    @WebResult(name = "respuesta")
+    public String actualizarUsuario(@XmlElement(required = true)@WebParam(name = "usuario") UsuarioEntity usuario){
+        String rta = "";
+        try {
+            UsuarioLogica objLogica = new UsuarioLogica();
+            rta = objLogica.actualizaUsuarioEntity(usuario);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+    /**
+     * Funcion con la cual inserto un usuario en el sistema
+     * @param usuario
+     * @return 
+     */
+    @WebMethod(operationName = "insertaUsuario")
+    @WebResult(name = "respuesta")
+    public String insertaUsuario(@XmlElement(required = true)@WebParam(name = "usuario") UsuarioEntity usuario){;
+        String rta = "";
+        try {
+            UsuarioLogica objLogica = new UsuarioLogica();
+            rta = objLogica.insertarUsuarioEntity(usuario);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
     }
 }

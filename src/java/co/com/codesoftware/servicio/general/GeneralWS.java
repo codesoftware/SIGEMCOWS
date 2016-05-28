@@ -10,6 +10,7 @@ import co.com.codesoftware.logica.admin.ResolucionFactLogica;
 import co.com.codesoftware.logica.admin.SedesLogica;
 import co.com.codesoftware.logica.admin.UbicacionLogica;
 import co.com.codesoftware.logica.facturacion.RemisionLogica;
+import co.com.codesoftware.logica.inventario.PagoRemisionLogica;
 import co.com.codesoftware.logica.reportes.ReporteLogica;
 import co.com.codesoftware.persistence.entities.MapaEntity;
 import co.com.codesoftware.persistencia.entidad.admin.CiudadEntity;
@@ -20,6 +21,8 @@ import co.com.codesoftware.persistencia.entidad.admin.SedeEntity;
 import co.com.codesoftware.persistencia.entidad.facturacion.DetProdRemision;
 import co.com.codesoftware.persistencia.entidad.facturacion.RemisionEntity;
 import co.com.codesoftware.persistencia.entidad.generico.facturacion.RelFacRemiGenEntity;
+import co.com.codesoftware.persistencia.entidad.inventario.DetallePagoRemision;
+import co.com.codesoftware.persistencia.entidad.inventario.PagoRemisionEntity;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -260,17 +263,16 @@ public class GeneralWS {
     @WebResult(name = "listaDepartamentos")
     public List<DepartamentoEntity> obtenerDepartamentos() {
         List<DepartamentoEntity> rta = null;
-        try (UbicacionLogica objLogica = new UbicacionLogica()){
+        try (UbicacionLogica objLogica = new UbicacionLogica()) {
             rta = objLogica.obtieneDepartamentos();
         } catch (Exception e) {
             e.printStackTrace();
         }
         return rta;
     }
-    
+
     /**
-     * Funcion con la cual obtengo la ciudad parametrizadas en el
-     * sistema
+     * Funcion con la cual obtengo la ciudad parametrizadas en el sistema
      *
      * @return
      */
@@ -278,17 +280,16 @@ public class GeneralWS {
     @WebResult(name = "listaCiudades")
     public List<CiudadEntity> obtenerCiudades() {
         List<CiudadEntity> rta = null;
-        try (UbicacionLogica objLogica = new UbicacionLogica()){
+        try (UbicacionLogica objLogica = new UbicacionLogica()) {
             rta = objLogica.obtieneCiudad();
         } catch (Exception e) {
             e.printStackTrace();
         }
         return rta;
     }
-    
+
     /**
-     * Funcion con la cual actualizo un parametro del 
-     * sistema
+     * Funcion con la cual actualizo un parametro del sistema
      *
      * @param clave
      * @param nuevoValor
@@ -296,16 +297,51 @@ public class GeneralWS {
      */
     @WebMethod(operationName = "actualizaParametro")
     @WebResult(name = "listaCiudades")
-    public String actualizaParametro(@XmlElement(required = true) @WebParam(name = "clave")String clave,
-            @XmlElement(required = true) @WebParam(name = "nuevoValor")String nuevoValor ) {
+    public String actualizaParametro(@XmlElement(required = true) @WebParam(name = "clave") String clave,
+            @XmlElement(required = true) @WebParam(name = "nuevoValor") String nuevoValor) {
         String rta = null;
-        try (ParametrosEmpresaLogic objLogica = new ParametrosEmpresaLogic()){
+        try (ParametrosEmpresaLogic objLogica = new ParametrosEmpresaLogic()) {
             rta = objLogica.actualizaParametros(clave, nuevoValor);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return rta;
     }
-    
-    
+
+    /**
+     * Funcion con la cual obtengo la informacion principal del pago de una
+     * remision
+     *
+     * @param idRemision
+     * @param idFactura
+     * @return
+     */
+    @WebMethod(operationName = "obtenerPrincPago")
+    @WebResult(name = "pagoRemision")
+    public PagoRemisionEntity obtenerPrincPago(@XmlElement(required = true) @WebParam(name = "idRemision") Integer idRemision, 
+            @XmlElement(required = true) @WebParam(name = "idFactura") Integer idFactura) {
+        PagoRemisionEntity rta = null;
+        try (PagoRemisionLogica objLogica = new PagoRemisionLogica()) {
+            rta = objLogica.obtieneRemison(idRemision, idFactura);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+    /**
+     * Funcion con la cual obtiene el detalle de los pagos
+     * @param idPago
+     * @return 
+     */
+    @WebMethod(operationName = "obtenerDetallePagos")
+    @WebResult(name = "detallePago")
+    public List<DetallePagoRemision> obtenerDetallePagos(@XmlElement(required = true) @WebParam(name = "idPago")Integer idPago){
+        List<DetallePagoRemision> rta = null;
+        try(PagoRemisionLogica objLogica = new PagoRemisionLogica()) {
+            rta = objLogica.obtieneDetallePago(idPago);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
 }

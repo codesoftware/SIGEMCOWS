@@ -9,6 +9,7 @@ import co.com.codesoftware.persistencia.HibernateUtil;
 import co.com.codesoftware.persistencia.ReadFunction;
 import co.com.codesoftware.persistencia.entidad.inventario.ExistenciaXSedeEntity;
 import co.com.codesoftware.persistencia.entidad.inventario.PrecioProductoEntity;
+import co.com.codesoftware.persistencia.entidad.inventario.ProductoEntity;
 import co.com.codesoftware.persistencia.entidad.inventario.PromPonderaEntity;
 import co.com.codesoftware.persistencia.utilities.DataType;
 import java.math.BigDecimal;
@@ -58,6 +59,24 @@ public class ProductoLogica implements AutoCloseable {
         }
         return rta;
     }
+    
+    /**
+     * metodo que consulta los productos por 
+     * @param idSede
+     * @return 
+     */
+    public List<ProductoEntity> obtieneProductosXSede(Integer idSede) {
+        List<ProductoEntity> rta = null;
+        try {
+            this.initOperation();
+            Criteria crit = sesion.createCriteria(ProductoEntity.class);
+            rta = crit.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+
 
     /**
      * Funcion con la cual obtengo todos los productos del sistema que tengan

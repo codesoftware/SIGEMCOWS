@@ -101,6 +101,9 @@ public class SolicitudLogica implements AutoCloseable {
             Criteria crit = sesion.createCriteria(SolicitudEntity.class);
             if (fechaInicial != null && fechaFinal != null) {
                 crit.add(Restrictions.ge("fecha", fechaInicial));
+                fechaFinal.setHours(23);
+                fechaFinal.setMinutes(59);
+                fechaFinal.setSeconds(59);
                 crit.add(Restrictions.lt("fecha", fechaFinal));
             }
             if (estado != null && !"".equalsIgnoreCase(estado)) {
@@ -226,7 +229,6 @@ public class SolicitudLogica implements AutoCloseable {
      */
     public RespuestaEntity ejecutaProcedimientoSolicitud(Integer idUsuario, Integer idSede) {
         RespuestaEntity respuesta = new RespuestaEntity();
-       List<String> response = new ArrayList<>();
         try (ReadFunction rf = new ReadFunction()){
             rf.setNombreFuncion("FA_ENVIASOLICITUD");
             rf.setNumParam(2);
@@ -234,8 +236,13 @@ public class SolicitudLogica implements AutoCloseable {
             rf.addParametro(idSede.toString(), DataType.INT);
             boolean valida = rf.callFunctionJdbc();
             if(valida){
+                if(rf.getRespuestaPg().get(0).startsWith("Error")){
+                   respuesta.setCodigoRespuesta(0); 
+                }else{
+                    respuesta.setCodigoRespuesta(1);
+                }
                 respuesta.setDescripcionRespuesta(rf.getRespuestaPg().get(0));
-                respuesta.setCodigoRespuesta(1);
+                
             }else{
                 respuesta.setDescripcionRespuesta("Error al realizar solicitud ");
                 respuesta.setCodigoRespuesta(0);
