@@ -32,7 +32,8 @@
         <mapping class="co.com.codesoftware.persistencia.entidad.facturacion.FacturaEntity"/>
         <mapping class="co.com.codesoftware.persistencia.entidad.facturacion.DetProduFacturaEntity"/>
         <mapping class="co.com.codesoftware.persistencia.entidad.facturacion.TemporalProdTable"/>
-        <mapping class="co.com.codesoftware.persistencia.entidad.facturacion.TemporalRecTable"/>
+        <mapping class="co.com.codesoftware.persistencia.entidad.facturacion.RemisionEntity"/>
+        <mapping class="co.com.codesoftware.persistencia.entidad.facturacion.DetProdRemision"/>
         
         <mapping class="co.com.codesoftware.persistencia.entidad.contabilidad.SubCuentaEntity"/>
         <mapping class="co.com.codesoftware.persistencia.entidad.contabilidad.MoviContableEntity"/>
@@ -61,12 +62,9 @@
         <mapping class="co.com.codesoftware.persistence.entity.facturacion.ImagenFacturaEntity"/>
         <mapping class="co.com.codesoftware.persistencia.entidad.receta.RecetaEntity"/>
         <mapping class="co.com.codesoftware.persistencia.entidad.receta.PrecioRecetaEntity"/>
-<<<<<<< HEAD
         <mapping class="co.com.codesoftware.persistencia.entidad.facturacion.DetReceFacturaEntity"/>
         <mapping class="co.com.codesoftware.persistencia.entidad.facturacion.TemporalRecTable"/>
-=======
         <mapping class="co.com.codesoftware.persistencia.entidad.inventario.SolicitudEntity"/>
         <mapping class="co.com.codesoftware.persistencia.entidad.inventario.SolicitudProdEntity"/>
->>>>>>> 76882e0568bdb01dd894de1b01dd3810d9d34aac
     </session-factory>
 </hibernate-configuration>
