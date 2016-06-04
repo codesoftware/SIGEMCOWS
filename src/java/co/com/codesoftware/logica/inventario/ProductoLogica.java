@@ -294,6 +294,24 @@ public class ProductoLogica implements AutoCloseable {
     }
     
     /**
+     * metodo que consulta las existencias de los productos en todas las sedes
+     * @param sede
+     * @param idProducto
+     * @return 
+     */
+        public List<ExistenciaXSedeEntity> consultaExistenciasTotales(Integer idProducto) {
+         List<ExistenciaXSedeEntity> resultado = new  ArrayList<ExistenciaXSedeEntity>();
+        initOperation();
+        try {
+            resultado= sesion.createCriteria(ExistenciaXSedeEntity.class)
+                    .add(Restrictions.eq("idDska", idProducto)).list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return resultado;
+    }
+    
+    /**
      * Funcion con la cual busco un producto por medio de su codigo y que tenga
      * precio en la sede
      *

@@ -259,6 +259,24 @@ public class ProductoWS {
         }
         return resultado;
     }
+    
+    /**
+     * metodo que consulta las existencias en todas las sedes
+     * @param idProducto
+     * @return 
+     */
+     @WebMethod(operationName = "obtenerCantidadesTotales")
+    @WebResult(name = "ExistenciaXSedeEntity")
+    public List<ExistenciaXSedeEntity> obtenerCantidadesTotales(
+            @XmlElement(required = true) @WebParam(name = "idDska") Integer idProducto) {
+         List<ExistenciaXSedeEntity> resultado = new  ArrayList<ExistenciaXSedeEntity>();
+        try (ProductoLogica logic = new ProductoLogica()) {
+            resultado = logic.consultaCantidades(idProducto);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return resultado;
+    }
 
     /**
      * Funcion con la cual obtengo todas las cantidades que tiene un producto
@@ -376,7 +394,7 @@ public class ProductoWS {
      * @param idUsuario
      * @param productos
      * @return 
-     */
+     */ 
     @WebMethod(operationName = "actualizaSolicitud")
      @WebResult(name="RespuestaEntity")
     public RespuestaEntity actualizaSolicitud(@WebParam(name = "idUsuario")Integer idUsuario,@WebParam(name = "productosSolicitud") List<SolicitudProdEntity> productos){

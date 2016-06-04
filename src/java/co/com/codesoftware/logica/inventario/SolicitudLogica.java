@@ -19,6 +19,7 @@ import org.hibernate.FetchMode;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 /**
@@ -107,7 +108,7 @@ public class SolicitudLogica implements AutoCloseable {
                 crit.add(Restrictions.lt("fecha", fechaFinal));
             }
             if (estado != null && !"".equalsIgnoreCase(estado)) {
-                crit.add(Restrictions.eq("", estado));
+                crit.add(Restrictions.eq("estado", estado));
             }
             if (usuario != null && usuario != 0) {
                 crit.createAlias("usuario", "usu").add(Restrictions.eq("usu.id", usuario));
@@ -115,6 +116,7 @@ public class SolicitudLogica implements AutoCloseable {
             if (sede != null && sede != 0) {
                 crit.createAlias("sede", "sede").add(Restrictions.eq("sede.id", sede));
             }
+            crit.addOrder(Order.desc("id"));
             respuesta = crit.setFetchMode("sede", FetchMode.JOIN)
                     .setFetchMode("usuario", FetchMode.JOIN)
                     .list();
