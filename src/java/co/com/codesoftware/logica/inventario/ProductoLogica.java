@@ -5,12 +5,15 @@
  */
 package co.com.codesoftware.logica.inventario;
 
+import co.com.codesoftware.logica.receta.RecetaLogica;
 import co.com.codesoftware.persistencia.HibernateUtil;
 import co.com.codesoftware.persistencia.ReadFunction;
+import co.com.codesoftware.persistencia.entidad.admin.SedeEntity;
 import co.com.codesoftware.persistencia.entidad.inventario.ExistenciaXSedeEntity;
 import co.com.codesoftware.persistencia.entidad.inventario.PrecioProductoEntity;
 import co.com.codesoftware.persistencia.entidad.inventario.ProductoEntity;
 import co.com.codesoftware.persistencia.entidad.inventario.PromPonderaEntity;
+import co.com.codesoftware.persistencia.entidad.receta.PrecioRecetaEntity;
 import co.com.codesoftware.persistencia.utilities.DataType;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -218,10 +221,55 @@ public class ProductoLogica implements AutoCloseable {
             crit.setFetchMode("producto.categoria", FetchMode.JOIN);
             crit.setFetchMode("producto.subcuenta", FetchMode.JOIN);
             rta = (PrecioProductoEntity) crit.uniqueResult();
+            if(rta ==null || rta.getId()==0 || rta.getId()==null){
+                RecetaLogica logica = new RecetaLogica();
+                PrecioRecetaEntity receta = new PrecioRecetaEntity();
+                receta = logica.getRecetaXCodigo(codExt, idSede);
+                if(receta!=null)
+                if(receta.getId()!=0 && receta.getId()!=null){
+                    rta = convierteRecetaProducto(receta);
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
         return rta;
+    }
+    
+    /**
+     * metodo que convierte una receta en producto
+     * @param receta
+     * @return 
+     */
+    public PrecioProductoEntity convierteRecetaProducto(PrecioRecetaEntity receta){
+        PrecioProductoEntity prd = new PrecioProductoEntity();
+        try {
+            prd.setEstado(receta.getEstado());
+            prd.setId(receta.getId());
+            SedeEntity sede = new SedeEntity();
+            sede.setId(receta.getIdSede());
+            prd.setIdSede(sede);
+            prd.setPrecio(receta.getPrecio());
+            prd.setPrecioIva(receta.getPrecio());
+            prd.setPrecioXCien(receta.getPrecio());
+            prd.setPrecioXMil(receta.getPrecio());
+            prd.setPrecioXUnidad(receta.getPrecio());
+            ProductoEntity entityprd = new ProductoEntity();
+            entityprd.setCodigo(receta.getReceta().getCodigo());
+            entityprd.setCodigoBarras(receta.getReceta().getCodigo());
+            entityprd.setCodigoExt(receta.getReceta().getCodigo());
+            entityprd.setDescripcion(receta.getReceta().getDescripcion());
+            entityprd.setEstado(receta.getReceta().getEstado());
+            entityprd.setId(receta.getReceta().getId());
+            entityprd.setIva(receta.getReceta().getIva());
+            entityprd.setNombre(receta.getReceta().getNombre());
+            prd.setProducto(entityprd);
+            
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return prd;
     }
     
     /**

@@ -54,7 +54,7 @@ public class ProductoWS {
     }
     @WebMethod(operationName = "obtenerProductosXSede")
     @WebResult(name = "ListGeneric")
-    public List<ProductoGenericoEntity> obtenerProductosXSede(@XmlElement(required = true) @WebParam(name = "sede_sede") Integer sede_sede) {
+    public List<ProductoGenericoEntity> obtenerProductosXSedeobtenerProductoXCodExt(@XmlElement(required = true) @WebParam(name = "sede_sede") Integer sede_sede) {
         try {
             ProductosGenericosLogica logica = new ProductosGenericosLogica();
             return logica.obtieneProductosXSede(sede_sede);
