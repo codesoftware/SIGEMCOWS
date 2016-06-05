@@ -72,5 +72,6 @@
         <mapping class="co.com.codesoftware.persistencia.entidad.inventario.SolicitudProdEntity"/>
         
         <mapping class="co.com.codesoftware.persistencia.entidad.importacion.ProveedorInterEntity"/>
+        <mapping class="co.com.codesoftware.persistencia.entidad.importacion.ImportacionEntity"/>
     </session-factory>
 </hibernate-configuration>

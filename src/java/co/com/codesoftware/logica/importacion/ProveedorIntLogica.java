@@ -7,6 +7,8 @@ package co.com.codesoftware.logica.importacion;
 
 import co.com.codesoftware.persistencia.HibernateUtil;
 import co.com.codesoftware.persistencia.entidad.importacion.ProveedorInterEntity;
+import java.util.List;
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -35,6 +37,21 @@ public class ProveedorIntLogica implements AutoCloseable {
         } catch (Exception e) {
             e.printStackTrace();
             rta ="Error " + e;
+        }
+        return rta;
+    }
+    /**
+     * Funcion con la cual consulta los proveedores internacionales
+     * @return 
+     */
+    public List<ProveedorInterEntity> consultaProveedoresInterna(){
+        List<ProveedorInterEntity> rta = null;
+        try {
+            this.initOperation();
+            Criteria crit = this.sesion.createCriteria(ProveedorInterEntity.class);
+            rta = crit.list();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return rta;
     }
