@@ -7,6 +7,8 @@ package co.com.codesoftware.logica.importacion;
 
 import co.com.codesoftware.persistencia.HibernateUtil;
 import co.com.codesoftware.persistencia.entidad.importacion.ImportacionEntity;
+import java.math.BigDecimal;
+import java.util.Date;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -23,6 +25,9 @@ public class ImportacionLogica implements AutoCloseable {
         String rta = "";
         try {
             this.initOperation();
+            objEntity.setFechaCrea(new Date());
+            objEntity.setVlrTotal(new BigDecimal(0));
+            objEntity.setVlrImpuestos(new BigDecimal(0));
             this.sesion.save(objEntity);
             rta = "Ok";
         } catch (Exception e) {

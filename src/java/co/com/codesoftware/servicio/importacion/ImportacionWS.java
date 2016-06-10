@@ -64,7 +64,7 @@ public class ImportacionWS {
     public String insertaImportacion(@WebParam(name = "importEntity") ImportacionEntity objEntity) {
         String rta = "Ok";
         try (ImportacionLogica objLogica = new ImportacionLogica()){
-            
+            rta = objLogica.insertaImportacion(objEntity);
         } catch (Exception e) {
             e.printStackTrace();
             rta = "Error " + e;
