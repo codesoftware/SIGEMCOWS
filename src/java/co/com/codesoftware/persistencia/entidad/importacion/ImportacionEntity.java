@@ -21,7 +21,8 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "im_timpo")
-public class ImportacionEntity implements Serializable{
+public class ImportacionEntity implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "impo_impo")
@@ -40,6 +41,8 @@ public class ImportacionEntity implements Serializable{
     private BigDecimal vlrTotal;
     @Column(name = "impo_vlrImpu")
     private BigDecimal vlrImpuestos;
+    @Column(name = "impo_estado")
+    private String estado;
 
     public Integer getId() {
         return id;
@@ -104,5 +107,13 @@ public class ImportacionEntity implements Serializable{
     public void setVlrImpuestos(BigDecimal vlrImpuestos) {
         this.vlrImpuestos = vlrImpuestos;
     }
-    
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
 }

@@ -28,6 +28,7 @@ public class ImportacionLogica implements AutoCloseable {
             objEntity.setFechaCrea(new Date());
             objEntity.setVlrTotal(new BigDecimal(0));
             objEntity.setVlrImpuestos(new BigDecimal(0));
+            objEntity.setEstado("A");
             this.sesion.save(objEntity);
             rta = "Ok";
         } catch (Exception e) {
