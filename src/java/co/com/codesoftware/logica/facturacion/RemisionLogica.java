@@ -89,7 +89,7 @@ public class RemisionLogica implements AutoCloseable {
      * @param diasPlazo
      * @return
      */
-    public String realizarFacturaXRemision(Integer idRemision, Integer idTius, Integer idRsfa, Integer diasPlazo) {
+    public String realizarFacturaXRemision(Integer idRemision, Integer idTius, Integer idRsfa, Integer diasPlazo, String retefuente) {
         String rta = "";
         List<String> response = new ArrayList<>();
         try (ReadFunction rf = new ReadFunction()) {
@@ -99,6 +99,7 @@ public class RemisionLogica implements AutoCloseable {
             rf.addParametro("" + idRemision, DataType.INT);
             rf.addParametro("" + idRsfa, DataType.INT);
             rf.addParametro("" + diasPlazo, DataType.INT);
+            rf.addParametro(retefuente, DataType.TEXT);
             rf.callFunctionJdbc();
             response = rf.getRespuestaPg();
             rta = response.get(0);

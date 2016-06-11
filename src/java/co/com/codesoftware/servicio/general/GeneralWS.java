@@ -155,6 +155,9 @@ public class GeneralWS {
      *
      * @param idRemision
      * @param idTius
+     * @param idRsfa
+     * @param diasPlazo
+     * @param retefuente
      * @return
      */
     @WebMethod(operationName = "realizarFacturaXRemision")
@@ -162,11 +165,12 @@ public class GeneralWS {
     public String realizarFacturaXRemision(@XmlElement(required = true) @WebParam(name = "idRemision") Integer idRemision,
             @XmlElement(required = true) @WebParam(name = "idTius") Integer idTius,
             @XmlElement(required = true) @WebParam(name = "idRsfa") Integer idRsfa,
-            @XmlElement(required = true) @WebParam(name = "diasPlazo") Integer diasPlazo) {
+            @XmlElement(required = true) @WebParam(name = "diasPlazo") Integer diasPlazo,
+            @XmlElement(required = true) @WebParam(name = "retefuente") String retefuente) {
         String rta = "";
         try {
             RemisionLogica objLogica = new RemisionLogica();
-            rta = objLogica.realizarFacturaXRemision(idRemision, idTius, idRsfa, diasPlazo);
+            rta = objLogica.realizarFacturaXRemision(idRemision, idTius, idRsfa, diasPlazo,retefuente);
         } catch (Exception e) {
             return null;
         }

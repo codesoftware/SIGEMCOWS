@@ -14,7 +14,7 @@
 (select para_valor from em_tpara where para_clave = 'TELEFONOS') telEmp,
 (select 'ACTIVIDAD ECONOMICO: '|| para_valor from em_tpara where para_clave = 'ACTECONO') actEcono,
 'NIT/CEDULA : '||clien_cedula || '   ' clien_cedula,clien_apellidos || ''|| clien_nombres cliente_nombre  ,clien_direccion, clien_telefono, 'C' || clien_clien clien_clien,
-to_char(fact_fechaex, 'dd/mm/yyyy HH:MI AM') fact_fechaex, to_char(fact_cons,'9,999,999,999')  numFactura,fact_fact , 'RE'||(SELECT REMI_REMI FROM IN_TREMI WHERE REMI_FACT = fact_fact) REMI_REMI,
+to_char(fact_fechaex, 'dd/mm/yyyy HH:MI AM') fact_fechaex, cast(fact_cons as bigint )  numFactura,fact_fact , 'RE'||(SELECT REMI_REMI FROM IN_TREMI WHERE REMI_FACT = fact_fact) REMI_REMI,
 row_number() OVER (ORDER BY fact_fact) AS item,  to_char(dtpr_cant,'9,999,999,999') dtpr_cant ,dska_cod_ext,dska_desc, ' $ '||to_char(dtpr_vlr_uni_prod,'9,999,999,999.00') valorUnitario, ' $ '||to_char(dtpr_vlr_pr_tot,'9,999,999,999.00') valorTotal,
 F_NUMEROS_A_LETRAS(FACT_VLR_TOTAL + FACT_VLR_IVA) NUMEROENLETRAS,
 to_char(FACT_VLR_TOTAL,'9,999,999,999.00') TOTPROD,to_char(FACT_VLR_IVA,'9,999,999,999.00')  TOTIVA, to_char((FACT_VLR_TOTAL + FACT_VLR_IVA),'9,999,999,999.00')  TOTALPAGAR
@@ -41,7 +41,7 @@ and dtpr_dska = DSKA_DSKA]]>
 		<fieldDescription><![CDATA[Identificador primario de la tabla]]></fieldDescription>
 	</field>
 	<field name="fact_fechaex" class="java.lang.String"/>
-	<field name="numfactura" class="java.lang.String"/>
+	<field name="numfactura" class="java.lang.Long"/>
 	<field name="fact_fact" class="java.lang.Long">
 		<fieldDescription><![CDATA[Identificador primario de la tabla]]></fieldDescription>
 	</field>
