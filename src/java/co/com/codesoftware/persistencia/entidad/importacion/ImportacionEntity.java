@@ -14,6 +14,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
 
 /**
  *
@@ -30,8 +31,10 @@ public class ImportacionEntity implements Serializable {
     @Column(name = "impo_nombre")
     private String nombre;
     @Column(name = "impo_fecCrea")
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date fechaCrea;
     @Column(name = "impo_fecLlegada")
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date fechaLleg;
     @Column(name = "impo_pvin")
     private Integer idProv;

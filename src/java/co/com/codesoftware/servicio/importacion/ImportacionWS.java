@@ -9,6 +9,7 @@ import co.com.codesoftware.logica.importacion.ImportacionLogica;
 import co.com.codesoftware.logica.importacion.ProveedorIntLogica;
 import co.com.codesoftware.persistencia.entidad.importacion.ImportacionEntity;
 import co.com.codesoftware.persistencia.entidad.importacion.ProveedorInterEntity;
+import java.util.Date;
 import java.util.List;
 import javax.jws.WebService;
 import javax.jws.WebMethod;
@@ -70,5 +71,22 @@ public class ImportacionWS {
             rta = "Error " + e;
         }
         return rta;
+    }
+    
+    /**
+     * metodo que se usa para consultar las importaciones dependiendo de la fecha
+     * @param fechaInicial
+     * @param fechaFinal
+     * @return 
+     */
+    @WebMethod(operationName = "obtenerImportaciones")
+    public List<ImportacionEntity> obtenerImportaciones(@WebParam(name = "fechaInicial") Date fechaInicial,@WebParam(name = "fechaFinal") Date fechaFinal){
+        List<ImportacionEntity> respuesta = null;
+        try (ImportacionLogica objLogica = new ImportacionLogica()){
+            respuesta= objLogica.consultaImportaciones(fechaInicial, fechaFinal);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return respuesta;
     }
 }
