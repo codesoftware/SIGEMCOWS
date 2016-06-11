@@ -94,7 +94,7 @@ public class RemisionLogica implements AutoCloseable {
         List<String> response = new ArrayList<>();
         try (ReadFunction rf = new ReadFunction()) {
             rf.setNombreFuncion("FA_REMISION_FACTURA");
-            rf.setNumParam(4);
+            rf.setNumParam(5);
             rf.addParametro("" + idTius, DataType.INT);
             rf.addParametro("" + idRemision, DataType.INT);
             rf.addParametro("" + idRsfa, DataType.INT);
