@@ -52,7 +52,7 @@ public class ProveedoresLogic implements AutoCloseable {
      * @return
      */
     public RespuestaEntity insertaProveedores(ProveedoresEntity entidad) {
-        RespuestaEntity entity = new RespuestaEntity();;
+        RespuestaEntity entity = new RespuestaEntity();
         try {
             this.initOperation();
             if(entidad.getEstado() == null){
@@ -64,6 +64,29 @@ public class ProveedoresLogic implements AutoCloseable {
             entity.setDescripcionRespuesta("EXITOSO");
             entity.setMensajeRespuesta("OK");
         } catch (Error e) {
+            entity.setCodigoRespuesta(0);
+            entity.setDescripcionRespuesta("ERROR");
+            entity.setMensajeRespuesta(e.getMessage());
+            e.printStackTrace();
+        }
+        return entity;
+    }
+    
+    /**
+     * metodo que actualiza un proveedor
+     * @param entidad
+     * @return 
+     */
+    public RespuestaEntity actualizaProveedor(ProveedoresEntity entidad){
+         RespuestaEntity entity = new RespuestaEntity();
+        try {
+            this.initOperation();
+            sesion.update(entidad);
+            entity.setCodigoRespuesta(1);
+            entity.setDescripcionRespuesta("EXITOSO");
+            entity.setMensajeRespuesta("OK");
+            
+        } catch (Exception e) {
             entity.setCodigoRespuesta(0);
             entity.setDescripcionRespuesta("ERROR");
             entity.setMensajeRespuesta(e.getMessage());
