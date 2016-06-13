@@ -5,6 +5,8 @@
  */
 package co.com.codesoftware.persistence.entity.administracion;
 
+import co.com.codesoftware.persistencia.entidad.admin.CiudadEntity;
+import co.com.codesoftware.persistencia.entidad.admin.DepartamentoEntity;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,7 +20,7 @@ import javax.persistence.Table;
  *
  * @author john
  */
-    @Entity
+@Entity
 @Table(name = "in_tprov")
 public class ProveedoresEntity implements Serializable {
 
@@ -44,10 +46,17 @@ public class ProveedoresEntity implements Serializable {
     @Column(name = "prov_corre")
     private String correo;
     @JoinColumn(name = "prov_retde")
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.LAZY)
     private ReteFuenteEntity retenciones;
     @Column(name = "prov_gcron")
     private String granContribuyente;
+    @JoinColumn(name = "prov_ciu")
+    @OneToOne(fetch = FetchType.LAZY)
+    private CiudadEntity ciudad;
+    @JoinColumn(name = "prov_mpio")
+    @OneToOne(fetch = FetchType.LAZY)
+    private DepartamentoEntity municipio;
+
     public Integer getId() {
         return id;
     }
@@ -128,7 +137,6 @@ public class ProveedoresEntity implements Serializable {
         this.correo = correo;
     }
 
-
     public String getGranContribuyente() {
         return granContribuyente;
     }
@@ -144,6 +152,24 @@ public class ProveedoresEntity implements Serializable {
     public void setRetenciones(ReteFuenteEntity retenciones) {
         this.retenciones = retenciones;
     }
+
+    public CiudadEntity getCiudad() {
+        return ciudad;
+    }
+
+    public void setCiudad(CiudadEntity ciudad) {
+        this.ciudad = ciudad;
+    }
+
+    public DepartamentoEntity getMunicipio() {
+        return municipio;
+    }
+
+    public void setMunicipio(DepartamentoEntity municipio) {
+        this.municipio = municipio;
+    }
+    
+    
     
     
 

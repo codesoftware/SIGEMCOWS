@@ -44,7 +44,7 @@ import javax.jws.WebResult;
  * @author ACER
  */
 @WebService(serviceName = "AdministrationEndPoint")
-public class AdministrationEndPoint {   
+public class AdministrationEndPoint {
 
     /**
      * Metodo el cual consulta los proveedores activos en el sistema
@@ -86,6 +86,26 @@ public class AdministrationEndPoint {
     }
 
     /**
+     * metodo que actualiza un proveedor
+     * @param proveedor
+     * @return 
+     */
+    @WebMethod(operationName = "actualizarProveedor")
+    @WebResult(name = "RespuestaEntity")
+    public RespuestaEntity actualizarProveedor(@WebParam(name = "proveedor") ProveedoresEntity proveedor) {
+        RespuestaEntity respuesta = new RespuestaEntity();
+        try(ProveedoresLogic logic = new ProveedoresLogic()) {
+               respuesta= logic.actualizaProveedor(proveedor);
+        } catch (Exception e) {
+            respuesta.setCodigoRespuesta(0);
+            respuesta.setDescripcionRespuesta(e.toString());
+            respuesta.setMensajeRespuesta("ERROR");
+            e.printStackTrace();
+        }
+        return respuesta;
+    }
+
+    /**
      * Funcion que consulta las marcas activas en el sistema
      *
      * @return
@@ -101,9 +121,10 @@ public class AdministrationEndPoint {
 
         }
     }
-    
+
     /**
-     * Funcion que consulta las marcas que tienen una serie de productos que tienen determinadas categorias
+     * Funcion que consulta las marcas que tienen una serie de productos que
+     * tienen determinadas categorias
      *
      * @param idCate
      * @return
@@ -181,14 +202,11 @@ public class AdministrationEndPoint {
 
     }
 
-
-
     /**
      * Funcion que consulta las categorias activas en el sistema
      *
      * @return
      */
-    
     @WebMethod(operationName = "obtieneCategorias")
     @WebResult(name = "listaCategorias")
     public List<CategoriaEntity> obtieneCategorias() {
@@ -220,8 +238,6 @@ public class AdministrationEndPoint {
             return null;
         }
     }
-    
-    
 
     /**
      * Metodo que consulta los productos por categoria, subcategoria y marca
@@ -272,16 +288,18 @@ public class AdministrationEndPoint {
             return null;
         }
     }
+
     /**
      * metodo que consulta las subcuentas por filtros
+     *
      * @param campo
      * @param datos
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "obtieneSubCuentasFiltros")
-    public List<SubCuentaEntity> obtieneSubCuentasFiltros(@WebParam(name = "datos")ArrayList<PucEntity> datos){
+    public List<SubCuentaEntity> obtieneSubCuentasFiltros(@WebParam(name = "datos") ArrayList<PucEntity> datos) {
         List<SubCuentaEntity> respuesta = new ArrayList<SubCuentaEntity>();
-        try (SubCuentaLogic logic = new SubCuentaLogic()){
+        try (SubCuentaLogic logic = new SubCuentaLogic()) {
             respuesta = logic.consultaSubCuentaFiltros(datos);
         } catch (Exception e) {
             e.printStackTrace();
@@ -407,9 +425,10 @@ public class AdministrationEndPoint {
 
     /**
      * Metodo con el cual se realiza el login de un usuario
+     *
      * @param usuario
      * @param contrasena
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "loginUsuario")
     public List loginUsuario(@WebParam(name = "usuario") String usuario, @WebParam(name = "contrasena") String contrasena) {
@@ -452,64 +471,69 @@ public class AdministrationEndPoint {
      */
     @WebMethod(operationName = "cambioPrecioProducto")
     public RespuestaEntity cambioPrecioProducto(@WebParam(name = "tius_tius") Integer usuario, @WebParam(name = "sede_sede") Integer sede, @WebParam(name = "dska_dska") Integer dska, @WebParam(name = "precio") BigDecimal precio,
-    @WebParam(name = "precioUni") BigDecimal precioUni,@WebParam(name = "precioDec") BigDecimal precioDec,@WebParam(name = "precioMil") BigDecimal precioMil,@WebParam(name = "precioEstatic") String precioEstatic ) {
+            @WebParam(name = "precioUni") BigDecimal precioUni, @WebParam(name = "precioDec") BigDecimal precioDec, @WebParam(name = "precioMil") BigDecimal precioMil, @WebParam(name = "precioEstatic") String precioEstatic) {
         RespuestaEntity rta = null;
         try (ProductoLogic objLogic = new ProductoLogic()) {
-            rta = objLogic.cambioPrecioProducto(usuario, sede, dska, precio, precioUni,precioDec, precioMil, precioEstatic);
+            rta = objLogic.cambioPrecioProducto(usuario, sede, dska, precio, precioUni, precioDec, precioMil, precioEstatic);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return rta;
     }
+
     /**
      * metodo que consulta todas las subcuentas
-     * @return 
+     *
+     * @return
      */
 
     @WebMethod(operationName = "consultaSubcuentas")
     public List<SubCuentaEntity> consultaSubCuentas() {
         List<SubCuentaEntity> respuesta = null;
-        try (SubCuentaLogic logica = new SubCuentaLogic()){
-            respuesta= logica.consultaSubcuentas();
+        try (SubCuentaLogic logica = new SubCuentaLogic()) {
+            respuesta = logica.consultaSubcuentas();
         } catch (Exception e) {
             e.printStackTrace();
         }
         return respuesta;
     }
+
     /**
      * metodo que inserta una factura de compra
+     *
      * @param factura
      * @param pago
      * @param productos
      * @param ajustePeso
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "insertaFacturaCompra")
-    public RespuestaEntity insertaFacturaCompra(@WebParam(name = "factura") FacturaCompraEntity factura,@WebParam(name = "pagoFactura") List<PagoFacCompraEntity> pago,@WebParam(name = "productosFactura") List<ProductoFacCompraEntity> productos){
+    public RespuestaEntity insertaFacturaCompra(@WebParam(name = "factura") FacturaCompraEntity factura, @WebParam(name = "pagoFactura") List<PagoFacCompraEntity> pago, @WebParam(name = "productosFactura") List<ProductoFacCompraEntity> productos) {
         RespuestaEntity respuesta = new RespuestaEntity();
         try {
             FacturaCompraLogic logica = new FacturaCompraLogic();
-            respuesta = logica.insertaFactura(factura,pago,productos);
-            
+            respuesta = logica.insertaFactura(factura, pago, productos);
+
         } catch (Exception e) {
 //            respuesta.setCodigoRespuesta(0);
 //            respuesta.setDescripcionRespuesta(e.getCause().toString());
 //            respuesta.setMensajeRespuesta(e.toString());
             e.printStackTrace();
-            
+
         }
         return respuesta;
     }
-    
+
     /**
-     * metodo qu consulta las tablas  de retenciones por versión
+     * metodo qu consulta las tablas de retenciones por versión
+     *
      * @param idVersion
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "consultaTablasRetencion")
-    public List<ReteFuenteEntity> consultaTablaReteFuente(@WebParam(name = "idVersion")Integer idVersion){
+    public List<ReteFuenteEntity> consultaTablaReteFuente(@WebParam(name = "idVersion") Integer idVersion) {
         List<ReteFuenteEntity> respuesta = null;
-        try (RetencionLogic logic = new RetencionLogic()){
+        try (RetencionLogic logic = new RetencionLogic()) {
             respuesta = logic.consultaTablaRetencion(idVersion);
         } catch (Exception e) {
             e.printStackTrace();
