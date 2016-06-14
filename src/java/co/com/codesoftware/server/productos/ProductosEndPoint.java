@@ -259,14 +259,15 @@ public class ProductosEndPoint {
      * @param fechaFinal
      * @param estado
      * @param imagen
+     * @param digitalizado String Indica si la consulta busca o no las facturas que ya han sido digitalizadas
      * @return 
      */
     @WebMethod(operationName = "consultaFacturaCompraFiltros")
     @WebResult(name = "FacturaCompraTotalEntity")
-    public List<FacturaCompraTotalEntity> consultaFacturaCompraFiltros(Integer idProveedor,Date fechaInicial,Date fechaFinal,String estado,String imagen){
+    public List<FacturaCompraTotalEntity> consultaFacturaCompraFiltros(Integer idProveedor,Date fechaInicial,Date fechaFinal,String estado,String imagen, String digitalizado){
          List<FacturaCompraTotalEntity> respuesta = null;
          try (ProductoLogic objLogic = new ProductoLogic()){
-            respuesta = objLogic.consultaFacturas(idProveedor, fechaInicial, fechaFinal, estado, imagen);
+            respuesta = objLogic.consultaFacturas(idProveedor, fechaInicial, fechaFinal, estado, imagen, digitalizado);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -719,7 +719,7 @@ public class ProductoLogic implements AutoCloseable {
      * @param imagen
      * @return
      */
-    public List<FacturaCompraTotalEntity> consultaFacturas(Integer idProveedor, Date fechaInicial, Date fechaFinal, String estado, String imagen) {
+    public List<FacturaCompraTotalEntity> consultaFacturas(Integer idProveedor, Date fechaInicial, Date fechaFinal, String estado, String imagen, String digitalizado) {
         List<FacturaCompraTotalEntity> lista = null;
         try {
             initOperation();
@@ -737,6 +737,11 @@ public class ProductoLogic implements AutoCloseable {
             }
             if (imagen != null && "".equalsIgnoreCase(imagen) && "-1".equalsIgnoreCase(imagen)) {
                 criteria.add(Restrictions.eq("rutaImagen", imagen));
+            }
+            if("S".equalsIgnoreCase(digitalizado)){
+                criteria.add(Restrictions.sqlRestriction(" exists (select 1 from fa_timfac where imfac_facom = facom_facom) "));
+            }else if ("N".equalsIgnoreCase(digitalizado)){
+                criteria.add(Restrictions.sqlRestriction(" not exists (select 1 from fa_timfac where imfac_facom = facom_facom) "));
             }
             lista = criteria.list();
 
