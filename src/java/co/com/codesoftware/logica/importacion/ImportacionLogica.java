@@ -6,11 +6,16 @@
 package co.com.codesoftware.logica.importacion;
 
 import co.com.codesoftware.persistencia.HibernateUtil;
+import co.com.codesoftware.persistencia.ReadFunction;
 import co.com.codesoftware.persistencia.entidad.importacion.ImportacionEntity;
+import co.com.codesoftware.persistencia.entidad.importacion.ProductoImportacionEntity;
+import co.com.codesoftware.persistencia.utilities.DataType;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
@@ -63,6 +68,57 @@ public class ImportacionLogica implements AutoCloseable {
             }
             rta = crit.list();
 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+
+    /**
+     * Funcion con la cual inserto un producto a una importacion
+     *
+     * @param idImpo
+     * @param codExterno
+     * @param cantidad
+     * @param precio
+     * @return
+     */
+    public String insertarProductoImportacion(Integer idImpo,
+            String codExterno,
+            Integer cantidad,
+            BigDecimal precio) {
+        String rta = "";
+        List<String> response = new ArrayList<>();
+        try (ReadFunction rf = new ReadFunction()) {
+            rf.setNombreFuncion("IN_INSERTA_PROD_IMPORTACION");
+            rf.setNumParam(4);
+            rf.addParametro("" + idImpo, DataType.INT);
+            rf.addParametro(codExterno, DataType.TEXT);
+            rf.addParametro("" + cantidad, DataType.INT);
+            rf.addParametro(precio.toString(), DataType.BIGDECIMAL);
+            rf.callFunctionJdbc();
+            response = rf.getRespuestaPg();
+            rta = response.get(0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+
+    /**
+     * Funcion con la cual obtengo los productos que tiene una importacion
+     *
+     * @param idImportacion
+     * @return
+     */
+    public List<ProductoImportacionEntity> obtenerProductosImportacion(Integer idImportacion) {
+        List<ProductoImportacionEntity> rta = null;
+        try {
+            this.initOperation();
+            Criteria crit = this.sesion.createCriteria(ProductoImportacionEntity.class);
+            crit.add(Restrictions.eq("idImpo", idImportacion));
+            crit.setFetchMode("producto", FetchMode.JOIN);
+            rta = crit.list();
         } catch (Exception e) {
             e.printStackTrace();
         }

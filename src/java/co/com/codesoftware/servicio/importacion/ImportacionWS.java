@@ -8,7 +8,9 @@ package co.com.codesoftware.servicio.importacion;
 import co.com.codesoftware.logica.importacion.ImportacionLogica;
 import co.com.codesoftware.logica.importacion.ProveedorIntLogica;
 import co.com.codesoftware.persistencia.entidad.importacion.ImportacionEntity;
+import co.com.codesoftware.persistencia.entidad.importacion.ProductoImportacionEntity;
 import co.com.codesoftware.persistencia.entidad.importacion.ProveedorInterEntity;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import javax.jws.WebService;
@@ -64,7 +66,7 @@ public class ImportacionWS {
     @WebMethod(operationName = "insertaImportacion")
     public String insertaImportacion(@WebParam(name = "importEntity") ImportacionEntity objEntity) {
         String rta = "Ok";
-        try (ImportacionLogica objLogica = new ImportacionLogica()){
+        try (ImportacionLogica objLogica = new ImportacionLogica()) {
             rta = objLogica.insertaImportacion(objEntity);
         } catch (Exception e) {
             e.printStackTrace();
@@ -72,21 +74,59 @@ public class ImportacionWS {
         }
         return rta;
     }
-    
+
     /**
-     * metodo que se usa para consultar las importaciones dependiendo de la fecha
+     * metodo que se usa para consultar las importaciones dependiendo de la
+     * fecha
+     *
      * @param fechaInicial
      * @param fechaFinal
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "obtenerImportaciones")
-    public List<ImportacionEntity> obtenerImportaciones(@WebParam(name = "fechaInicial") Date fechaInicial,@WebParam(name = "fechaFinal") Date fechaFinal){
+    public List<ImportacionEntity> obtenerImportaciones(@WebParam(name = "fechaInicial") Date fechaInicial, @WebParam(name = "fechaFinal") Date fechaFinal) {
         List<ImportacionEntity> respuesta = null;
-        try (ImportacionLogica objLogica = new ImportacionLogica()){
-            respuesta= objLogica.consultaImportaciones(fechaInicial, fechaFinal);
+        try (ImportacionLogica objLogica = new ImportacionLogica()) {
+            respuesta = objLogica.consultaImportaciones(fechaInicial, fechaFinal);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return respuesta;
+    }
+
+    /**
+     *
+     * @param idImpo
+     * @param codExterno
+     * @param cantidad
+     * @param precio
+     * @return
+     */
+    public String insertarProductoImportacion(@WebParam(name = "idImpo") Integer idImpo,
+            @WebParam(name = "codExterno") String codExterno,
+            @WebParam(name = "cantidad") Integer cantidad,
+            @WebParam(name = "precio") BigDecimal precio) {
+        String rta = "";
+        try {
+            ImportacionLogica objogica = new ImportacionLogica();
+            rta = objogica.insertarProductoImportacion(idImpo, codExterno, cantidad, precio);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+    /**
+     * Funcion con la cual consulto los productos que tiene una importacion
+     * @param idImpo
+     * @return 
+     */
+    public List<ProductoImportacionEntity> obtenerProductosImportacion(@WebParam(name = "idImpo")Integer idImpo){
+        List<ProductoImportacionEntity> rta = null;
+        try (ImportacionLogica objLogica = new ImportacionLogica()) {
+              rta = objLogica.obtenerProductosImportacion(idImpo);  
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
     }
 }
