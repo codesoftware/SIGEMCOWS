@@ -46,6 +46,10 @@ public class ImportacionEntity implements Serializable {
     private BigDecimal vlrImpuestos;
     @Column(name = "impo_estado")
     private String estado;
+    @Column(name = "impo_trm")
+    private BigDecimal trm;
+    @Column(name = "impo_tazaProm")
+    private BigDecimal tazaPromedio;
 
     public Integer getId() {
         return id;
@@ -117,6 +121,22 @@ public class ImportacionEntity implements Serializable {
 
     public void setEstado(String estado) {
         this.estado = estado;
+    }
+
+    public BigDecimal getTrm() {
+        return trm;
+    }
+
+    public void setTrm(BigDecimal trm) {
+        this.trm = trm;
+    }
+
+    public BigDecimal getTazaPromedio() {
+        return tazaPromedio;
+    }
+
+    public void setTazaPromedio(BigDecimal tazaPromedio) {
+        this.tazaPromedio = tazaPromedio;
     }
 
 }

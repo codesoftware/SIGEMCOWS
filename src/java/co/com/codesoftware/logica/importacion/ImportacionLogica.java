@@ -104,6 +104,32 @@ public class ImportacionLogica implements AutoCloseable {
         }
         return rta;
     }
+    /**
+     * Funcion con la cual convierto los productos de dolares a pesos
+     * @param idImpo
+     * @param trm
+     * @param tazaProm
+     * @return 
+     */
+    public String insertarTazasCambio(Integer idImpo,
+            BigDecimal trm,
+            BigDecimal tazaProm) {
+        String rta = "";
+        List<String> response = new ArrayList<>();
+        try (ReadFunction rf = new ReadFunction()) {
+            rf.setNombreFuncion("im_convierte_dolares_importacion");
+            rf.setNumParam(3);
+            rf.addParametro("" + idImpo, DataType.INT);
+            rf.addParametro(trm.toString(), DataType.BIGDECIMAL);
+            rf.addParametro(tazaProm.toString(), DataType.BIGDECIMAL);
+            rf.callFunctionJdbc();
+            response = rf.getRespuestaPg();
+            rta = response.get(0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
 
     /**
      * Funcion con la cual obtengo los productos que tiene una importacion

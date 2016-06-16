@@ -129,4 +129,21 @@ public class ImportacionWS {
         }
         return rta;
     }
+    /**
+     * Funcion con la cual le da valores a los productos que tiene la importacion
+     * @param idImpo
+     * @param trm
+     * @param tazaProm
+     * @return 
+     */
+    public String insertaValorDolaresProd(@WebParam(name = "idImpo")Integer idImpo,@WebParam(name = "trm")BigDecimal trm,@WebParam(name = "tazaProm") BigDecimal tazaProm){
+        String rta = "";
+        try {
+            ImportacionLogica objLogica = new ImportacionLogica();
+            rta = objLogica.insertarTazasCambio(idImpo, trm, tazaProm);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
 }
