@@ -7,6 +7,7 @@ package co.com.codesoftware.servicio.importacion;
 
 import co.com.codesoftware.logica.importacion.ImportacionLogica;
 import co.com.codesoftware.logica.importacion.ProveedorIntLogica;
+import co.com.codesoftware.persistencia.entidad.importacion.GastoImpoEntity;
 import co.com.codesoftware.persistencia.entidad.importacion.ImportacionEntity;
 import co.com.codesoftware.persistencia.entidad.importacion.ProductoImportacionEntity;
 import co.com.codesoftware.persistencia.entidad.importacion.ProveedorInterEntity;
@@ -141,6 +142,20 @@ public class ImportacionWS {
         try {
             ImportacionLogica objLogica = new ImportacionLogica();
             rta = objLogica.insertarTazasCambio(idImpo, trm, tazaProm);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+    /**
+     * Funcion con la cual inserto un gasto a una importacion
+     * @param gasto
+     * @return 
+     */
+    public String insertaGastoImportacion(@WebParam(name = "gasto")GastoImpoEntity gasto){
+        String rta = "";
+        try(ImportacionLogica objLogica = new ImportacionLogica()) {
+            rta = objLogica.insertaGastoImportacion(gasto);
         } catch (Exception e) {
             e.printStackTrace();
         }

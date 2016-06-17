@@ -7,6 +7,7 @@ package co.com.codesoftware.logica.importacion;
 
 import co.com.codesoftware.persistencia.HibernateUtil;
 import co.com.codesoftware.persistencia.ReadFunction;
+import co.com.codesoftware.persistencia.entidad.importacion.GastoImpoEntity;
 import co.com.codesoftware.persistencia.entidad.importacion.ImportacionEntity;
 import co.com.codesoftware.persistencia.entidad.importacion.ProductoImportacionEntity;
 import co.com.codesoftware.persistencia.utilities.DataType;
@@ -28,7 +29,11 @@ public class ImportacionLogica implements AutoCloseable {
 
     private Session sesion;
     private Transaction tx;
-
+    /**
+     * Funcion con la cual inserto una importacion
+     * @param objEntity
+     * @return 
+     */
     public String insertaImportacion(ImportacionEntity objEntity) {
         String rta = "";
         try {
@@ -42,6 +47,23 @@ public class ImportacionLogica implements AutoCloseable {
         } catch (Exception e) {
             rta = "Error " + e;
             e.printStackTrace();
+        }
+        return rta;
+    }
+    /**
+     * Funcion con la cual inserto un gasto a una importacion
+     * @param gasto
+     * @return 
+     */
+    public String insertaGastoImportacion(GastoImpoEntity gasto){
+        String rta = "";
+        try {
+            this.initOperation();
+            this.sesion.save(gasto);
+            rta = "Ok";
+        } catch (Exception e) {
+            e.printStackTrace();
+            rta = "Error " + e;
         }
         return rta;
     }
