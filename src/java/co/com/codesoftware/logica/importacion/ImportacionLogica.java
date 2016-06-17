@@ -59,11 +59,28 @@ public class ImportacionLogica implements AutoCloseable {
         String rta = "";
         try {
             this.initOperation();
+            gasto.setFechaRegistro(new Date());
             this.sesion.save(gasto);
             rta = "Ok";
         } catch (Exception e) {
             e.printStackTrace();
             rta = "Error " + e;
+        }
+        return rta;
+    }
+    /**
+     * Funcion con la cual obtengo los gastos de una importacion
+     * @return 
+     */
+    public List<GastoImpoEntity> obtenerGastosImportacion(Integer idImpo){
+        List<GastoImpoEntity> rta = null;
+        try{
+            this.initOperation();
+            Criteria crit = this.sesion.createCriteria(GastoImpoEntity.class);
+            crit.add(Restrictions.eq("idImpo", idImpo));
+            rta = crit.list();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return rta;
     }
@@ -172,6 +189,7 @@ public class ImportacionLogica implements AutoCloseable {
         }
         return rta;
     }
+ 
 
     /**
      * metodo que inicia la sesion de base de datos

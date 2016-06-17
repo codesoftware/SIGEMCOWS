@@ -161,4 +161,18 @@ public class ImportacionWS {
         }
         return rta;
     }
+    /**
+     * Funcion con la cual obtengo los gastos de una importacion
+     * @param idImpo
+     * @return 
+     */
+    public List<GastoImpoEntity> obtenerGastosImpo(@WebParam(name = "idImpo")Integer idImpo){
+        List<GastoImpoEntity> rta = null;
+        try (ImportacionLogica objLogica = new ImportacionLogica()){
+            rta = objLogica.obtenerGastosImportacion(idImpo);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
 }
