@@ -17,8 +17,10 @@ import java.util.Date;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 /**
@@ -183,14 +185,34 @@ public class ImportacionLogica implements AutoCloseable {
             Criteria crit = this.sesion.createCriteria(ProductoImportacionEntity.class);
             crit.add(Restrictions.eq("idImpo", idImportacion));
             crit.setFetchMode("producto", FetchMode.JOIN);
+            crit.addOrder(Order.asc("id"));
             rta = crit.list();
         } catch (Exception e) {
             e.printStackTrace();
         }
         return rta;
     }
- 
-
+    /**
+     * Funcion con la cual borro todos los productos de una importacion
+     * @return 
+     */
+    public String borrarProductosImportacion(Integer idImpo){
+        String rta = "";
+        try {
+            this.initOperation();
+            Query query = this.sesion.createQuery("delete ProductoImportacionEntity where idImpo = :idImpo");
+            query.setParameter("idImpo", idImpo);
+            int result = query.executeUpdate();
+            if(result>0){
+                rta = "Ok Eliminados "+ result + " de la importacion";
+            }else{
+                rta = "Error al eliminar los productos ";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
     /**
      * metodo que inicia la sesion de base de datos
      */

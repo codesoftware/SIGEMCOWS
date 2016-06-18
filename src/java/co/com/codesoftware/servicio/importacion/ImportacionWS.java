@@ -175,4 +175,18 @@ public class ImportacionWS {
         }
         return rta;
     }
+    /**
+     * Funcion con la cual borro los productos que tiene asociada una importacion(Todos)
+     * @return 
+     */
+    public String borrarProductosImportacion(@WebParam(name = "idImpo")Integer idImpo){
+        String rta= "";
+        try (ImportacionLogica objLogica = new ImportacionLogica()){
+            rta = objLogica.borrarProductosImportacion(idImpo);
+        } catch (Exception e) {
+            e.printStackTrace();
+            rta = "Error " + e;
+        }
+        return rta;
+    }
 }
