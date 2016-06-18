@@ -142,6 +142,7 @@ public class ImportacionLogica implements AutoCloseable {
             rta = response.get(0);
         } catch (Exception e) {
             e.printStackTrace();
+            rta = "Error de ejecucion del proceso " + e;
         }
         return rta;
     }

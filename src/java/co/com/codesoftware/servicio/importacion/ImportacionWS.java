@@ -113,6 +113,7 @@ public class ImportacionWS {
             rta = objogica.insertarProductoImportacion(idImpo, codExterno, cantidad, precio);
         } catch (Exception e) {
             e.printStackTrace();
+            rta = "Error "  + e;
         }
         return rta;
     }
