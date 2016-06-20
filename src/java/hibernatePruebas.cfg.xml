@@ -76,5 +76,7 @@
         <mapping class="co.com.codesoftware.persistencia.entidad.importacion.ProductoImportacionEntity"/>
         <mapping class="co.com.codesoftware.persistencia.entidad.importacion.ImportacionEntity"/>
         <mapping class="co.com.codesoftware.persistencia.entidad.importacion.GastoImpoEntity"/>
+        
+        <mapping class="co.com.codesoftware.persistencia.entidad.contabilidad.ClaseEntity"/>
     </session-factory>
 </hibernate-configuration>
