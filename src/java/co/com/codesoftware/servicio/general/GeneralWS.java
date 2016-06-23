@@ -170,7 +170,7 @@ public class GeneralWS {
         String rta = "";
         try {
             RemisionLogica objLogica = new RemisionLogica();
-            rta = objLogica.realizarFacturaXRemision(idRemision, idTius, idRsfa, diasPlazo,retefuente);
+            rta = objLogica.realizarFacturaXRemision(idRemision, idTius, idRsfa, diasPlazo, retefuente);
         } catch (Exception e) {
             return null;
         }
@@ -293,6 +293,24 @@ public class GeneralWS {
     }
 
     /**
+     * metodo que consulta las ciudades por departamento
+     * @param idDepto
+     * @return 
+     */
+    @WebMethod(operationName = "obtenerCiudadesXDepartamento")
+    @WebResult(name = "listaCiudades")
+    public List<CiudadEntity> obtenerCiudadesXDepto(@WebParam(name = "idDepto") Integer idDepto) {
+        List<CiudadEntity> rta = null;
+        try (UbicacionLogica objLogica = new UbicacionLogica()) {
+            rta = objLogica.obtieneCiudadXDepto(idDepto);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+
+    }
+
+    /**
      * Funcion con la cual actualizo un parametro del sistema
      *
      * @param clave
@@ -322,7 +340,7 @@ public class GeneralWS {
      */
     @WebMethod(operationName = "obtenerPrincPago")
     @WebResult(name = "pagoRemision")
-    public PagoRemisionEntity obtenerPrincPago(@XmlElement(required = true) @WebParam(name = "idRemision") Integer idRemision, 
+    public PagoRemisionEntity obtenerPrincPago(@XmlElement(required = true) @WebParam(name = "idRemision") Integer idRemision,
             @XmlElement(required = true) @WebParam(name = "idFactura") Integer idFactura) {
         PagoRemisionEntity rta = null;
         try (PagoRemisionLogica objLogica = new PagoRemisionLogica()) {
@@ -332,16 +350,18 @@ public class GeneralWS {
         }
         return rta;
     }
+
     /**
      * Funcion con la cual obtiene el detalle de los pagos
+     *
      * @param idPago
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "obtenerDetallePagos")
     @WebResult(name = "detallePago")
-    public List<DetallePagoRemision> obtenerDetallePagos(@XmlElement(required = true) @WebParam(name = "idPago")Integer idPago){
+    public List<DetallePagoRemision> obtenerDetallePagos(@XmlElement(required = true) @WebParam(name = "idPago") Integer idPago) {
         List<DetallePagoRemision> rta = null;
-        try(PagoRemisionLogica objLogica = new PagoRemisionLogica()) {
+        try (PagoRemisionLogica objLogica = new PagoRemisionLogica()) {
             rta = objLogica.obtieneDetallePago(idPago);
         } catch (Exception e) {
             e.printStackTrace();

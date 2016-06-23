@@ -99,7 +99,7 @@ public class AdministrationEndPoint {
         } catch (Exception e) {
             respuesta.setCodigoRespuesta(0);
             respuesta.setDescripcionRespuesta(e.toString());
-            respuesta.setMensajeRespuesta("ERROR");
+            respuesta.setMensajeRespuesta(e.toString());
             e.printStackTrace();
         }
         return respuesta;

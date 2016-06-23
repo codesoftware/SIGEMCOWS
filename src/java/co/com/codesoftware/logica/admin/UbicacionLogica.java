@@ -12,13 +12,14 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Restrictions;
 
 /**
  *
  * @author ACER
  */
 public class UbicacionLogica implements AutoCloseable {
-    
+
     private Session sesion;
     private Transaction tx;
 
@@ -39,10 +40,9 @@ public class UbicacionLogica implements AutoCloseable {
         }
         return rta;
     }
-    
+
     /**
-     * Funcion con la cual obtengo la ciudad parametrizada en el
-     * sistema
+     * Funcion con la cual obtengo la ciudad parametrizada en el sistema
      *
      * @return
      */
@@ -57,7 +57,26 @@ public class UbicacionLogica implements AutoCloseable {
         }
         return rta;
     }
-    
+
+    /**
+     * metodo para consultar las ciudades por departamento
+     *
+     * @param idDepto
+     * @return
+     */
+    public List<CiudadEntity> obtieneCiudadXDepto(Integer idDepto) {
+        List<CiudadEntity> rta = null;
+        try {
+            this.initOperation();
+            Criteria crit = sesion.createCriteria(CiudadEntity.class);
+            crit.add(Restrictions.eq("departamento", idDepto));
+            rta = crit.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+
     @Override
     public void close() throws Exception {
         if (tx != null) {
