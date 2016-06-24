@@ -8,6 +8,7 @@ package co.com.codesoftware.persistence.entity.administracion;
 import co.com.codesoftware.persistencia.entidad.admin.CiudadEntity;
 import co.com.codesoftware.persistencia.entidad.admin.DepartamentoEntity;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -43,6 +44,12 @@ public class ProveedoresEntity implements Serializable {
     private String celular;
     @Column(name = "prov_estado")
     private String estado;
+    @Column(name = "prov_dver")
+    private String dverificacion;
+    @Column(name = "prov_dcre")
+    private Integer dcredito;
+     @Column(name = "prov_rete")
+    private BigDecimal porcRetencion;
     @Column(name = "prov_corre")
     private String correo;
     @JoinColumn(name = "prov_retde")
@@ -168,9 +175,32 @@ public class ProveedoresEntity implements Serializable {
     public void setMunicipio(DepartamentoEntity municipio) {
         this.municipio = municipio;
     }
-    
-    
-    
+
+    public String getDverificacion() {
+        return dverificacion;
+    }
+
+    public void setDverificacion(String dverificacion) {
+        this.dverificacion = dverificacion;
+    }
+
+    public Integer getDcredito() {
+        return dcredito;
+    }
+
+    public void setDcredito(Integer dcredito) {
+        this.dcredito = dcredito;
+    }
+
+    public BigDecimal getPorcRetencion() {
+        return porcRetencion;
+    }
+
+    public void setPorcRetencion(BigDecimal porcRetencion) {
+        this.porcRetencion = porcRetencion;
+    }
+
+
     
 
 }
