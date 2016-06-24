@@ -35,5 +35,7 @@
         <mapping class="co.com.codesoftware.persistence.entity.productos.ImagenesFacCompraEntity"/>   
         <mapping class="co.com.codesoftware.persistence.entity.productos.KardexProductoEntity"/>
         <mapping class="co.com.codesoftware.persistence.entity.productos.MovimientoInventarioEntity"/>
+        <mapping class="co.com.codesoftware.persistencia.entidad.facturacion.FacturaCompraTmpEntity"/>
+        <mapping class="co.com.codesoftware.persistencia.entidad.facturacion.ProdFacCompraTmpEntity"/>
     </session-factory>
 </hibernate-configuration>
