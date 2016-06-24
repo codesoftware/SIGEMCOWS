@@ -15,6 +15,7 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
@@ -124,6 +125,27 @@ public class PucLogica implements AutoCloseable {
             this.initOperation();
             Criteria crit = this.sesion.createCriteria(AuxContableEntity.class);
             crit.add(Restrictions.eq("idSbcu", idSubCuenta));
+            crit.addOrder(Order.asc("id"));
+            rta = crit.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+    
+    /**
+     * Funcion con la cual obtengo los auxiliares contables por medio de algun criterio
+     * @param criterio
+     * @return 
+     */
+    public List<AuxContableEntity> obtenerAuxiliaresConXCriterio(String criterio){
+        List<AuxContableEntity> rta = null;
+        try {
+            this.initOperation();
+            Criteria crit = this.sesion.createCriteria(AuxContableEntity.class);
+            Criterion uno = Restrictions.like("codigo", "%"+criterio+"%");
+            Criterion dos = Restrictions.like("nombre", "%"+criterio+"%");
+            crit.add(Restrictions.or(uno,dos));
             crit.addOrder(Order.asc("id"));
             rta = crit.list();
         } catch (Exception e) {

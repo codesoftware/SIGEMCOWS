@@ -118,4 +118,21 @@ public class ContabilidadWS {
         }
         return rta;
     }
+    
+    /**
+     * Funcion con la cual obtengo todos los auxiliares contables por medio de algun criterio
+     * @param criterio
+     * @return 
+     */
+    @WebMethod(operationName = "obtenerAuxContableXCrit")
+    @WebResult(name = "listaAuxConta")
+    public List<AuxContableEntity> obtenerAuxContableXCrit(String criterio){
+        List<AuxContableEntity> rta = null;
+        try (PucLogica objLogica = new PucLogica()){
+            rta = objLogica.obtenerAuxiliaresConXCriterio(criterio);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
 }
