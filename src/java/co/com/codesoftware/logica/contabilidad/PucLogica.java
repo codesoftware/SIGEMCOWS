@@ -6,6 +6,7 @@
 package co.com.codesoftware.logica.contabilidad;
 
 import co.com.codesoftware.persistencia.HibernateUtil;
+import co.com.codesoftware.persistencia.entidad.contabilidad.AuxContableEntity;
 import co.com.codesoftware.persistencia.entidad.contabilidad.ClaseEntity;
 import co.com.codesoftware.persistencia.entidad.contabilidad.CuentaEntity;
 import co.com.codesoftware.persistencia.entidad.contabilidad.GrupoEntity;
@@ -14,6 +15,7 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 /**
@@ -90,6 +92,39 @@ public class PucLogica implements AutoCloseable {
             this.initOperation();
             Criteria crit = this.sesion.createCriteria(SubCuentaEntity.class);
             crit.add(Restrictions.eq("cuenta", idCuenta));
+            rta = crit.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+    /**
+     * Funcion con la cual inserto un auxiliar contable
+     * @return 
+     */
+    public String insertarAuxContable(AuxContableEntity objEntity){
+        String rta = "Ok";
+        try {
+            this.initOperation();
+            sesion.save(objEntity);
+        } catch (Exception e) {
+            rta = "Error " + e;
+            e.printStackTrace();
+        }
+        return rta;                
+    }
+    /**
+     * Funcion con la cual obtengo los auxiliares contables por medio de una subcuenta
+     * @param idSubCuenta
+     * @return 
+     */
+    public List<AuxContableEntity> obtenerAuxiliaresConXSubCuenta(Integer idSubCuenta){
+        List<AuxContableEntity> rta = null;
+        try {
+            this.initOperation();
+            Criteria crit = this.sesion.createCriteria(AuxContableEntity.class);
+            crit.add(Restrictions.eq("idSbcu", idSubCuenta));
+            crit.addOrder(Order.asc("id"));
             rta = crit.list();
         } catch (Exception e) {
             e.printStackTrace();

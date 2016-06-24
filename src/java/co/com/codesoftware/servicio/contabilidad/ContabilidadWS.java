@@ -6,6 +6,7 @@
 package co.com.codesoftware.servicio.contabilidad;
 
 import co.com.codesoftware.logica.contabilidad.PucLogica;
+import co.com.codesoftware.persistencia.entidad.contabilidad.AuxContableEntity;
 import co.com.codesoftware.persistencia.entidad.contabilidad.ClaseEntity;
 import co.com.codesoftware.persistencia.entidad.contabilidad.CuentaEntity;
 import co.com.codesoftware.persistencia.entidad.contabilidad.GrupoEntity;
@@ -80,6 +81,38 @@ public class ContabilidadWS {
         List<SubCuentaEntity> rta = null;
         try(PucLogica objLogica = new PucLogica()) {
             rta = objLogica.obtieneSubCuenteXCuenta(idCuenta);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+    /**
+     * Funcion con la cual inserto auxiliares contables
+     * @param objEntity
+     * @return 
+     */
+    @WebMethod(operationName = "insertaAuxiliarCont")
+    @WebResult(name = "rta")
+    public String insertaAuxiliarCont(AuxContableEntity objEntity){
+        String rta = "";
+        try (PucLogica objLogica = new PucLogica()){
+            rta = objLogica.insertarAuxContable(objEntity);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+    /**
+     * Funcion con la cual obtengo todos los auxiliares contables
+     * @param idSubCuenta
+     * @return 
+     */
+    @WebMethod(operationName = "obtenerAuxContableXSubCuenta")
+    @WebResult(name = "listaAuxConta")
+    public List<AuxContableEntity> obtenerAuxContableXSubCuenta(Integer idSubCuenta){
+        List<AuxContableEntity> rta = null;
+        try (PucLogica objLogica = new PucLogica()){
+            rta = objLogica.obtenerAuxiliaresConXSubCuenta(idSubCuenta);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -79,6 +79,8 @@
         <mapping class="co.com.codesoftware.persistencia.entidad.contabilidad.SubCuentaEntity"/>
         <mapping class="co.com.codesoftware.persistencia.entidad.contabilidad.MoviContableEntity"/>
         <mapping class="co.com.codesoftware.persistencia.entidad.contabilidad.TipoDocumentoEntity"/>
+        <mapping class="co.com.codesoftware.persistencia.entidad.contabilidad.AuxContableEntity"/>
+        
         <mapping class="co.com.codesoftware.persistencia.entidad.facturacion.FacturaCompraTmpEntity"/>
         <mapping class="co.com.codesoftware.persistencia.entidad.facturacion.ProdFacCompraTmpEntity"/>
     </session-factory>
