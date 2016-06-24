@@ -6,6 +6,7 @@
 package co.com.codesoftware.persistencia.entidad.facturacion;
 
 import co.com.codesoftware.persistence.entity.administracion.ProveedoresEntity;
+import co.com.codesoftware.persistence.entity.administracion.RespuestaEntity;
 import co.com.codesoftware.persistencia.entidad.admin.SedeEntity;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -25,7 +26,7 @@ import javax.persistence.Temporal;
  */
 @Entity
 @Table(name = "fa_tfacom_tmp")
-public class FacturaCompraTmpEntity implements Serializable {
+public class FacturaCompraTmpEntity extends RespuestaEntity implements Serializable {
 
     @Id
     @Column(name = "facom_tmp_facom")
@@ -183,7 +184,5 @@ public class FacturaCompraTmpEntity implements Serializable {
     public void setPlazo(Integer plazo) {
         this.plazo = plazo;
     }
-    
-    
 
 }
