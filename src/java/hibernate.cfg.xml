@@ -38,11 +38,7 @@
         <mapping class="co.com.codesoftware.persistencia.entidad.facturacion.TemporalProdTable"/>
         <mapping class="co.com.codesoftware.persistencia.entidad.facturacion.RemisionEntity"/>
         <mapping class="co.com.codesoftware.persistencia.entidad.facturacion.DetProdRemision"/>
-        
-        <mapping class="co.com.codesoftware.persistencia.entidad.contabilidad.SubCuentaEntity"/>
-        <mapping class="co.com.codesoftware.persistencia.entidad.contabilidad.MoviContableEntity"/>
-        <mapping class="co.com.codesoftware.persistencia.entidad.contabilidad.TipoDocumentoEntity"/>
-        
+                
         <mapping class="co.com.codesoftware.persistencia.entidad.pedido.PedidoEntity"/>
         <mapping class="co.com.codesoftware.persistencia.entidad.pedido.PedidoProductoEntity"/>
         <!-- Entidades de NSIGEMCO -->
@@ -78,5 +74,10 @@
         <mapping class="co.com.codesoftware.persistencia.entidad.importacion.GastoImpoEntity"/>
         
         <mapping class="co.com.codesoftware.persistencia.entidad.contabilidad.ClaseEntity"/>
+        <mapping class="co.com.codesoftware.persistencia.entidad.contabilidad.GrupoEntity"/>
+        <mapping class="co.com.codesoftware.persistencia.entidad.contabilidad.CuentaEntity"/>
+        <mapping class="co.com.codesoftware.persistencia.entidad.contabilidad.SubCuentaEntity"/>
+        <mapping class="co.com.codesoftware.persistencia.entidad.contabilidad.MoviContableEntity"/>
+        <mapping class="co.com.codesoftware.persistencia.entidad.contabilidad.TipoDocumentoEntity"/>
     </session-factory>
 </hibernate-configuration>
