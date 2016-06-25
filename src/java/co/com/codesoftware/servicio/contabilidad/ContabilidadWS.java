@@ -135,4 +135,19 @@ public class ContabilidadWS {
         }
         return rta;
     }
+    /**
+     * Funcion con la cual obtengo un auxiliar por su id
+     * @return 
+     */
+    @WebMethod(operationName = "obtenerAuxContableXId")
+    @WebResult(name = "auxiliarContable")
+    public AuxContableEntity obtenerAuxContableXId(Integer idAux){
+        AuxContableEntity aux = null;
+        try (PucLogica objLogica = new PucLogica()){
+            aux = objLogica.obtenerAuxiliarContXId(idAux);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return aux;
+    }
 }

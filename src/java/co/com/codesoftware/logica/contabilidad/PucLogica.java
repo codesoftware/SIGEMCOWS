@@ -132,6 +132,24 @@ public class PucLogica implements AutoCloseable {
         }
         return rta;
     }
+    /**
+     * Funcion con la cual obtengo el auxiliar contable
+     * @param idAuxCont
+     * @return 
+     */
+    public AuxContableEntity obtenerAuxiliarContXId(Integer idAuxCont){
+        AuxContableEntity rta = null;
+        try {
+            this.initOperation();
+            Criteria crit = this.sesion.createCriteria(AuxContableEntity.class);
+            crit.add(Restrictions.eq("id", idAuxCont));
+            crit.addOrder(Order.asc("id"));
+            rta = (AuxContableEntity) crit.uniqueResult();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
     
     /**
      * Funcion con la cual obtengo los auxiliares contables por medio de algun criterio

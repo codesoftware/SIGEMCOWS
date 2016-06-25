@@ -194,6 +194,20 @@ public class ImportacionLogica implements AutoCloseable {
         return rta;
     }
     /**
+     * Funcion con la cual obtiene los gastos de una importacion
+     * @param idImpo
+     * @return 
+     */
+    public List<GastoImpoEntity> obtenerGastos(Integer idImpo){
+        List<GastoImpoEntity> rta = null;
+        try (ImportacionLogica objLogica = new ImportacionLogica()){
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+    /**
      * Funcion con la cual borro todos los productos de una importacion
      * @return 
      */
