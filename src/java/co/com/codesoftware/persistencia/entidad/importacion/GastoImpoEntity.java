@@ -22,7 +22,8 @@ import javax.persistence.Temporal;
  */
 @Entity
 @Table(name = "im_tgast")
-public class GastoImpoEntity implements Serializable{
+public class GastoImpoEntity implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "gast_gast")
@@ -41,8 +42,6 @@ public class GastoImpoEntity implements Serializable{
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     @Column(name = "gast_fechaRegi")
     private Date fechaRegistro;
-    @Column(name = "gast_auco")
-    private Integer idAuxi;
 
     public Integer getId() {
         return id;
@@ -99,12 +98,4 @@ public class GastoImpoEntity implements Serializable{
     public void setFechaRegistro(Date fechaRegistro) {
         this.fechaRegistro = fechaRegistro;
     }
-
-    public Integer getIdAuxi() {
-        return idAuxi;
-    }
-
-    public void setIdAuxi(Integer idAuxi) {
-        this.idAuxi = idAuxi;
-    }   
 }
