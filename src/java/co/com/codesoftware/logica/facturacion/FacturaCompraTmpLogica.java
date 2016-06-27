@@ -9,6 +9,7 @@ import co.com.codesoftware.persistencia.HibernateUtil;
 import co.com.codesoftware.persistencia.entidad.facturacion.FacturaCompraTmpEntity;
 import co.com.codesoftware.persistencia.entidad.facturacion.ProdFacCompraTmpEntity;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -68,15 +69,27 @@ public class FacturaCompraTmpLogica implements AutoCloseable {
      * metodo que consulta las facturas de compra temporales por estado
      *
      * @param estado
+     * @param idSede
+     * @param fechaIncial
+     * @param fechaFinal
      * @return
      */
-    public List<FacturaCompraTmpEntity> consultaFacturaTemporalXEstado(String estado) {
+    public List<FacturaCompraTmpEntity> consultaFacturaTemporalXEstado(String estado, Integer idSede, Date fechaIncial, Date fechaFinal) {
         List<FacturaCompraTmpEntity> rta = new ArrayList<>();
         try {
             this.initOperation();
             Criteria crit = sesion.createCriteria(FacturaCompraTmpEntity.class);
             if (!"".equalsIgnoreCase(estado)) {
                 crit.add(Restrictions.eq("estado", estado));
+            }
+            if (fechaIncial != null && fechaFinal != null) {
+                fechaFinal.setHours(23);
+                fechaFinal.setMinutes(59);
+                fechaFinal.setSeconds(59);
+                crit.add(Restrictions.between("fechaFacCompra", fechaIncial, fechaFinal));
+            }
+            if (idSede != null && idSede != 0) {
+                crit.createAlias("sede", "s").add(Restrictions.eq("s.id", idSede));
             }
             rta = crit.list();
 

@@ -305,13 +305,16 @@ public class FacturacionWS {
      * metodo que consulta las facturas temporales de compra por estado
      *
      * @param estado
+     * @param fechaInicial
+     * @param fechaFinal
+     * @param IdSede
      * @return
      */
     @WebMethod(operationName = "obtenerFacturasCompraTmp")
-    public List<FacturaCompraTmpEntity> obtenerFacturasCompraTmp(@WebParam(name = "estado") String estado) {
+    public List<FacturaCompraTmpEntity> obtenerFacturasCompraTmp(@WebParam(name = "estado") String estado,@WebParam(name = "fInicial")  Date fechaInicial,@WebParam(name = "fFinal")  Date fechaFinal, @WebParam(name = "idSede")  Integer IdSede) {
         List<FacturaCompraTmpEntity> respuesta = new ArrayList<>();
         try (FacturaCompraTmpLogica logica = new FacturaCompraTmpLogica()) {
-            respuesta = logica.consultaFacturaTemporalXEstado(estado);
+            respuesta = logica.consultaFacturaTemporalXEstado(estado,IdSede,fechaInicial,fechaFinal);
         } catch (Exception e) {
             e.printStackTrace();
         }
