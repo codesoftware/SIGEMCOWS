@@ -161,8 +161,8 @@ public class PucLogica implements AutoCloseable {
         try {
             this.initOperation();
             Criteria crit = this.sesion.createCriteria(AuxContableEntity.class);
-            Criterion uno = Restrictions.like("codigo", "%"+criterio+"%");
-            Criterion dos = Restrictions.like("nombre", "%"+criterio+"%");
+            Criterion uno = Restrictions.like("codigo", "%"+criterio+"%").ignoreCase();
+            Criterion dos = Restrictions.like("nombre", "%"+criterio+"%").ignoreCase();
             crit.add(Restrictions.or(uno,dos));
             crit.addOrder(Order.asc("id"));
             rta = crit.list();

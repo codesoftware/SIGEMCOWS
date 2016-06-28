@@ -7,6 +7,7 @@ package co.com.codesoftware.logica.importacion;
 
 import co.com.codesoftware.persistencia.HibernateUtil;
 import co.com.codesoftware.persistencia.ReadFunction;
+import co.com.codesoftware.persistencia.entidad.importacion.DetalleGastoEntity;
 import co.com.codesoftware.persistencia.entidad.importacion.GastoImpoEntity;
 import co.com.codesoftware.persistencia.entidad.importacion.ImportacionEntity;
 import co.com.codesoftware.persistencia.entidad.importacion.ProductoImportacionEntity;
@@ -194,14 +195,17 @@ public class ImportacionLogica implements AutoCloseable {
         return rta;
     }
     /**
-     * Funcion con la cual obtiene los gastos de una importacion
-     * @param idImpo
+     * Funcion con la cual inserto un detalle al gasto
      * @return 
      */
-    public List<GastoImpoEntity> obtenerGastos(Integer idImpo){
-        List<GastoImpoEntity> rta = null;
-        try (ImportacionLogica objLogica = new ImportacionLogica()){
-            
+    public String insertaDetalleGasto(DetalleGastoEntity gasto){
+        String rta = "";
+        try {
+            this.initOperation();
+             this.initOperation();
+            gasto.setFechaRegi(new Date());
+            this.sesion.save(gasto);
+            rta = "Ok";
         } catch (Exception e) {
             e.printStackTrace();
         }

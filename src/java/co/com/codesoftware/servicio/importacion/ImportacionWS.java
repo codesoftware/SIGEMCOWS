@@ -7,6 +7,7 @@ package co.com.codesoftware.servicio.importacion;
 
 import co.com.codesoftware.logica.importacion.ImportacionLogica;
 import co.com.codesoftware.logica.importacion.ProveedorIntLogica;
+import co.com.codesoftware.persistencia.entidad.importacion.DetalleGastoEntity;
 import co.com.codesoftware.persistencia.entidad.importacion.GastoImpoEntity;
 import co.com.codesoftware.persistencia.entidad.importacion.ImportacionEntity;
 import co.com.codesoftware.persistencia.entidad.importacion.ProductoImportacionEntity;
@@ -187,6 +188,20 @@ public class ImportacionWS {
         } catch (Exception e) {
             e.printStackTrace();
             rta = "Error " + e;
+        }
+        return rta;
+    }
+    /**
+     * Funcion con la cual inserta un detalle del gasto
+     * @param detalle
+     * @return 
+     */
+    public String insertarDetalleGasto(@WebParam(name = "detalle")DetalleGastoEntity detalle){
+        String rta = "";
+        try(ImportacionLogica objLogica = new ImportacionLogica()) {
+            rta = objLogica.insertaDetalleGasto(detalle);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return rta;
     }
