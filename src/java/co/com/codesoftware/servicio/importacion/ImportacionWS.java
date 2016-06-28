@@ -205,5 +205,19 @@ public class ImportacionWS {
         }
         return rta;
     }
+    /**
+     * Funcion con la cual obtengo el detalle de un gasto
+     * @param idGasto
+     * @return 
+     */
+    public List<DetalleGastoEntity>  obtenerDetalleGasto(@WebParam(name = "idGasto")Integer idGasto){
+        List<DetalleGastoEntity> rta = null; 
+        try(ImportacionLogica objLogica = new ImportacionLogica()) {
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
     
 }

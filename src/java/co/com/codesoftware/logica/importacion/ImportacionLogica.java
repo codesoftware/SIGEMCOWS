@@ -44,7 +44,7 @@ public class ImportacionLogica implements AutoCloseable {
             objEntity.setFechaCrea(new Date());
             objEntity.setVlrTotal(new BigDecimal(0));
             objEntity.setVlrImpuestos(new BigDecimal(0));
-            objEntity.setEstado("A");
+            objEntity.setEstado("C");
             this.sesion.save(objEntity);
             rta = "Ok";
         } catch (Exception e) {
@@ -211,6 +211,14 @@ public class ImportacionLogica implements AutoCloseable {
         }
         return rta;
     }
+    /**
+     * Funcion con la cual obtengo el detalle de un gasto basandome en su id
+     * @return 
+     */
+    public List<DetalleGastoEntity> obtenerDetalleGasto(){
+        List<DetalleGastoEntity>  rta = null;
+        return rta;
+    }    
     /**
      * Funcion con la cual borro todos los productos de una importacion
      * @return 
