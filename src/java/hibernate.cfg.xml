@@ -72,6 +72,7 @@
         <mapping class="co.com.codesoftware.persistencia.entidad.importacion.ProductoImportacionEntity"/>
         <mapping class="co.com.codesoftware.persistencia.entidad.importacion.ImportacionEntity"/>
         <mapping class="co.com.codesoftware.persistencia.entidad.importacion.GastoImpoEntity"/>
+        <mapping class="co.com.codesoftware.persistencia.entidad.importacion.DetalleGastoEntity"/>
         
         <mapping class="co.com.codesoftware.persistencia.entidad.contabilidad.ClaseEntity"/>
         <mapping class="co.com.codesoftware.persistencia.entidad.contabilidad.GrupoEntity"/>
@@ -80,7 +81,6 @@
         <mapping class="co.com.codesoftware.persistencia.entidad.contabilidad.MoviContableEntity"/>
         <mapping class="co.com.codesoftware.persistencia.entidad.contabilidad.TipoDocumentoEntity"/>
         <mapping class="co.com.codesoftware.persistencia.entidad.contabilidad.AuxContableEntity"/>
-        <mapping class="co.com.codesoftware.persistencia.entidad.contabilidad.DetalleGastoEntity"/>
         
         <mapping class="co.com.codesoftware.persistencia.entidad.facturacion.FacturaCompraTmpEntity"/>
         <mapping class="co.com.codesoftware.persistencia.entidad.facturacion.ProdFacCompraTmpEntity"/>
