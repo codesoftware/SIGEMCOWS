@@ -215,8 +215,16 @@ public class ImportacionLogica implements AutoCloseable {
      * Funcion con la cual obtengo el detalle de un gasto basandome en su id
      * @return 
      */
-    public List<DetalleGastoEntity> obtenerDetalleGasto(){
+    public List<DetalleGastoEntity> obtenerDetalleGasto(Integer idGasto){
         List<DetalleGastoEntity>  rta = null;
+        try {
+            this.initOperation();
+            Criteria crit = this.sesion.createCriteria(DetalleGastoEntity.class);
+            crit.add(Restrictions.eq("idGasto", idGasto));
+            rta = crit.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return rta;
     }    
     /**

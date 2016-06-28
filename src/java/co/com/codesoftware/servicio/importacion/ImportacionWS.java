@@ -213,7 +213,7 @@ public class ImportacionWS {
     public List<DetalleGastoEntity>  obtenerDetalleGasto(@WebParam(name = "idGasto")Integer idGasto){
         List<DetalleGastoEntity> rta = null; 
         try(ImportacionLogica objLogica = new ImportacionLogica()) {
-            
+            rta = objLogica.obtenerDetalleGasto(idGasto);
         } catch (Exception e) {
             e.printStackTrace();
         }
