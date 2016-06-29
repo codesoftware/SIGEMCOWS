@@ -311,10 +311,10 @@ public class FacturacionWS {
      * @return
      */
     @WebMethod(operationName = "obtenerFacturasCompraTmp")
-    public List<FacturaCompraTmpEntity> obtenerFacturasCompraTmp(@WebParam(name = "estado") String estado,@WebParam(name = "fInicial")  Date fechaInicial,@WebParam(name = "fFinal")  Date fechaFinal, @WebParam(name = "idSede")  Integer IdSede) {
+    public List<FacturaCompraTmpEntity> obtenerFacturasCompraTmp(@WebParam(name = "estado") String estado, @WebParam(name = "fInicial") Date fechaInicial, @WebParam(name = "fFinal") Date fechaFinal, @WebParam(name = "idSede") Integer IdSede) {
         List<FacturaCompraTmpEntity> respuesta = new ArrayList<>();
         try (FacturaCompraTmpLogica logica = new FacturaCompraTmpLogica()) {
-            respuesta = logica.consultaFacturaTemporalXEstado(estado,IdSede,fechaInicial,fechaFinal);
+            respuesta = logica.consultaFacturaTemporalXEstado(estado, IdSede, fechaInicial, fechaFinal);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -339,7 +339,8 @@ public class FacturacionWS {
         return respuesta;
     }
 
-    /**metodo que consulta los productos por factura de compra
+    /**
+     * metodo que consulta los productos por factura de compra
      *
      * @param idFactCompraTmp
      * @return
@@ -347,27 +348,50 @@ public class FacturacionWS {
     @WebMethod(operationName = "obtenerProdFacturasCompraTmp")
     public List<ProdFacCompraTmpEntity> obtenerProdFacturasCompraTmp(@WebParam(name = "idFactCompraTmp") Integer idFactCompraTmp) {
         List<ProdFacCompraTmpEntity> respuesta = new ArrayList<>();
-        try (FacturaCompraTmpLogica logica = new FacturaCompraTmpLogica()){
+        try (FacturaCompraTmpLogica logica = new FacturaCompraTmpLogica()) {
             respuesta = logica.consultaProductos(idFactCompraTmp);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return respuesta;
     }
+
     /**
      * metodo que consulta las factura temporal de compra por id
+     *
      * @param idFactura
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "obtenerFactTempCompraXId")
-    public FacturaCompraTmpEntity obtenerFactTempCompraXId(@WebParam(name = "idFacturaCompra") Integer idFactura){
+    public FacturaCompraTmpEntity obtenerFactTempCompraXId(@WebParam(name = "idFacturaCompra") Integer idFactura) {
         FacturaCompraTmpEntity respuesta = new FacturaCompraTmpEntity();
-        try(FacturaCompraTmpLogica logica = new FacturaCompraTmpLogica()) {
+        try (FacturaCompraTmpLogica logica = new FacturaCompraTmpLogica()) {
             respuesta = logica.consultaFacturaTemporal(idFactura);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return respuesta;
-        
+
     }
+
+    /**
+     * funcion que llama el procedimiento para verificar y ejecutar la insercion
+     * de la factura de compra
+     *
+     * @param idFactura
+     * @return
+     */
+    @WebMethod(operationName = "llamaProcedimientoFacturaTMP")
+    public String llamaProcedimientoFacturaTMP(@WebParam(name = "idFacturaCompra") Integer idFactura) {
+        String rta = "";
+        try {
+            FacturaCompraTmpLogica logica = new FacturaCompraTmpLogica();
+            rta = logica.llamaProcedimientoFacturaCompra(idFactura);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+
+    }
+
 }

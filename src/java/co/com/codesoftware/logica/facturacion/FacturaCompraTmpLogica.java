@@ -6,8 +6,10 @@
 package co.com.codesoftware.logica.facturacion;
 
 import co.com.codesoftware.persistencia.HibernateUtil;
+import co.com.codesoftware.persistencia.ReadFunction;
 import co.com.codesoftware.persistencia.entidad.facturacion.FacturaCompraTmpEntity;
 import co.com.codesoftware.persistencia.entidad.facturacion.ProdFacCompraTmpEntity;
+import co.com.codesoftware.persistencia.utilities.DataType;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -179,6 +181,34 @@ public class FacturaCompraTmpLogica implements AutoCloseable {
         }
         return rta;
 
+    }
+
+    /**
+     * funcion que llama el procedimiento 
+     * @param idFacturaTmp
+     * @return 
+     */
+            public String llamaProcedimientoFacturaCompra(Integer idFacturaTmp) {
+        String rta = "";
+        try (ReadFunction rf = new ReadFunction()){
+
+         List<String> response = new ArrayList<>();
+            rf.setNombreFuncion("FA_REGISTRA_FACT_COMPRA_TMP");
+            rf.setNumParam(1);
+            rf.addParametro(idFacturaTmp.toString(), DataType.INT);
+            boolean valida = rf.callFunctionJdbc();
+            if (valida) {
+                response = rf.getRespuestaPg();
+                rta = response.get(0);
+            } else {
+                response = rf.getRespuestaPg();
+                rta = "Error al realizar el llamado de FA_REGISTRA_FACT_COMPRA ";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            rta = "Error " + e;
+        }
+        return rta;
     }
 
     /**

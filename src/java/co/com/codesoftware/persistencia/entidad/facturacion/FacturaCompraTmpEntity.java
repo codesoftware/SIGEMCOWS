@@ -64,6 +64,8 @@ public class FacturaCompraTmpEntity extends RespuestaEntity implements Serializa
     private String ajusteFactura;
     @Column(name = "facom_tmp_plaz")
     private Integer plazo;
+    @Column(name = "facom_tmp_porc")
+    private BigDecimal porcRetencion;
 
     public Integer getId() {
         return id;
@@ -184,5 +186,15 @@ public class FacturaCompraTmpEntity extends RespuestaEntity implements Serializa
     public void setPlazo(Integer plazo) {
         this.plazo = plazo;
     }
+
+    public BigDecimal getPorcRetencion() {
+        return porcRetencion;
+    }
+
+    public void setPorcRetencion(BigDecimal porcRetencion) {
+        this.porcRetencion = porcRetencion;
+    }
+    
+    
 
 }
