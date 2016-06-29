@@ -5,14 +5,18 @@
  */
 package co.com.codesoftware.persistencia.entidad.importacion;
 
+import co.com.codesoftware.persistencia.entidad.contabilidad.AuxContableEntity;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 
@@ -39,9 +43,10 @@ public class DetalleGastoEntity implements Serializable {
     @Column(name = "dgas_fechaRegi")
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date fechaRegi;
-    @Column(name = "dgas_auco")
-    private Integer idAuxconta;
-
+    @JoinColumn(name = "dgas_auco")
+    @OneToOne(fetch = FetchType.LAZY)
+    private AuxContableEntity idAuxconta;
+    
     public Integer getId() {
         return id;
     }
@@ -90,11 +95,12 @@ public class DetalleGastoEntity implements Serializable {
         this.fechaRegi = fechaRegi;
     }
 
-    public Integer getIdAuxconta() {
+    public AuxContableEntity getIdAuxconta() {
         return idAuxconta;
     }
 
-    public void setIdAuxconta(Integer idAuxconta) {
+    public void setIdAuxconta(AuxContableEntity idAuxconta) {
         this.idAuxconta = idAuxconta;
     }
+
 }

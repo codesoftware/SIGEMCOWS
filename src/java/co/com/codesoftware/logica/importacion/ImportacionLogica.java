@@ -221,6 +221,7 @@ public class ImportacionLogica implements AutoCloseable {
             this.initOperation();
             Criteria crit = this.sesion.createCriteria(DetalleGastoEntity.class);
             crit.add(Restrictions.eq("idGasto", idGasto));
+            crit.setFetchMode("idAuxconta", FetchMode.JOIN);
             rta = crit.list();
         } catch (Exception e) {
             e.printStackTrace();
