@@ -32,10 +32,12 @@ public class ImportacionLogica implements AutoCloseable {
 
     private Session sesion;
     private Transaction tx;
+
     /**
      * Funcion con la cual inserto una importacion
+     *
      * @param objEntity
-     * @return 
+     * @return
      */
     public String insertaImportacion(ImportacionEntity objEntity) {
         String rta = "";
@@ -53,12 +55,14 @@ public class ImportacionLogica implements AutoCloseable {
         }
         return rta;
     }
+
     /**
      * Funcion con la cual inserto un gasto a una importacion
+     *
      * @param gasto
-     * @return 
+     * @return
      */
-    public String insertaGastoImportacion(GastoImpoEntity gasto){
+    public String insertaGastoImportacion(GastoImpoEntity gasto) {
         String rta = "";
         try {
             this.initOperation();
@@ -71,13 +75,15 @@ public class ImportacionLogica implements AutoCloseable {
         }
         return rta;
     }
+
     /**
      * Funcion con la cual obtengo los gastos de una importacion
-     * @return 
+     *
+     * @return
      */
-    public List<GastoImpoEntity> obtenerGastosImportacion(Integer idImpo){
+    public List<GastoImpoEntity> obtenerGastosImportacion(Integer idImpo) {
         List<GastoImpoEntity> rta = null;
-        try{
+        try {
             this.initOperation();
             Criteria crit = this.sesion.createCriteria(GastoImpoEntity.class);
             crit.add(Restrictions.eq("idImpo", idImpo));
@@ -147,12 +153,14 @@ public class ImportacionLogica implements AutoCloseable {
         }
         return rta;
     }
+
     /**
      * Funcion con la cual convierto los productos de dolares a pesos
+     *
      * @param idImpo
      * @param trm
      * @param tazaProm
-     * @return 
+     * @return
      */
     public String insertarTazasCambio(Integer idImpo,
             BigDecimal trm,
@@ -194,15 +202,17 @@ public class ImportacionLogica implements AutoCloseable {
         }
         return rta;
     }
+
     /**
      * Funcion con la cual inserto un detalle al gasto
-     * @return 
+     *
+     * @return
      */
-    public String insertaDetalleGasto(DetalleGastoEntity gasto){
+    public String insertaDetalleGasto(DetalleGastoEntity gasto) {
         String rta = "";
         try {
             this.initOperation();
-             this.initOperation();
+            this.initOperation();
             gasto.setFechaRegi(new Date());
             this.sesion.save(gasto);
             rta = "Ok";
@@ -211,12 +221,14 @@ public class ImportacionLogica implements AutoCloseable {
         }
         return rta;
     }
+
     /**
      * Funcion con la cual obtengo el detalle de un gasto basandome en su id
-     * @return 
+     *
+     * @return
      */
-    public List<DetalleGastoEntity> obtenerDetalleGasto(Integer idGasto){
-        List<DetalleGastoEntity>  rta = null;
+    public List<DetalleGastoEntity> obtenerDetalleGasto(Integer idGasto) {
+        List<DetalleGastoEntity> rta = null;
         try {
             this.initOperation();
             Criteria crit = this.sesion.createCriteria(DetalleGastoEntity.class);
@@ -227,21 +239,49 @@ public class ImportacionLogica implements AutoCloseable {
             e.printStackTrace();
         }
         return rta;
-    }    
+    }
+
+    /**
+     * Funcion con la cual llamo al proceso que realizara el proceso de
+     * importacion dentro del sistema
+     *
+     * @param idTius
+     * @param idImpo
+     * @return
+     */
+    public String ejecutaProcesoImportacion(Integer idTius, Integer idImpo) {
+        String rta = "";
+        List<String> response = new ArrayList<>();
+        try (ReadFunction rf = new ReadFunction()) {
+            rf.setNombreFuncion("IM_FEJECUTAIMPORTACION");
+            rf.setNumParam(2);
+            rf.addParametro("" + idTius, DataType.INT);
+            rf.addParametro("" + idImpo, DataType.INT);
+            rf.callFunctionJdbc();
+            response = rf.getRespuestaPg();
+            rta = response.get(0);
+        } catch (Exception e) {
+            e.printStackTrace();
+            rta = "Error de ejecucion del proceso " + e;
+        }
+        return rta;
+    }
+
     /**
      * Funcion con la cual borro todos los productos de una importacion
-     * @return 
+     *
+     * @return
      */
-    public String borrarProductosImportacion(Integer idImpo){
+    public String borrarProductosImportacion(Integer idImpo) {
         String rta = "";
         try {
             this.initOperation();
             Query query = this.sesion.createQuery("delete ProductoImportacionEntity where idImpo = :idImpo");
             query.setParameter("idImpo", idImpo);
             int result = query.executeUpdate();
-            if(result>0){
-                rta = "Ok Eliminados "+ result + " de la importacion";
-            }else{
+            if (result > 0) {
+                rta = "Ok Eliminados " + result + " de la importacion";
+            } else {
                 rta = "Error al eliminar los productos ";
             }
         } catch (Exception e) {
@@ -249,6 +289,7 @@ public class ImportacionLogica implements AutoCloseable {
         }
         return rta;
     }
+
     /**
      * metodo que inicia la sesion de base de datos
      */

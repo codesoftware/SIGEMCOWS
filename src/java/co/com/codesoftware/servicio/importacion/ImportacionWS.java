@@ -114,32 +114,37 @@ public class ImportacionWS {
             rta = objogica.insertarProductoImportacion(idImpo, codExterno, cantidad, precio);
         } catch (Exception e) {
             e.printStackTrace();
-            rta = "Error "  + e;
+            rta = "Error " + e;
         }
         return rta;
     }
+
     /**
      * Funcion con la cual consulto los productos que tiene una importacion
+     *
      * @param idImpo
-     * @return 
+     * @return
      */
-    public List<ProductoImportacionEntity> obtenerProductosImportacion(@WebParam(name = "idImpo")Integer idImpo){
+    public List<ProductoImportacionEntity> obtenerProductosImportacion(@WebParam(name = "idImpo") Integer idImpo) {
         List<ProductoImportacionEntity> rta = null;
         try (ImportacionLogica objLogica = new ImportacionLogica()) {
-              rta = objLogica.obtenerProductosImportacion(idImpo);  
+            rta = objLogica.obtenerProductosImportacion(idImpo);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return rta;
     }
+
     /**
-     * Funcion con la cual le da valores a los productos que tiene la importacion
+     * Funcion con la cual le da valores a los productos que tiene la
+     * importacion
+     *
      * @param idImpo
      * @param trm
      * @param tazaProm
-     * @return 
+     * @return
      */
-    public String insertaValorDolaresProd(@WebParam(name = "idImpo")Integer idImpo,@WebParam(name = "trm")BigDecimal trm,@WebParam(name = "tazaProm") BigDecimal tazaProm){
+    public String insertaValorDolaresProd(@WebParam(name = "idImpo") Integer idImpo, @WebParam(name = "trm") BigDecimal trm, @WebParam(name = "tazaProm") BigDecimal tazaProm) {
         String rta = "";
         try {
             ImportacionLogica objLogica = new ImportacionLogica();
@@ -149,41 +154,48 @@ public class ImportacionWS {
         }
         return rta;
     }
+
     /**
      * Funcion con la cual inserto un gasto a una importacion
+     *
      * @param gasto
-     * @return 
+     * @return
      */
-    public String insertaGastoImportacion(@WebParam(name = "gasto")GastoImpoEntity gasto){
+    public String insertaGastoImportacion(@WebParam(name = "gasto") GastoImpoEntity gasto) {
         String rta = "";
-        try(ImportacionLogica objLogica = new ImportacionLogica()) {
+        try (ImportacionLogica objLogica = new ImportacionLogica()) {
             rta = objLogica.insertaGastoImportacion(gasto);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return rta;
     }
+
     /**
      * Funcion con la cual obtengo los gastos de una importacion
+     *
      * @param idImpo
-     * @return 
+     * @return
      */
-    public List<GastoImpoEntity> obtenerGastosImpo(@WebParam(name = "idImpo")Integer idImpo){
+    public List<GastoImpoEntity> obtenerGastosImpo(@WebParam(name = "idImpo") Integer idImpo) {
         List<GastoImpoEntity> rta = null;
-        try (ImportacionLogica objLogica = new ImportacionLogica()){
+        try (ImportacionLogica objLogica = new ImportacionLogica()) {
             rta = objLogica.obtenerGastosImportacion(idImpo);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return rta;
     }
+
     /**
-     * Funcion con la cual borro los productos que tiene asociada una importacion(Todos)
-     * @return 
+     * Funcion con la cual borro los productos que tiene asociada una
+     * importacion(Todos)
+     *
+     * @return
      */
-    public String borrarProductosImportacion(@WebParam(name = "idImpo")Integer idImpo){
-        String rta= "";
-        try (ImportacionLogica objLogica = new ImportacionLogica()){
+    public String borrarProductosImportacion(@WebParam(name = "idImpo") Integer idImpo) {
+        String rta = "";
+        try (ImportacionLogica objLogica = new ImportacionLogica()) {
             rta = objLogica.borrarProductosImportacion(idImpo);
         } catch (Exception e) {
             e.printStackTrace();
@@ -191,33 +203,57 @@ public class ImportacionWS {
         }
         return rta;
     }
+
     /**
      * Funcion con la cual inserta un detalle del gasto
+     *
      * @param detalle
-     * @return 
+     * @return
      */
-    public String insertarDetalleGasto(@WebParam(name = "detalle")DetalleGastoEntity detalle){
+    public String insertarDetalleGasto(@WebParam(name = "detalle") DetalleGastoEntity detalle) {
         String rta = "";
-        try(ImportacionLogica objLogica = new ImportacionLogica()) {
+        try (ImportacionLogica objLogica = new ImportacionLogica()) {
             rta = objLogica.insertaDetalleGasto(detalle);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return rta;
     }
+
     /**
      * Funcion con la cual obtengo el detalle de un gasto
+     *
      * @param idGasto
-     * @return 
+     * @return
      */
-    public List<DetalleGastoEntity>  obtenerDetalleGasto(@WebParam(name = "idGasto")Integer idGasto){
-        List<DetalleGastoEntity> rta = null; 
-        try(ImportacionLogica objLogica = new ImportacionLogica()) {
+    public List<DetalleGastoEntity> obtenerDetalleGasto(@WebParam(name = "idGasto") Integer idGasto) {
+        List<DetalleGastoEntity> rta = null;
+        try (ImportacionLogica objLogica = new ImportacionLogica()) {
             rta = objLogica.obtenerDetalleGasto(idGasto);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return rta;
     }
-    
+
+    /**
+     * Funcion con la cual ejecuto el proceso de importacion dentro del sistema
+     *
+     * @param idtius
+     * @param idImpo
+     * @return
+     */
+    public String ejecutaProcesoImportacion(@WebParam(name = "idtius") Integer idtius,
+            @WebParam(name = "idImpo") Integer idImpo) {
+        String rta = "";
+        try {
+            ImportacionLogica objLogica = new ImportacionLogica();
+            rta = objLogica.ejecutaProcesoImportacion(idtius, idImpo);
+        } catch (Exception e) {
+            e.printStackTrace();
+            rta = "Error " + e;
+        }
+        return rta;
+    }
+
 }
