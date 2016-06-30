@@ -2,15 +2,18 @@ package co.com.codesoftware.persistencia;
 
 import co.com.codesoftware.persistencia.utilities.ParamFunction;
 import co.com.codesoftware.persistencia.utilities.DataType;
+import co.com.codesoftware.persistencia.utilities.Parametro;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLType;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.hibernate.type.PostgresUUIDType;
 
 public class ReadFunction implements AutoCloseable {
 
@@ -19,6 +22,7 @@ public class ReadFunction implements AutoCloseable {
     private int numParam;
     private String nombreFuncion;
     private ArrayList<ParamFunction> parameters;
+    private ArrayList<Parametro> parametros;
     private String respuesta;
     private String rtaPg;
     private List<String> respuestaPg;
@@ -64,6 +68,24 @@ public class ReadFunction implements AutoCloseable {
     }
 
     /**
+     * Funcion con la cual inserto un parametro para llamar un proceso
+     *
+     * @param value
+     * @param dataType
+     * @return
+     */
+    public boolean adicionarParametro(Object value, DataType dataType) {
+        Parametro param = new Parametro();
+        param.setObjeto(value);
+        param.setDataType(dataType);
+        if (parametros == null) {
+            this.parametros = new ArrayList<>();
+        }
+        this.parametros.add(param);
+        return true;
+    }
+
+    /**
      * Funcion con el cual creo el String base para hacer el llamado de la base
      * de datos
      *
@@ -82,6 +104,46 @@ public class ReadFunction implements AutoCloseable {
                 }
             }
             this.base += ")";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Funcion con la cual se llama un procedimiento de postgres
+     *
+     * @return
+     */
+    public boolean llamarFuncion() {
+        try (ConexionJdbc objConexion = ConexionJdbc.getInstance()) {
+            this.createBase();
+            Connection conn = objConexion.conexion();
+            if (conn != null) {
+                PreparedStatement ps = conn.prepareStatement(this.base);
+                int i = 1;
+                if (this.parametros != null) {
+                    for (Parametro parametro : this.parametros) {
+                        if (parametro.getDataType().toString().equalsIgnoreCase("TEXT")) {
+                            ps.setString(i, (String) parametro.getObjeto());
+                        } else if (parametro.getDataType().toString().equalsIgnoreCase("INT")) {
+                            ps.setInt(i, (Integer) parametro.getObjeto());
+                        }
+                        i++;
+                    }
+                }
+                ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+                    rtaPg = rs.getString(1);
+                }
+                this.ListResponsePg();
+                ps.close();
+                conn.close();
+            }else{
+                respuesta = "Error al crear la conexion ";
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -112,7 +174,7 @@ public class ReadFunction implements AutoCloseable {
                             ps.setDouble(i, Double.parseDouble(parametro.getName()));
                         } else if (parametro.getDataType().toString().equalsIgnoreCase("BIGDECIMAL")) {
                             ps.setBigDecimal(i, new BigDecimal(parametro.getName()));
-                        } else if (parametro.getDataType().toString().equalsIgnoreCase("DATE")){
+                        } else if (parametro.getDataType().toString().equalsIgnoreCase("DATE")) {
                             long auxFecha = Long.parseLong(parametro.getName());
                             Date fecha = new Date(auxFecha);
                             ps.setDate(i, fecha);
@@ -121,7 +183,7 @@ public class ReadFunction implements AutoCloseable {
                         i++;
                     }
                 }
-                System.out.println("Sql : "  + ps.toString());
+                System.out.println("Sql : " + ps.toString());
                 ResultSet rs = ps.executeQuery();
                 while (rs.next()) {
                     rtaPg = rs.getString(1);
@@ -137,12 +199,14 @@ public class ReadFunction implements AutoCloseable {
         }
         return true;
     }
+
     /**
      * Funcion con la cual se ejecuta un query directo a la base de datos
+     *
      * @param query
-     * @return 
+     * @return
      */
-    public ResultSet enviaQuery(String query){
+    public ResultSet enviaQuery(String query) {
         ResultSet rs = null;
         try {
             ConexionJdbc objConexion = ConexionJdbc.getInstance();

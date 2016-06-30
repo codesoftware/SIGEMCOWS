@@ -10,6 +10,7 @@ package co.com.codesoftware.persistencia.utilities;
  * @author ACER
  */
 public class Parametro {
+
     private Object objeto;
     private DataType dataType;
 
@@ -28,7 +29,5 @@ public class Parametro {
     public void setDataType(DataType dataType) {
         this.dataType = dataType;
     }
-    
-    
-    
+
 }

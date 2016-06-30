@@ -255,9 +255,9 @@ public class ImportacionLogica implements AutoCloseable {
         try (ReadFunction rf = new ReadFunction()) {
             rf.setNombreFuncion("IM_FEJECUTAIMPORTACION");
             rf.setNumParam(2);
-            rf.addParametro("" + idTius, DataType.INT);
-            rf.addParametro("" + idImpo, DataType.INT);
-            rf.callFunctionJdbc();
+            rf.adicionarParametro(idTius, DataType.INT);
+            rf.adicionarParametro(idImpo, DataType.INT);
+            rf.llamarFuncion();
             response = rf.getRespuestaPg();
             rta = response.get(0);
         } catch (Exception e) {
