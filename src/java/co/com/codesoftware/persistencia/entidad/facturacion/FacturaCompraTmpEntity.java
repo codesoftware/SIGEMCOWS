@@ -66,6 +66,8 @@ public class FacturaCompraTmpEntity extends RespuestaEntity implements Serializa
     private Integer plazo;
     @Column(name = "facom_tmp_porc")
     private BigDecimal porcRetencion;
+    @Column(name = "facom_tmp_vlpr")
+    private BigDecimal valorProductos;
 
     public Integer getId() {
         return id;
@@ -194,6 +196,16 @@ public class FacturaCompraTmpEntity extends RespuestaEntity implements Serializa
     public void setPorcRetencion(BigDecimal porcRetencion) {
         this.porcRetencion = porcRetencion;
     }
+
+    public BigDecimal getValorProductos() {
+        return valorProductos;
+    }
+
+    public void setValorProductos(BigDecimal valorProductos) {
+        this.valorProductos = valorProductos;
+    }
+    
+    
     
     
 
