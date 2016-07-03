@@ -46,7 +46,9 @@ public class DetalleGastoEntity implements Serializable {
     @JoinColumn(name = "dgas_auco")
     @OneToOne(fetch = FetchType.LAZY)
     private AuxContableEntity idAuxconta;
-    
+    @Column(name = "dgas_prov")
+    private Integer idProveedor;
+
     public Integer getId() {
         return id;
     }
@@ -101,6 +103,14 @@ public class DetalleGastoEntity implements Serializable {
 
     public void setIdAuxconta(AuxContableEntity idAuxconta) {
         this.idAuxconta = idAuxconta;
+    }
+
+    public Integer getIdProveedor() {
+        return idProveedor;
+    }
+
+    public void setIdProveedor(Integer idProveedor) {
+        this.idProveedor = idProveedor;
     }
 
 }
