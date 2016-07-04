@@ -42,6 +42,8 @@ public class GastoImpoEntity implements Serializable {
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     @Column(name = "gast_fechaRegi")
     private Date fechaRegistro;
+    @Column(name = "gast_prov")
+    private Integer idProveedor;
 
     public Integer getId() {
         return id;
@@ -97,5 +99,13 @@ public class GastoImpoEntity implements Serializable {
 
     public void setFechaRegistro(Date fechaRegistro) {
         this.fechaRegistro = fechaRegistro;
+    }
+
+    public Integer getIdProveedor() {
+        return idProveedor;
+    }
+
+    public void setIdProveedor(Integer idProveedor) {
+        this.idProveedor = idProveedor;
     }
 }

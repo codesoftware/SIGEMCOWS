@@ -11,6 +11,7 @@ import co.com.codesoftware.persistence.entity.administracion.RespuestaEntity;
 import co.com.codesoftware.persistencia.HibernateUtil;
 import java.util.List;
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -37,6 +38,8 @@ public class ProveedoresLogic implements AutoCloseable {
             this.initOperation();
             Criteria crit = sesion.createCriteria(ProveedoresEntity.class);
             crit.add(Restrictions.eq("estado", "A"));
+            crit.setFetchMode("retenciones", FetchMode.JOIN);
+            //crit.setFetchMode("", FetchMode.JOIN);
             respuesta = crit.list();
             
         } catch (Exception e) {
