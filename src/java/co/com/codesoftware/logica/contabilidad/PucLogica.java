@@ -10,9 +10,11 @@ import co.com.codesoftware.persistencia.entidad.contabilidad.AuxContableEntity;
 import co.com.codesoftware.persistencia.entidad.contabilidad.ClaseEntity;
 import co.com.codesoftware.persistencia.entidad.contabilidad.CuentaEntity;
 import co.com.codesoftware.persistencia.entidad.contabilidad.GrupoEntity;
+import co.com.codesoftware.persistencia.entidad.contabilidad.MoviContableEntity;
 import co.com.codesoftware.persistencia.entidad.contabilidad.SubCuentaEntity;
 import java.util.List;
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Criterion;
@@ -165,6 +167,27 @@ public class PucLogica implements AutoCloseable {
             Criterion dos = Restrictions.like("nombre", "%"+criterio+"%").ignoreCase();
             crit.add(Restrictions.or(uno,dos));
             crit.addOrder(Order.asc("id"));
+            rta = crit.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+    /**
+     * Funcion con la cual obtengo asientos contables
+     * @param idTrans
+     * @return 
+     */
+    public List<MoviContableEntity> obtenerAsientoContable(Integer idTrans){
+        List<MoviContableEntity>  rta = null;
+        try {
+            this.initOperation();
+            Criteria crit = this.sesion.createCriteria(MoviContableEntity.class);
+            crit.add(Restrictions.eq("idMovimiento", idTrans));
+            crit.setFetchMode("auxiliar", FetchMode.JOIN);
+            crit.setFetchMode("subcuenta", FetchMode.JOIN);
+            crit.setFetchMode("tipoDocumento", FetchMode.JOIN);
+            crit.addOrder(Order.asc("naturaleza"));
             rta = crit.list();
         } catch (Exception e) {
             e.printStackTrace();

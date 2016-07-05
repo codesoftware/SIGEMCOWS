@@ -22,6 +22,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "co_tmvco")
 public class MoviContableEntity implements Serializable {
+
     @Id
     @Column(name = "mvco_mvco")
     private Integer id;
@@ -41,6 +42,9 @@ public class MoviContableEntity implements Serializable {
     private String llave;
     @Column(name = "mvco_id_llave")
     private Integer idLlave;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "mvco_auco")
+    private AuxContableEntity auxiliar;
 
     public Integer getId() {
         return id;
@@ -67,10 +71,10 @@ public class MoviContableEntity implements Serializable {
     }
 
     public String getNaturaleza() {
-        if("C".equalsIgnoreCase(naturaleza)){
-        return "CREDITO";
-        }else{
-          return "DEBITO";  
+        if ("C".equalsIgnoreCase(naturaleza)) {
+            return "CREDITO";
+        } else {
+            return "DEBITO";
         }
     }
 
@@ -109,6 +113,13 @@ public class MoviContableEntity implements Serializable {
     public void setIdLlave(Integer idLlave) {
         this.idLlave = idLlave;
     }
-    
-    
+
+    public AuxContableEntity getAuxiliar() {
+        return auxiliar;
+    }
+
+    public void setAuxiliar(AuxContableEntity auxiliar) {
+        this.auxiliar = auxiliar;
+    }
+
 }

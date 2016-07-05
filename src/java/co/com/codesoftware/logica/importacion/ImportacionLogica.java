@@ -291,6 +291,22 @@ public class ImportacionLogica implements AutoCloseable {
     }
 
     /**
+     * Funcion con la cual obtengo la informacion basica de la importacion
+     *
+     * @return
+     */
+    public ImportacionEntity obtenerImportacion(Integer idImpo) {
+        ImportacionEntity objEntity = null;
+        try {
+            this.initOperation();
+            objEntity = (ImportacionEntity) this.sesion.createCriteria(ImportacionEntity.class).add(Restrictions.eq("id", idImpo)).uniqueResult();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return objEntity;
+    }
+
+    /**
      * metodo que inicia la sesion de base de datos
      */
     private void initOperation() {

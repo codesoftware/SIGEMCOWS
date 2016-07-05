@@ -25,7 +25,21 @@ import javax.jws.WebParam;
  */
 @WebService(serviceName = "ImportacionWS")
 public class ImportacionWS {
-
+    /**
+     * Funcion con la cual obtengo una importacion por medio de su id
+     * @param idImpo
+     * @return 
+     */
+    @WebMethod(operationName = "obtenerImportacion")
+    public ImportacionEntity obtenerImportacion(@WebParam(name = "idImpo")Integer idImpo){
+        ImportacionEntity objEntity = null;
+        try (ImportacionLogica objLogica = new ImportacionLogica()){
+            objEntity = objLogica.obtenerImportacion(idImpo);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return objEntity;
+    }
     /**
      * Metodo con el cual se inserta un proveedor internacional
      *

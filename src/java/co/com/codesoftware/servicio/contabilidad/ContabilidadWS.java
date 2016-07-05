@@ -10,12 +10,14 @@ import co.com.codesoftware.persistencia.entidad.contabilidad.AuxContableEntity;
 import co.com.codesoftware.persistencia.entidad.contabilidad.ClaseEntity;
 import co.com.codesoftware.persistencia.entidad.contabilidad.CuentaEntity;
 import co.com.codesoftware.persistencia.entidad.contabilidad.GrupoEntity;
+import co.com.codesoftware.persistencia.entidad.contabilidad.MoviContableEntity;
 import co.com.codesoftware.persistencia.entidad.contabilidad.SubCuentaEntity;
 import java.util.List;
 import javax.jws.WebService;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
+import javax.xml.bind.annotation.XmlElement;
 
 /**
  *
@@ -149,5 +151,19 @@ public class ContabilidadWS {
             e.printStackTrace();
         }
         return aux;
+    }
+    /**
+     * Funcion con la cual obtengo todo el asiento contable por medio de su id de transaccion
+     * @param idTransCont
+     * @return 
+     */
+    public List<MoviContableEntity> obtenerAsientoContable(@XmlElement(required = true) @WebParam(name = "idTransCont")Integer idTransCont){
+        List<MoviContableEntity> rta = null;
+        try(PucLogica objLogica = new PucLogica()) {
+            rta = objLogica.obtenerAsientoContable(idTransCont);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
     }
 }

@@ -50,6 +50,8 @@ public class ImportacionEntity implements Serializable {
     private BigDecimal trm;
     @Column(name = "impo_tazaProm")
     private BigDecimal tazaPromedio;
+    @Column(name = "impo_idtrans_co")
+    private Integer idTranCont;
 
     public Integer getId() {
         return id;
@@ -137,6 +139,14 @@ public class ImportacionEntity implements Serializable {
 
     public void setTazaPromedio(BigDecimal tazaPromedio) {
         this.tazaPromedio = tazaPromedio;
+    }
+
+    public Integer getIdTranCont() {
+        return idTranCont;
+    }
+
+    public void setIdTranCont(Integer idTranCont) {
+        this.idTranCont = idTranCont;
     }
 
 }

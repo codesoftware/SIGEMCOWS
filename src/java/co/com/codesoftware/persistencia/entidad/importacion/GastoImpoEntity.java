@@ -5,14 +5,18 @@
  */
 package co.com.codesoftware.persistencia.entidad.importacion;
 
+import co.com.codesoftware.persistence.entity.administracion.ProveedoresEntity;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 
@@ -42,8 +46,9 @@ public class GastoImpoEntity implements Serializable {
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     @Column(name = "gast_fechaRegi")
     private Date fechaRegistro;
-    @Column(name = "gast_prov")
-    private Integer idProveedor;
+    @JoinColumn(name = "gast_prov")
+    @OneToOne(fetch = FetchType.LAZY)
+    private ProveedoresEntity proveedor;
 
     public Integer getId() {
         return id;
@@ -101,11 +106,11 @@ public class GastoImpoEntity implements Serializable {
         this.fechaRegistro = fechaRegistro;
     }
 
-    public Integer getIdProveedor() {
-        return idProveedor;
+    public ProveedoresEntity getProveedor() {
+        return proveedor;
     }
 
-    public void setIdProveedor(Integer idProveedor) {
-        this.idProveedor = idProveedor;
+    public void setProveedor(ProveedoresEntity proveedor) {
+        this.proveedor = proveedor;
     }
 }
