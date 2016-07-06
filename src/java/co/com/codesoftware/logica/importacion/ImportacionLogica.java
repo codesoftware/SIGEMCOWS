@@ -87,6 +87,11 @@ public class ImportacionLogica implements AutoCloseable {
             this.initOperation();
             Criteria crit = this.sesion.createCriteria(GastoImpoEntity.class);
             crit.add(Restrictions.eq("idImpo", idImpo));
+            crit.setFetchMode("proveedor", FetchMode.JOIN);
+            crit.createAlias("proveedor", "prov");
+            crit.setFetchMode("proveedor.ciudad", FetchMode.JOIN);
+            crit.setFetchMode("proveedor.municipio", FetchMode.JOIN);
+            crit.setFetchMode("proveedor.retenciones", FetchMode.JOIN);
             rta = crit.list();
         } catch (Exception e) {
             e.printStackTrace();

@@ -51,7 +51,7 @@ public class ImportacionEntity implements Serializable {
     @Column(name = "impo_tazaProm")
     private BigDecimal tazaPromedio;
     @Column(name = "impo_idtrans_co")
-    private Integer idTranCont;
+    private Integer idTranCont; 
 
     public Integer getId() {
         return id;

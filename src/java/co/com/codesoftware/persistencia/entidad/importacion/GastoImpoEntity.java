@@ -49,6 +49,8 @@ public class GastoImpoEntity implements Serializable {
     @JoinColumn(name = "gast_prov")
     @OneToOne(fetch = FetchType.LAZY)
     private ProveedoresEntity proveedor;
+    @Column(name = "gast_tran_mvco")
+    private Integer idTransCo;
 
     public Integer getId() {
         return id;
@@ -113,4 +115,13 @@ public class GastoImpoEntity implements Serializable {
     public void setProveedor(ProveedoresEntity proveedor) {
         this.proveedor = proveedor;
     }
+
+    public Integer getIdTransCo() {
+        return idTransCo;
+    }
+
+    public void setIdTransCo(Integer idTransCo) {
+        this.idTransCo = idTransCo;
+    }
+
 }
