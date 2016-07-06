@@ -184,16 +184,45 @@ public class FacturaCompraTmpLogica implements AutoCloseable {
     }
 
     /**
-     * funcion que llama el procedimiento 
+     * funcion que llama el procedimiento
+     *
+     * @param idFacturaTmp
+     * @return
+     */
+    public String llamaProcedimientoFacturaCompra(Integer idFacturaTmp) {
+        String rta = "";
+        try (ReadFunction rf = new ReadFunction()) {
+
+            List<String> response = new ArrayList<>();
+            rf.setNombreFuncion("FA_REGISTRA_FACT_COMPRA_TMP");
+            rf.setNumParam(1);
+            rf.adicionarParametro(idFacturaTmp, DataType.INT);
+            boolean valida = rf.callFunctionJdbc();
+            if (valida) {
+                response = rf.getRespuestaPg();
+                rta = response.get(0);
+            } else {
+                response = rf.getRespuestaPg();
+                rta = "Error al realizar el llamado de FA_REGISTRA_FACT_COMPRA ";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            rta = "Error " + e;
+        }
+        return rta;
+    }
+
+    /**
+     * metodo que invoca la funcion que actualiza los valores en la tabla de factura de compra temporal
      * @param idFacturaTmp
      * @return 
      */
-            public String llamaProcedimientoFacturaCompra(Integer idFacturaTmp) {
+    public String llamaProcedimientoValoresFC(Integer idFacturaTmp) {
         String rta = "";
-        try (ReadFunction rf = new ReadFunction()){
-
-         List<String> response = new ArrayList<>();
-            rf.setNombreFuncion("FA_REGISTRA_FACT_COMPRA_TMP");
+        try (ReadFunction rf = new ReadFunction()) {
+            System.err.println(idFacturaTmp);
+            List<String> response = new ArrayList<>();
+            rf.setNombreFuncion("FA_CALCULA_PAGOS_FAC_COMPRA");
             rf.setNumParam(1);
             rf.addParametro(idFacturaTmp.toString(), DataType.INT);
             boolean valida = rf.callFunctionJdbc();
@@ -202,7 +231,7 @@ public class FacturaCompraTmpLogica implements AutoCloseable {
                 rta = response.get(0);
             } else {
                 response = rf.getRespuestaPg();
-                rta = "Error al realizar el llamado de FA_REGISTRA_FACT_COMPRA ";
+                rta = "Error al realizar el llamado de FA_CALCULA_PAGOS_FAC_COMPRA ";
             }
         } catch (Exception e) {
             e.printStackTrace();

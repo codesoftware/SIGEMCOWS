@@ -63,6 +63,7 @@ public class ProveedoresEntity implements Serializable {
     @JoinColumn(name = "prov_mpio")
     @OneToOne(fetch = FetchType.LAZY)
     private DepartamentoEntity municipio;
+    
 
     public Integer getId() {
         return id;

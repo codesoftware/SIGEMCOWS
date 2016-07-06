@@ -393,5 +393,23 @@ public class FacturacionWS {
         return rta;
 
     }
+    /**
+     * metodo que consulta los valores temporales de la factura de compra
+     * @param idFactura
+     * @return 
+     */
+     @WebMethod(operationName = "llamaProcedimientoValoresFacturaTMP")
+    public String llamaProcedimientoValoresFacturaTMP(@WebParam(name = "idFacturaCompra") Integer idFactura) {
+        String rta = "";
+        try {
+            System.out.println("valor factura"+idFactura);
+            FacturaCompraTmpLogica logica = new FacturaCompraTmpLogica();
+            rta = logica.llamaProcedimientoValoresFC(idFactura);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+
+    }
 
 }
