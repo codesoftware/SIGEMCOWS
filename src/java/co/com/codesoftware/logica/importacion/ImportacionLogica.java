@@ -254,14 +254,15 @@ public class ImportacionLogica implements AutoCloseable {
      * @param idImpo
      * @return
      */
-    public String ejecutaProcesoImportacion(Integer idTius, Integer idImpo) {
+    public String ejecutaProcesoImportacion(Integer idTius, Integer idImpo, Integer idSede) {
         String rta = "";
         List<String> response = new ArrayList<>();
         try (ReadFunction rf = new ReadFunction()) {
             rf.setNombreFuncion("IM_FEJECUTAIMPORTACION");
-            rf.setNumParam(2);
+            rf.setNumParam(3);
             rf.adicionarParametro(idTius, DataType.INT);
             rf.adicionarParametro(idImpo, DataType.INT);
+            rf.adicionarParametro(idSede, DataType.INT);
             rf.llamarFuncion();
             response = rf.getRespuestaPg();
             rta = response.get(0);

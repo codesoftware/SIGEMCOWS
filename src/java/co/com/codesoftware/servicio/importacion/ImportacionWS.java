@@ -258,11 +258,12 @@ public class ImportacionWS {
      * @return
      */
     public String ejecutaProcesoImportacion(@WebParam(name = "idtius") Integer idtius,
-            @WebParam(name = "idImpo") Integer idImpo) {
+            @WebParam(name = "idImpo") Integer idImpo,
+            @WebParam(name = "idSede") Integer idSede) {
         String rta = "";
         try {
             ImportacionLogica objLogica = new ImportacionLogica();
-            rta = objLogica.ejecutaProcesoImportacion(idtius, idImpo);
+            rta = objLogica.ejecutaProcesoImportacion(idtius, idImpo,idSede);
         } catch (Exception e) {
             e.printStackTrace();
             rta = "Error " + e;
