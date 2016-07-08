@@ -70,8 +70,10 @@ public class FacturaCompraTmpEntity extends RespuestaEntity implements Serializa
     private BigDecimal valorProductos;
     @Column(name = "facom_tmp_vlraj")
     private BigDecimal valorAjuste;
-     @Column(name = "facom_tmp_vltot")
+    @Column(name = "facom_tmp_vltot")
     private BigDecimal valorTotalPagar;
+    @Column(name = "facom_tmp_cbret")
+    private String cobraRete;
 
     public Integer getId() {
         return id;
@@ -224,10 +226,13 @@ public class FacturaCompraTmpEntity extends RespuestaEntity implements Serializa
     public void setValorTotalPagar(BigDecimal valorTotalPagar) {
         this.valorTotalPagar = valorTotalPagar;
     }
-    
-    
-    
-    
-    
+
+    public String getCobraRete() {
+        return cobraRete;
+    }
+
+    public void setCobraRete(String cobraRete) {
+        this.cobraRete = cobraRete;
+    }
 
 }

@@ -196,7 +196,7 @@ public class FacturaCompraTmpLogica implements AutoCloseable {
             List<String> response = new ArrayList<>();
             rf.setNombreFuncion("FA_REGISTRA_FACT_COMPRA_TMP");
             rf.setNumParam(1);
-            rf.adicionarParametro(idFacturaTmp, DataType.INT);
+            rf.addParametro(idFacturaTmp.toString(), DataType.INT);
             boolean valida = rf.callFunctionJdbc();
             if (valida) {
                 response = rf.getRespuestaPg();

@@ -53,6 +53,7 @@ public class ProdFacCompraTmpEntity implements Serializable{
     @Column(name = "fcprd_tmp_fech")
     private Date fecha;
 
+
     public Integer getId() {
         return id;
     }
@@ -132,6 +133,8 @@ public class ProdFacCompraTmpEntity implements Serializable{
     public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
+
+
     
     
 }
