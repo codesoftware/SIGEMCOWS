@@ -75,6 +75,8 @@ public class FacturaEntity implements Serializable {
     private Integer resolucion;
     @Column(name = "fact_vlr_acobrar")
     private BigDecimal valorCobrar;
+    @Column(name = "FACT_VLRRTFU")
+    private BigDecimal vlrReteFu;
 
     public Integer getId() {
         return id;
@@ -267,4 +269,13 @@ public class FacturaEntity implements Serializable {
     public void setValorCobrar(BigDecimal valorCobrar) {
         this.valorCobrar = valorCobrar;
     }
+
+    public BigDecimal getVlrReteFu() {
+        return vlrReteFu;
+    }
+
+    public void setVlrReteFu(BigDecimal vlrReteFu) {
+        this.vlrReteFu = vlrReteFu;
+    }
+
 }
