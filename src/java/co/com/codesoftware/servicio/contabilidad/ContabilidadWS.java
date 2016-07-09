@@ -5,6 +5,7 @@
  */
 package co.com.codesoftware.servicio.contabilidad;
 
+import co.com.codesoftware.logica.contabilidad.ContabilidadLogica;
 import co.com.codesoftware.logica.contabilidad.PucLogica;
 import co.com.codesoftware.persistencia.entidad.contabilidad.AuxContableEntity;
 import co.com.codesoftware.persistencia.entidad.contabilidad.ClaseEntity;
@@ -12,6 +13,7 @@ import co.com.codesoftware.persistencia.entidad.contabilidad.CuentaEntity;
 import co.com.codesoftware.persistencia.entidad.contabilidad.GrupoEntity;
 import co.com.codesoftware.persistencia.entidad.contabilidad.MoviContableEntity;
 import co.com.codesoftware.persistencia.entidad.contabilidad.SubCuentaEntity;
+import java.util.Date;
 import java.util.List;
 import javax.jws.WebService;
 import javax.jws.WebMethod;
@@ -165,5 +167,25 @@ public class ContabilidadWS {
             e.printStackTrace();
         }
         return rta;
+    }
+    /**
+     * Funcion con la cual obtengo los movimientos contables de acuerdo a las fechas y a el tipo de docuemnto
+     * @param fechaIn
+     * @param fechaFi
+     * @param tipoDoc
+     * @return 
+     */
+    @WebMethod(operationName = "obtenerMovimientosContables")
+    @WebResult(name = "listaMovimientos")
+    public List<MoviContableEntity> obtenerMovimientosContables(@XmlElement(required = true) @WebParam(name = "fechaIn")Date fechaIn, 
+            @XmlElement(required = true) @WebParam(name = "fechaFi")Date fechaFi,
+            @XmlElement(required = true) @WebParam(name = "tipoDoc")String tipoDoc ){
+        List<MoviContableEntity> rta = null;
+        try (ContabilidadLogica objLogica = new ContabilidadLogica()){
+            rta = objLogica.consultarMovimientoscontable(fechaIn, fechaFi, tipoDoc);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return  rta;
     }
 }
