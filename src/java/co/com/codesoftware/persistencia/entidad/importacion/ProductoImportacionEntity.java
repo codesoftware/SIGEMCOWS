@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  *
@@ -22,7 +23,8 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "im_tprim")
-public class ProductoImportacionEntity implements Serializable{
+public class ProductoImportacionEntity implements Serializable {
+
     @Id
     @Column(name = "prim_prim")
     private Integer id;
@@ -39,6 +41,8 @@ public class ProductoImportacionEntity implements Serializable{
     private BigDecimal vlrPesTRM;
     @Column(name = "prim_vlrPesTzProm")
     private BigDecimal vlrPesTzProm;
+    @Transient
+    private Integer consecutivo;
 
     public Integer getId() {
         return id;
@@ -95,4 +99,13 @@ public class ProductoImportacionEntity implements Serializable{
     public void setVlrPesTzProm(BigDecimal vlrPesTzProm) {
         this.vlrPesTzProm = vlrPesTzProm;
     }
+
+    public Integer getConsecutivo() {
+        return consecutivo;
+    }
+
+    public void setConsecutivo(Integer consecutivo) {
+        this.consecutivo = consecutivo;
+    }
+
 }

@@ -18,6 +18,7 @@ import java.util.List;
 import javax.jws.WebService;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
+import javax.xml.ws.handler.MessageContext;
 
 /**
  *
@@ -189,7 +190,7 @@ public class ImportacionWS {
      * Funcion con la cual obtengo los gastos de una importacion
      *
      * @param idImpo
-     * @return
+     * @returnobtenerProductosImportacion
      */
     public List<GastoImpoEntity> obtenerGastosImpo(@WebParam(name = "idImpo") Integer idImpo) {
         List<GastoImpoEntity> rta = null;
@@ -270,5 +271,35 @@ public class ImportacionWS {
         }
         return rta;
     }
+    /**
+     * Funcion con la cual puedo eliminar un detalle de un gasto
+     * @param idImpo
+     * @param idDet
+     * @return 
+     */
+    public String eliminarDetalleGasto(@WebParam(name = "idDet")Integer idDet){
+        String rta = "";
+        try (ImportacionLogica objLogica = new ImportacionLogica()){
+            rta = objLogica.eliminarDetalleGasto(idDet);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+    /**
+     * Funcion con la cual elimino un gasto con sus detalles
+     * @param idGast
+     * @return 
+     */
+    public String eliminarGastoImportacion(@WebParam(name = "idGast")Integer idGast){
+        String rta = "";
+        try(ImportacionLogica objLogica = new ImportacionLogica()) {
+            rta = objLogica.eliminarGasto(idGast);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+            
 
 }

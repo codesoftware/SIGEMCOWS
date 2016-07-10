@@ -19,6 +19,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
+import javax.persistence.Transient;
 
 /**
  *
@@ -51,6 +52,8 @@ public class GastoImpoEntity implements Serializable {
     private ProveedoresEntity proveedor;
     @Column(name = "gast_tran_mvco")
     private Integer idTransCo;
+    @Transient
+    private Integer consecutivo;
 
     public Integer getId() {
         return id;
@@ -122,6 +125,14 @@ public class GastoImpoEntity implements Serializable {
 
     public void setIdTransCo(Integer idTransCo) {
         this.idTransCo = idTransCo;
+    }
+
+    public Integer getConsecutivo() {
+        return consecutivo;
+    }
+
+    public void setConsecutivo(Integer consecutivo) {
+        this.consecutivo = consecutivo;
     }
 
 }

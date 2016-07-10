@@ -92,7 +92,15 @@ public class ImportacionLogica implements AutoCloseable {
             crit.setFetchMode("proveedor.ciudad", FetchMode.JOIN);
             crit.setFetchMode("proveedor.municipio", FetchMode.JOIN);
             crit.setFetchMode("proveedor.retenciones", FetchMode.JOIN);
+            crit.addOrder(Order.asc("id"));
             rta = crit.list();
+            if (rta != null) {
+                int i = 0;
+                for (GastoImpoEntity item : rta) {
+                    i++;
+                    item.setConsecutivo(i);
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -202,6 +210,13 @@ public class ImportacionLogica implements AutoCloseable {
             crit.setFetchMode("producto", FetchMode.JOIN);
             crit.addOrder(Order.asc("id"));
             rta = crit.list();
+            int i = 0;
+            if (rta != null) {
+                for (ProductoImportacionEntity item : rta) {
+                    i++;
+                    item.setConsecutivo(i);
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -310,6 +325,46 @@ public class ImportacionLogica implements AutoCloseable {
             e.printStackTrace();
         }
         return objEntity;
+    }
+    /**
+     * Funcion con la cual elimino un detalle de una importacion
+     * @param idImpo
+     * @param idDet
+     * @return 
+     */
+    public String eliminarDetalleGasto(Integer idDet){
+        String rta= "";
+        try {
+            this.initOperation();
+            Query query = this.sesion.createQuery("delete DetalleGastoEntity where id = :id");
+            query.setInteger("id", idDet);
+            query.executeUpdate();
+            rta = "Ok";
+        } catch (Exception e) {
+            e.printStackTrace();
+            rta = "Error " + e;
+        }
+        return rta;
+    }
+    /**
+     * Funcion con la cual se elimina un gasto
+     * @param idGasto
+     * @return 
+     */
+    public String eliminarGasto(Integer idGasto){
+        String rta = "";
+        try {
+            this.initOperation();
+            GastoImpoEntity objEntity = new GastoImpoEntity();
+            objEntity.setId(idGasto);
+            this.sesion.delete(objEntity);
+            this.tx.commit();
+            rta = "Ok";
+        } catch (Exception e) {
+            e.printStackTrace();
+            rta = "Error "+ e;
+        }
+        return rta;
     }
 
     /**
