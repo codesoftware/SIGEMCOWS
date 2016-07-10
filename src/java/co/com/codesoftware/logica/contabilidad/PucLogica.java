@@ -194,6 +194,23 @@ public class PucLogica implements AutoCloseable {
         }
         return rta;
     }
+    /**
+     * Funcion con la cual inserta una subcuenta 
+     * @param objEntity
+     * @return 
+     */
+    public String insertarSubCuenta(SubCuentaEntity objEntity){
+        String rta = "";
+        try {
+            this.initOperation();
+            this.sesion.save(objEntity);
+            this.tx.commit();
+            rta = "Ok";
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
 
     private void initOperation() {
         try {

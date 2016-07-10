@@ -107,6 +107,20 @@ public class ContabilidadWS {
         return rta;
     }
     /**
+     * Funcion con la cual inserto una sub cuenta
+     * @param objEntity
+     * @return 
+     */
+    public String insertaSubCuenta(SubCuentaEntity objEntity){
+        String rta = "";
+        try (PucLogica objLogica = new PucLogica()){
+            rta = objLogica.insertarSubCuenta(objEntity);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+    /**
      * Funcion con la cual obtengo todos los auxiliares contables
      * @param idSubCuenta
      * @return 
