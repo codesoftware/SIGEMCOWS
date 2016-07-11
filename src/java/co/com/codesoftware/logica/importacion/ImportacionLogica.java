@@ -127,8 +127,9 @@ public class ImportacionLogica implements AutoCloseable {
                 crit.add(Restrictions.ge("fechaCrea", fechaInicial))
                         .add(Restrictions.lt("fechaCrea", fechaFinal));
             }
+            crit.addOrder(Order.asc("estado"));
+            crit.addOrder(Order.desc("id"));
             rta = crit.list();
-
         } catch (Exception e) {
             e.printStackTrace();
         }
