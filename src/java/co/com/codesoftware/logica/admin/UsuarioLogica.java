@@ -16,6 +16,7 @@ import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 
 /**
@@ -62,9 +63,9 @@ public class UsuarioLogica implements AutoCloseable {
             this.initOperation();
             Criteria crit = sesion.createCriteria(UsuarioEntity.class);
             crit.add(Restrictions.eq("usuario", user));
-            crit.setFetchMode("persona", FetchMode.JOIN); 
-            crit.setFetchMode("perfil", FetchMode.JOIN); 
-            crit.setFetchMode("sede", FetchMode.JOIN); 
+            crit.setFetchMode("persona", FetchMode.JOIN);
+            crit.setFetchMode("perfil", FetchMode.JOIN);
+            crit.setFetchMode("sede", FetchMode.JOIN);
             usuario = (UsuarioEntity) crit.uniqueResult();
         } catch (Exception e) {
             e.printStackTrace();
@@ -104,7 +105,7 @@ public class UsuarioLogica implements AutoCloseable {
             }
         }
     }
-    
+
     /**
      * Funcion con la cual se puede cambiar la contraseña del usuario
      *
@@ -132,7 +133,7 @@ public class UsuarioLogica implements AutoCloseable {
         }
         return rta;
     }
-    
+
     /**
      * Funcion con la cual obtenemos el usuario por medio de su id
      *
@@ -149,11 +150,13 @@ public class UsuarioLogica implements AutoCloseable {
         }
         return usuario;
     }
+
     /**
      * Funcion con la cual obtengo todos los usuarios de la aplicacion
-     * @return 
+     *
+     * @return
      */
-    public List<UsuarioEntity> obtenerUsuarios(){
+    public List<UsuarioEntity> obtenerUsuarios() {
         List<UsuarioEntity> rta = null;
         try {
             this.initOperation();
@@ -164,11 +167,13 @@ public class UsuarioLogica implements AutoCloseable {
         }
         return rta;
     }
+
     /**
      * Funcion con el cual obtengo los perfiles del sistema
-     * @return 
+     *
+     * @return
      */
-    public List<PerfilEntity> obtenerPerfiles(){
+    public List<PerfilEntity> obtenerPerfiles() {
         List<PerfilEntity> rta = null;
         try {
             this.initOperation();
@@ -178,22 +183,24 @@ public class UsuarioLogica implements AutoCloseable {
         }
         return rta;
     }
+
     /**
      * Funcion con la cual actualizo el usuario
+     *
      * @param usuario
-     * @return 
+     * @return
      */
-    public String actualizaUsuarioEntity(UsuarioEntity usuario){
+    public String actualizaUsuarioEntity(UsuarioEntity usuario) {
         String rta = "";
         List<String> response = new ArrayList<>();
-        try (ReadFunction rf = new ReadFunction()){
+        try (ReadFunction rf = new ReadFunction()) {
             rf.setNombreFuncion("US_FACTUALIZA_USUARIO");
             rf.setNumParam(9);
             rf.addParametro(usuario.getPersona().getNombre(), DataType.TEXT);
             rf.addParametro(usuario.getPersona().getApellido(), DataType.TEXT);
             rf.addParametro(usuario.getPersona().getCedula(), DataType.TEXT);
             rf.addParametro(usuario.getPersona().getCorreo(), DataType.TEXT);
-            rf.addParametro(usuario.getPersona().getFecha_nac().getTime()+"", DataType.DATE);
+            rf.addParametro(usuario.getPersona().getFecha_nac().getTime() + "", DataType.DATE);
             rf.addParametro(usuario.getPerfil().getId().toString(), DataType.INT);
             rf.addParametro(usuario.getEstado(), DataType.TEXT);
             rf.addParametro(usuario.getUsuario(), DataType.TEXT);
@@ -206,23 +213,24 @@ public class UsuarioLogica implements AutoCloseable {
         }
         return rta;
     }
-    
+
     /**
      * Funcion con la cual inserto el usuario
+     *
      * @param usuario
-     * @return 
+     * @return
      */
-    public String insertarUsuarioEntity(UsuarioEntity usuario){
+    public String insertarUsuarioEntity(UsuarioEntity usuario) {
         String rta = "";
         List<String> response = new ArrayList<>();
-        try (ReadFunction rf = new ReadFunction()){
+        try (ReadFunction rf = new ReadFunction()) {
             rf.setNombreFuncion("US_FINSERTA_USUA");
             rf.setNumParam(9);
             rf.addParametro(usuario.getPersona().getNombre(), DataType.TEXT);
             rf.addParametro(usuario.getPersona().getApellido(), DataType.TEXT);
             rf.addParametro(usuario.getPersona().getCedula(), DataType.TEXT);
             rf.addParametro(usuario.getPersona().getCorreo(), DataType.TEXT);
-            rf.addParametro(usuario.getPersona().getFecha_nac().getTime()+"", DataType.DATE);
+            rf.addParametro(usuario.getPersona().getFecha_nac().getTime() + "", DataType.DATE);
             rf.addParametro(usuario.getUsuario(), DataType.TEXT);
             rf.addParametro("1234", DataType.TEXT);
             rf.addParametro(usuario.getPerfil().getId().toString(), DataType.INT);
@@ -235,5 +243,25 @@ public class UsuarioLogica implements AutoCloseable {
         }
         return rta;
     }
-    
+
+    /**
+     * metodo que consulta los usuarios por permiso
+     * @param permiso
+     * @return 
+     */
+    public List<UsuarioEntity> consultaUsuariosXPermiso(String permiso) {
+        List<UsuarioEntity> respuesta = new ArrayList<>();
+        try {
+            initOperation();
+            respuesta = sesion.createCriteria(UsuarioEntity.class).
+                    createAlias("perfil", "pf").
+                    add(Restrictions.like("pf.permisos", permiso,MatchMode.ANYWHERE)).
+                    add(Restrictions.eq("estado", "A")).
+                    list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return respuesta;
+    }
+
 }

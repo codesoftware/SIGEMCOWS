@@ -6,11 +6,13 @@
 package co.com.codesoftware.servicio.facturacion;
 
 import co.com.codesoftware.logic.facturas.FacturaLogic;
+import co.com.codesoftware.logic.productos.FacturaCompraLogic;
 import co.com.codesoftware.logica.facturacion.FacturaCompraTmpLogica;
 import co.com.codesoftware.logica.facturacion.FacturacionLogica;
 import co.com.codesoftware.logica.reportes.ReporteLogica;
 import co.com.codesoftware.persistence.entity.facturacion.HistorialFacturaEntity;
 import co.com.codesoftware.persistence.entity.facturacion.ImagenFacturaEntity;
+import co.com.codesoftware.persistence.entity.productos.FacturaCompraEntity;
 import co.com.codesoftware.persistencia.entidad.contabilidad.MoviContableEntity;
 import co.com.codesoftware.persistencia.entidad.facturacion.FacturaCompraTmpEntity;
 import co.com.codesoftware.persistencia.entidad.facturacion.FacturaEntity;
@@ -410,6 +412,22 @@ public class FacturacionWS {
         }
         return rta;
 
+    }
+    
+    /**
+     * metodo que consulta las facturas vencidas
+     * @return 
+     */
+    @WebMethod(operationName = "consultaFacturasVencidas")
+    public List<FacturaCompraEntity> consultaFacturasVencidas(){
+        List<FacturaCompraEntity> respuesta = new ArrayList<>();
+        try {
+            FacturaCompraLogic logica = new FacturaCompraLogic();
+            respuesta = logica.consultaFacturaCompraXVencer();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return respuesta;
     }
 
 }

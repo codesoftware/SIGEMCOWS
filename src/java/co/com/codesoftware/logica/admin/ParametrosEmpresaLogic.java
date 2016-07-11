@@ -1,5 +1,6 @@
 package co.com.codesoftware.logica.admin;
 
+import co.com.codesoftware.persistence.entity.administracion.ParametrosEntity;
 import co.com.codesoftware.persistencia.HibernateUtil;
 import co.com.codesoftware.persistencia.entidad.admin.ParametrosEmpresaEntity;
 import java.util.Date;
@@ -62,6 +63,24 @@ public class ParametrosEmpresaLogic implements AutoCloseable {
         } catch (Exception e) {
             e.printStackTrace();
             rta = "Error " + e;
+        }
+        return rta;
+    }
+    
+    /**
+     * metodo que consulta los dias para el envio de correos
+     * @return 
+     */
+       public ParametrosEntity consultaDiasParametrizadosEnvioCorreo(){
+        ParametrosEntity rta = new ParametrosEntity();
+        try {
+            initOperation();
+            rta = (ParametrosEntity)sesion.createCriteria(ParametrosEntity.class).
+                    add(Restrictions.eq("clave", "DIASCORREO")).
+                    uniqueResult();
+            sesion.close();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return rta;
     }

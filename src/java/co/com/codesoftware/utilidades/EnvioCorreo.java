@@ -38,6 +38,7 @@ public class EnvioCorreo {
         this.config = new Properties();
         this.config.put("mail.smtp.host", this.host);
         this.config.put("mail.smtp.socketFactory.port", this.port);
+        this.config.put("mail.smtp.starttls.enable", true);
         //this.config.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
         this.config.put("mail.smtp.auth", "true");
         this.config.put("mail.smtp.port", this.port);

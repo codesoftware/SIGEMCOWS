@@ -34,11 +34,6 @@
         <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet>
-        <servlet-name>UtilitiesEndPoint</servlet-name>
-        <servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
-    <servlet>
         <servlet-name>AdministrationEndPoint</servlet-name>
         <servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
@@ -81,10 +76,6 @@
     <servlet-mapping>
         <servlet-name>PedidoWS</servlet-name>
         <url-pattern>/PedidoWS</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>UtilitiesEndPoint</servlet-name>
-        <url-pattern>/UtilitiesEndPoint</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AdministrationEndPoint</servlet-name>

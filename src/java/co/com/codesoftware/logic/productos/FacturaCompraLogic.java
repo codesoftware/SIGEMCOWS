@@ -5,6 +5,8 @@
  */
 package co.com.codesoftware.logic.productos;
 
+import co.com.codesoftware.logica.admin.ParametrosEmpresaLogic;
+import co.com.codesoftware.persistence.entity.administracion.ParametrosEntity;
 import co.com.codesoftware.persistence.entity.administracion.RespuestaEntity;
 import co.com.codesoftware.persistence.entity.productos.FacturaCompraEntity;
 import co.com.codesoftware.persistence.entity.productos.ImagenesFacCompraEntity;
@@ -14,12 +16,14 @@ import co.com.codesoftware.persistencia.HibernateUtil;
 import co.com.codesoftware.persistencia.ReadFunction;
 import co.com.codesoftware.persistencia.utilities.DataType;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 
 /**
  *
@@ -94,7 +98,7 @@ public class FacturaCompraLogic implements AutoCloseable {
     public RespuestaEntity insertaPagoFC(List<PagoFacCompraEntity> pagos, Integer idFacturaCompra) {
         RespuestaEntity respuesta = new RespuestaEntity();
         try {
-            System.out.println("id"+idFacturaCompra);
+            System.out.println("id" + idFacturaCompra);
             for (PagoFacCompraEntity item : pagos) {
                 item.setId(selecMaxPago());
                 initOperation();
@@ -102,7 +106,7 @@ public class FacturaCompraLogic implements AutoCloseable {
                 sesion.save(item);
                 close();
             }
-            
+
             respuesta.setCodigoRespuesta(1);
         } catch (Exception e) {
             e.printStackTrace();
@@ -130,7 +134,7 @@ public class FacturaCompraLogic implements AutoCloseable {
                 sesion.save(item);
                 close();
             }
-            
+
             respuesta.setCodigoRespuesta(1);
         } catch (Exception e) {
             respuesta.setCodigoRespuesta(0);
@@ -267,6 +271,37 @@ public class FacturaCompraLogic implements AutoCloseable {
     }
 
     /**
+     * funcion que consulta las facturas por vencer
+     *
+     * @return
+     */
+    public List<FacturaCompraEntity> consultaFacturaCompraXVencer() {
+        List<FacturaCompraEntity> facturas = new ArrayList<>();
+        try {
+            ParametrosEmpresaLogic logic = new ParametrosEmpresaLogic();
+            ParametrosEntity param = logic.consultaDiasParametrizadosEnvioCorreo();
+            Date fechaFinal = new Date();
+            fechaFinal.setHours(23);
+            fechaFinal.setMinutes(59);
+            fechaFinal.setSeconds(59);
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(fechaFinal);
+            calendar.add(Calendar.DAY_OF_YEAR, Integer.parseInt(param.getValor())*-1);
+            Date fechaInicial = calendar.getTime();
+            initOperation();
+                    facturas = sesion.createCriteria(FacturaCompraEntity.class).
+                    add(Restrictions.between("fechaFacCompra", fechaInicial, fechaFinal)).
+                    add(Restrictions.ne("estado", "P")).
+                    list();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return facturas;
+
+    }
+
+    /**
      * Funcion que inicializa la clase de hibernate
      *
      * @throws HibernateException
@@ -285,7 +320,7 @@ public class FacturaCompraLogic implements AutoCloseable {
     public void close() throws Exception {
         if (tx != null) {
             tx.commit();
-            tx=null;
+            tx = null;
         }
         if (sesion != null) {
             sesion.close();

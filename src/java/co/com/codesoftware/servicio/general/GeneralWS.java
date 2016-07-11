@@ -5,10 +5,12 @@
  */
 package co.com.codesoftware.servicio.general;
 
+import co.com.codesoftware.logic.EnviaCorreosLogic;
 import co.com.codesoftware.logica.admin.ParametrosEmpresaLogic;
 import co.com.codesoftware.logica.admin.ResolucionFactLogica;
 import co.com.codesoftware.logica.admin.SedesLogica;
 import co.com.codesoftware.logica.admin.UbicacionLogica;
+import co.com.codesoftware.logica.admin.UsuarioLogica;
 import co.com.codesoftware.logica.facturacion.RemisionLogica;
 import co.com.codesoftware.logica.inventario.PagoRemisionLogica;
 import co.com.codesoftware.logica.reportes.ReporteLogica;
@@ -18,12 +20,15 @@ import co.com.codesoftware.persistencia.entidad.admin.DepartamentoEntity;
 import co.com.codesoftware.persistencia.entidad.admin.ParametrosEmpresaEntity;
 import co.com.codesoftware.persistencia.entidad.admin.ResolucionFactEntity;
 import co.com.codesoftware.persistencia.entidad.admin.SedeEntity;
+import co.com.codesoftware.persistencia.entidad.admin.UsuarioEntity;
 import co.com.codesoftware.persistencia.entidad.facturacion.DetProdRemision;
 import co.com.codesoftware.persistencia.entidad.facturacion.RemisionEntity;
 import co.com.codesoftware.persistencia.entidad.generico.facturacion.RelFacRemiGenEntity;
 import co.com.codesoftware.persistencia.entidad.inventario.DetallePagoRemision;
 import co.com.codesoftware.persistencia.entidad.inventario.PagoRemisionEntity;
+import co.com.codesoftware.wrapperrequest.CorreoWrapperRequest;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.jws.WebService;
@@ -294,8 +299,9 @@ public class GeneralWS {
 
     /**
      * metodo que consulta las ciudades por departamento
+     *
      * @param idDepto
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "obtenerCiudadesXDepartamento")
     @WebResult(name = "listaCiudades")
@@ -368,4 +374,41 @@ public class GeneralWS {
         }
         return rta;
     }
+
+    /**
+     * metodo que consulta los usuarios por permiso
+     *
+     * @param permiso
+     * @return
+     */
+    @WebMethod(operationName = "obtenerUsuariosXPermiso")
+    @WebResult(name = "listaUsuarios")
+    public List<UsuarioEntity> obtenerUsuariosXPermiso(@WebParam(name = "permiso") String permiso) {
+        List<UsuarioEntity> respuesta = new ArrayList<>();
+        try (UsuarioLogica logica = new UsuarioLogica()) {
+            respuesta = logica.consultaUsuariosXPermiso(permiso);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return respuesta;
+    }
+
+    /**
+     * metodo que envia correos
+     * @param mensajeCorreo
+     * @return 
+     */
+    @WebMethod(operationName = "enviaCorreo")
+    public String enviaCorreo(@WebParam(name = "mensajeCorreo") CorreoWrapperRequest mensajeCorreo) {
+        String rta = "";
+        try {
+            EnviaCorreosLogic logic = new EnviaCorreosLogic();
+            rta = logic.enviaCorreos(mensajeCorreo.getAsunto(), mensajeCorreo.getMensaje(), mensajeCorreo.getCorreo());
+        } catch (Exception e) {
+            rta = e.toString();
+            e.printStackTrace();
+        }
+        return rta;
+    }
+
 }
