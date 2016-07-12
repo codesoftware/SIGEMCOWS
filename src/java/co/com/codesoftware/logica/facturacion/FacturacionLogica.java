@@ -31,6 +31,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
 /**
@@ -816,6 +817,29 @@ public class FacturacionLogica implements AutoCloseable {
             e.printStackTrace();
         }
         return rta;
+    }
+    /**
+     * Funcion con la cual obtengo el valor de 
+     * @param valor
+     * @return 
+     */
+    public BigDecimal obtieneValorFacturasMes(Integer valor){
+        BigDecimal valorTotal = null;
+        System.out.println("Valor " + valor);
+        try {
+            this.initOperation();
+            Criteria crit = this.sesion.createCriteria(FacturaEntity.class);
+            crit.setProjection(Projections.sum("valor"));
+            if(valor == 0){
+                crit.add(Restrictions.sqlRestriction("to_char(fact_fec_ini , 'mm/yyyy') = to_char(now(), 'mm/yyyy')"));
+            }else{
+                crit.add(Restrictions.sqlRestriction("to_char(fact_fec_ini , 'mm/yyyy') =  to_char(current_date + interval '-"+valor+" month', 'mm/yyyy')"));
+            }
+            valorTotal = (BigDecimal) crit.uniqueResult();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return valorTotal;
     }
 
 }

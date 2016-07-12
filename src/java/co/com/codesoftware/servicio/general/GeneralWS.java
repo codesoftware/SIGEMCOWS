@@ -11,6 +11,7 @@ import co.com.codesoftware.logica.admin.ResolucionFactLogica;
 import co.com.codesoftware.logica.admin.SedesLogica;
 import co.com.codesoftware.logica.admin.UbicacionLogica;
 import co.com.codesoftware.logica.admin.UsuarioLogica;
+import co.com.codesoftware.logica.facturacion.FacturacionLogica;
 import co.com.codesoftware.logica.facturacion.RemisionLogica;
 import co.com.codesoftware.logica.inventario.PagoRemisionLogica;
 import co.com.codesoftware.logica.reportes.ReporteLogica;
@@ -391,6 +392,22 @@ public class GeneralWS {
             e.printStackTrace();
         }
         return respuesta;
+    }
+    /**
+     * Funcion con la cual valido 
+     * @param valor
+     * @return 
+     */
+    @WebMethod(operationName = "obtenerValorVentasMes")
+    @WebResult(name = "valor")
+    public BigDecimal obtenerValorVentasMes(@WebParam(name = "valor")Integer valor){
+        BigDecimal rta = null;
+        try (FacturacionLogica  objLogica = new FacturacionLogica()){
+            rta = objLogica.obtieneValorFacturasMes(valor);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
     }
 
     /**
