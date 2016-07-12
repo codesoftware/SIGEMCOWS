@@ -17,6 +17,7 @@ import co.com.codesoftware.logica.inventario.PagoRemisionLogica;
 import co.com.codesoftware.logica.reportes.ReporteLogica;
 import co.com.codesoftware.persistence.entities.MapaEntity;
 import co.com.codesoftware.persistencia.entidad.admin.CiudadEntity;
+import co.com.codesoftware.persistencia.entidad.admin.ClienteEntity;
 import co.com.codesoftware.persistencia.entidad.admin.DepartamentoEntity;
 import co.com.codesoftware.persistencia.entidad.admin.ParametrosEmpresaEntity;
 import co.com.codesoftware.persistencia.entidad.admin.ResolucionFactEntity;
@@ -427,5 +428,5 @@ public class GeneralWS {
         }
         return rta;
     }
-
+  
 }

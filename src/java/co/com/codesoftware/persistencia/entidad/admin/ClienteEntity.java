@@ -25,6 +25,8 @@ public class ClienteEntity implements Serializable {
     private String correo;
     @Column(name = "CLIEN_DIRECCION")
     private String direccion;
+     @Column(name = "CLIEN_DVERI")
+    private Integer dVerificacion;
 
     public Integer getId() {
         return id;
@@ -81,5 +83,15 @@ public class ClienteEntity implements Serializable {
     public void setDireccion(String direccion) {
         this.direccion = direccion;
     }
+
+    public Integer getdVerificacion() {
+        return dVerificacion;
+    }
+
+    public void setdVerificacion(Integer dVerificacion) {
+        this.dVerificacion = dVerificacion;
+    }
+    
+    
 
 }
