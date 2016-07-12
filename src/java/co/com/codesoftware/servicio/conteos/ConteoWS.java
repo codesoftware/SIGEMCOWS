@@ -116,5 +116,37 @@ public class ConteoWS {
         }
         return rta;
     }
+    /**
+     * Funcion con la cual obtengo un conteo por medio de su id
+     * @param idConteo
+     */
+    @WebMethod(operationName = "obtenerConteo")
+    @WebResult(name = "conteo")
+    public ConteoEntity obtenerConteo(@WebParam(name = "idConteo")Integer idConteo){
+        ConteoEntity objEntity = null;
+        try (ConteoLogica objLogica = new ConteoLogica()){
+            objEntity = objLogica.obtenerConteoXId(idConteo);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return objEntity;
+    }
+    /**
+     * Funcion con la cual ejecuta el cierre de conteo
+     * @param idConteo
+     * @return 
+     */
+    @WebMethod(operationName = "ejecutaCierreConteo")
+    @WebResult(name = "conteo")
+    public String ejecutaCierreConteo(Integer idConteo){
+        String rta = "";
+        try {
+            ConteoLogica objLogica = new ConteoLogica();
+            rta = objLogica.cierraConteo(idConteo);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
 
 }

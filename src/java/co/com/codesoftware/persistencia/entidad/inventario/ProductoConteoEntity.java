@@ -5,7 +5,6 @@ package co.com.codesoftware.persistencia.entidad.inventario;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -34,6 +33,10 @@ public class ProductoConteoEntity implements Serializable {
     private ProductoEntity producto;
     @Column(name = "ecop_valor")
     private Integer cantidad;
+    @Column(name = "ECOP_EXISTENCIAS")
+    private Integer existencia;
+    @Column(name = "ECOP_DIFERENCIA")
+    private Integer diferencia;
 
     public Integer getId() {
         return id;
@@ -65,6 +68,22 @@ public class ProductoConteoEntity implements Serializable {
 
     public void setConteo(ConteoEntity conteo) {
         this.conteo = conteo;
+    }
+
+    public Integer getExistencia() {
+        return existencia;
+    }
+
+    public void setExistencia(Integer existencia) {
+        this.existencia = existencia;
+    }
+
+    public Integer getDiferencia() {
+        return diferencia;
+    }
+
+    public void setDiferencia(Integer diferencia) {
+        this.diferencia = diferencia;
     }
 
 }

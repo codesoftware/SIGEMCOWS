@@ -36,7 +36,15 @@ public class ConteoLogica implements AutoCloseable {
     private String llamadoFunction;
     private String idFactura;
     private String mensaje;
-
+    /**
+     * Funcion con la cual inserto un conteo 
+     * @param codigoConteo
+     * @param codigoProducto
+     * @param cantidad
+     * @param codigoBarras
+     * @param ubicacion
+     * @return 
+     */
     public RespuestaEntity insProdConteo(Integer codigoConteo, String codigoProducto, Integer cantidad, String codigoBarras, String ubicacion) {
         RespuestaEntity res = new RespuestaEntity();
         try {
@@ -273,6 +281,30 @@ public class ConteoLogica implements AutoCloseable {
         }
         return rta;
     }
+    /**
+     * Funcion con la cual cierro un conteo en el sistema
+     * @param conteo
+     * @return 
+     */
+    public String cierraConteo(Integer conteo){
+        String rta = "";
+        List<String> response = new ArrayList<>();
+        try (ReadFunction rf = new ReadFunction()) {
+            rf.setNombreFuncion("IN_CIERRA_CONTEO");
+            rf.setNumParam(1);
+            rf.adicionarParametro(conteo, DataType.INT);
+            boolean valida = rf.llamarFuncion();
+            if(valida){
+                
+            }else{
+            }
+        } catch (Exception e) {
+            llamadoFunction = "error";
+            rta = e.toString();
+            e.printStackTrace();
+        }
+        return rta;
+    }
 
     /**
      * Funcion que consulta un producto especifico del conteo
@@ -353,6 +385,23 @@ public class ConteoLogica implements AutoCloseable {
             e.printStackTrace();
         }
         return rta;
+    }
+    /**
+     * Funcion con la cual obtengo un conteo por medio de us id
+     * @param idConteo
+     * @return 
+     */
+    public ConteoEntity obtenerConteoXId(Integer idConteo){
+        ConteoEntity conteo = null;
+        try {
+            this.initOperation();
+            Criteria crit = this.sesion.createCriteria(ConteoEntity.class);
+            crit.add(Restrictions.eq("id", idConteo));
+            conteo = (ConteoEntity) crit.uniqueResult();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return conteo;
     }
     /**
      * Funcion con la cual obtengo el max de un conteo
