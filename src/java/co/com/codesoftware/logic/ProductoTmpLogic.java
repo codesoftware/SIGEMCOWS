@@ -12,8 +12,10 @@ import co.com.codesoftware.persistencia.HibernateUtil;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 
 /**
@@ -36,15 +38,20 @@ public class ProductoTmpLogic implements AutoCloseable {
         RespuestaEntity respuesta = new RespuestaEntity();
         List<ProductoTmpEntity> listaBorrar = null;
         try {
-            Criteria crit = sesion.createCriteria(ProductoTmpEntity.class);
-            listaBorrar = crit.list();
-            if (!listaBorrar.isEmpty()) {
-                for (ProductoTmpEntity iteratorBorrar : listaBorrar) {
-                    sesion.delete(iteratorBorrar);
-                }
-            }
+            Query  query = this.sesion.createQuery("delete ProductoTmpEntity ");
+            query.executeUpdate();
+            this.close();
+            this.sesion = null;
+            this.tx = null;
+            this.initOperation();
+//            Criteria crit = sesion.createCriteria(ProductoTmpEntity.class);
+//            listaBorrar = crit.list();
+//            if (!listaBorrar.isEmpty()) {
+//                for (ProductoTmpEntity iteratorBorrar : listaBorrar) {
+//                    sesion.delete(iteratorBorrar);
+//                }
+//            }
             for (ProductoTmpEntity iterator : productos) {
-                iterator.setId(consultaMax());
                 sesion.save(iterator);
             }
             respuesta.setCodigoRespuesta(1);
@@ -86,6 +93,7 @@ public class ProductoTmpLogic implements AutoCloseable {
         List<ProductoTmpEntity> respuesta = null;
         try {
             Criteria crit = sesion.createCriteria(ProductoTmpEntity.class);
+            crit.addOrder(Order.asc("id"));
             respuesta = crit.list();
         } catch (Exception e) {
             e.printStackTrace();

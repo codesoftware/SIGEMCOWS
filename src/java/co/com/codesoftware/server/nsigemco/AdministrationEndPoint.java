@@ -422,6 +422,24 @@ public class AdministrationEndPoint {
         return respuesta;
 
     }
+    /**
+     * Funcion con la cual registro porductos en el excel
+     * @return 
+     */
+    @WebMethod(operationName = "registroProductosExcel")
+    public RespuestaEntity registroProductosExcel() {
+        RespuestaEntity respuesta = new RespuestaEntity();
+        try (ProductoLogic logic = new ProductoLogic()) {
+            respuesta = logic.registroProductos();
+        } catch (Exception e) {
+            e.printStackTrace();
+            respuesta.setCodigoRespuesta(0);
+            respuesta.setDescripcionRespuesta(e.getMessage());
+            respuesta.setMensajeRespuesta("ERROR" + e.getMessage());
+        }
+        return respuesta;
+
+    }
 
     /**
      * Metodo con el cual se realiza el login de un usuario

@@ -147,7 +147,7 @@ public class ProductoLogic implements AutoCloseable {
                     .setFetchMode("referencia", FetchMode.JOIN)
                     .setFetchMode("marca", FetchMode.JOIN)
                     .setFetchMode("categoria", FetchMode.JOIN)
-                    .setFetchMode("subcuenta", FetchMode.JOIN); 
+                    .setFetchMode("subcuenta", FetchMode.JOIN);
             respuesta = crit.list();
         } catch (Exception e) {
             e.printStackTrace();
@@ -738,9 +738,9 @@ public class ProductoLogic implements AutoCloseable {
             if (imagen != null && "".equalsIgnoreCase(imagen) && "-1".equalsIgnoreCase(imagen)) {
                 criteria.add(Restrictions.eq("rutaImagen", imagen));
             }
-            if("S".equalsIgnoreCase(digitalizado)){
+            if ("S".equalsIgnoreCase(digitalizado)) {
                 criteria.add(Restrictions.sqlRestriction(" exists (select 1 from fa_timfac where imfac_facom = facom_facom) "));
-            }else if ("N".equalsIgnoreCase(digitalizado)){
+            } else if ("N".equalsIgnoreCase(digitalizado)) {
                 criteria.add(Restrictions.sqlRestriction(" not exists (select 1 from fa_timfac where imfac_facom = facom_facom) "));
             }
             lista = criteria.list();
@@ -784,7 +784,7 @@ public class ProductoLogic implements AutoCloseable {
      * @param fechaFin
      * @return
      */
-    public List<KardexProductoEntity> buscaKardexProducto(Integer idDska, Integer idSede,Date fechaIni, Date fechaFin) {
+    public List<KardexProductoEntity> buscaKardexProducto(Integer idDska, Integer idSede, Date fechaIni, Date fechaFin) {
         List<KardexProductoEntity> rta = null;
         try {
             initOperation();
@@ -792,13 +792,13 @@ public class ProductoLogic implements AutoCloseable {
             crit.add(Restrictions.eq("prod.id", idDska)).setFetchMode("sede", FetchMode.JOIN).
                     setFetchMode("producto", FetchMode.JOIN).setFetchMode("usuario", FetchMode.JOIN).
                     setFetchMode("usuario.persona", FetchMode.JOIN).setFetchMode("usuario.sede", FetchMode.JOIN).
-                    setFetchMode("usuario.idPerfil", FetchMode.JOIN).setFetchMode("movInv", FetchMode.JOIN);            
+                    setFetchMode("usuario.idPerfil", FetchMode.JOIN).setFetchMode("movInv", FetchMode.JOIN);
             crit.addOrder(Order.desc("id"));
-            if(fechaIni != null && fechaFin == null){
+            if (fechaIni != null && fechaFin == null) {
                 crit.add(Restrictions.ge("fecha", fechaIni));
-            }else if(fechaIni == null && fechaFin != null){
+            } else if (fechaIni == null && fechaFin != null) {
                 crit.add(Restrictions.lt("fecha", fechaFin));
-            }else if(fechaIni != null && fechaFin != null){
+            } else if (fechaIni != null && fechaFin != null) {
                 crit.add(Restrictions.between("fecha", fechaIni, fechaFin));
             }
             if (idSede != -1) {
@@ -809,6 +809,46 @@ public class ProductoLogic implements AutoCloseable {
             e.printStackTrace();
         }
         return rta;
+    }
+
+    /**
+     * Funcion con la cual registro los productos sin realizar movimientos
+     * contables ni inventarios
+     *
+     * @return
+     */
+    public RespuestaEntity registroProductos() {
+        RespuestaEntity respuesta = new RespuestaEntity();
+        List<String> response = new ArrayList<>();
+        try (ReadFunction rf = new ReadFunction()) {
+            rf.setNombreFuncion("in_finsertaexceltmp");
+            rf.setNumParam(0);
+            boolean valida = rf.callFunctionJdbc();
+            if (valida) {
+                response = rf.getRespuestaPg();
+                if ("Ok".equalsIgnoreCase(response.get(0))) {
+                    respuesta.setCodigoRespuesta(0);
+                    respuesta.setMensajeRespuesta("Ok");
+                    respuesta.setDescripcionRespuesta("INGRESO EXITOSO");
+                } else {
+                    respuesta.setCodigoRespuesta(1);
+                    respuesta.setMensajeRespuesta("Error al ingresar los productos masivamente");
+                    respuesta.setDescripcionRespuesta("Error enviado desde postgres... " + response.get(0));
+                }
+
+            } else {
+                respuesta.setCodigoRespuesta(1);
+                respuesta.setMensajeRespuesta(rf.getRespuesta());
+                respuesta.setDescripcionRespuesta("Error al llamar a la funcion de ingreso de productos por excel");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            respuesta.setCodigoRespuesta(0);
+            respuesta.setMensajeRespuesta(e.getMessage());
+            respuesta.setDescripcionRespuesta(e.toString());
+        }
+        return respuesta;
+
     }
 
     private void initOperation() throws HibernateException {
