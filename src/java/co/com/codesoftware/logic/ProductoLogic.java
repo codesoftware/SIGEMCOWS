@@ -413,7 +413,12 @@ public class ProductoLogic implements AutoCloseable {
         List<ProductoSimpleEntity> respuesta = null;
         try {
             initOperation();
-            respuesta = sesion.createCriteria(ProductoSimpleEntity.class).list();
+            Criteria crit = sesion.createCriteria(ProductoSimpleEntity.class);
+            crit.setFetchMode("referenciaObj", FetchMode.JOIN);
+            crit.setFetchMode("categoriaObj", FetchMode.JOIN);
+            crit.setFetchMode("marcaObj", FetchMode.JOIN);
+            crit.addOrder(Order.asc("id"));
+            respuesta = crit.list();
         } catch (Exception e) {
             e.printStackTrace();
         }
