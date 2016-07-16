@@ -34,7 +34,11 @@ public class ConteoWS {
      */
     @WebMethod(operationName = "insertaProductoConteo")
     @WebResult(name = "RespuestaEntity")
-    public RespuestaEntity insertaProductoConteo(@WebParam(name = "codExterno") String codExterno, @WebParam(name = "codConteo") Integer codConteo, @WebParam(name = "cantidad") Integer Cantidad, @WebParam(name = "codigoBarras") String codigoBarras, @WebParam(name = "ubicacion") String ubicacion) {
+    public RespuestaEntity insertaProductoConteo(@WebParam(name = "codExterno") String codExterno, 
+            @WebParam(name = "codConteo") Integer codConteo, 
+            @WebParam(name = "cantidad") Integer Cantidad, 
+            @WebParam(name = "codigoBarras") String codigoBarras, 
+            @WebParam(name = "ubicacion") String ubicacion) {
         RespuestaEntity rta = null;
         try (ConteoLogica logic = new ConteoLogica()) {
             rta = logic.insProdConteo(codConteo, codExterno, Cantidad, codigoBarras, ubicacion);
