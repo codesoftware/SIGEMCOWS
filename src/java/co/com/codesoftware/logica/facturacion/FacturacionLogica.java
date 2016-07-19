@@ -99,7 +99,7 @@ public class FacturacionLogica implements AutoCloseable {
             if (idFactura == null) {
                 idFactura = 0;
             }
-            idFactura = idFactura - iniFact;
+           //idFactura = idFactura - iniFact;
             if (idFactura > 0) {
                 crit.add(Restrictions.eq("id", idFactura));
             } else {
