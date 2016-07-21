@@ -48,7 +48,7 @@ public class ProveedoresEntity implements Serializable {
     private String dverificacion;
     @Column(name = "prov_dcre")
     private Integer dcredito;
-     @Column(name = "prov_rete")
+    @Column(name = "prov_rete")
     private BigDecimal porcRetencion;
     @Column(name = "prov_corre")
     private String correo;
@@ -63,7 +63,6 @@ public class ProveedoresEntity implements Serializable {
     @JoinColumn(name = "prov_mpio")
     @OneToOne(fetch = FetchType.LAZY)
     private DepartamentoEntity municipio;
-    
 
     public Integer getId() {
         return id;
@@ -200,8 +199,5 @@ public class ProveedoresEntity implements Serializable {
     public void setPorcRetencion(BigDecimal porcRetencion) {
         this.porcRetencion = porcRetencion;
     }
-
-
-    
 
 }
