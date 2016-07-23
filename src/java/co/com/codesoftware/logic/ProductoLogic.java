@@ -599,9 +599,16 @@ public class ProductoLogic implements AutoCloseable {
         List<PorcentajePrecioEntity> rta = null;
         try {
             initOperation();
-            Query query = sesion.createQuery("from PorcentajePrecioEntity where estado = :estado ");
-            query.setString("estado", estado);
-            rta = query.list();
+            Criteria crit = this.sesion.createCriteria(PorcentajePrecioEntity.class);
+            crit.add(Restrictions.eq("estado", estado));
+            crit.setFetchMode("sede", FetchMode.JOIN);
+            crit.setFetchMode("categoria", FetchMode.JOIN);
+            crit.setFetchMode("referencia", FetchMode.JOIN);
+            crit.setFetchMode("marca", FetchMode.JOIN);
+            //Query query = sesion.createQuery("from PorcentajePrecioEntity where estado = :estado ");
+            //query.setString("estado", estado);
+            
+            rta = crit.list();
         } catch (Exception e) {
             e.printStackTrace();
             rta = null;
@@ -616,25 +623,29 @@ public class ProductoLogic implements AutoCloseable {
      * @param estado
      * @param idSede
      * @param idCate
+     * @param idRefe
+     * @param idMarca
      * @return
      */
     public List<PorcentajePrecioEntity> buscaPorcentajePrecioXFiltros(String estado, Integer idSede, Integer idCate, Integer idRefe, Integer idMarca) {
         List<PorcentajePrecioEntity> rta;
         try {
             initOperation();
-            Criteria criteria = sesion.createCriteria(PorcentajePrecioEntity.class).
-                    createAlias("sede", "sed").add(Restrictions.eq("sed.id", idSede)).
-                    createAlias("referencia", "ref").createAlias("marca", "marc").add(Restrictions.eq("estado", estado)).
-                    createAlias("categoria", "cate").add(Restrictions.eq("cate.id", idCate)).addOrder(Order.asc("fecha")).
-                    addOrder(Order.asc("sed.nombre")).addOrder(Order.asc("cate.descripcion")).
-                    addOrder(Order.asc("ref.descripcion")).addOrder(Order.asc("marc.descripcion"));
+            Criteria criteria = sesion.createCriteria(PorcentajePrecioEntity.class);
+            criteria.setFetchMode("sede", FetchMode.JOIN);
+            criteria.setFetchMode("categoria", FetchMode.JOIN);
+            criteria.setFetchMode("referencia", FetchMode.JOIN);
+            criteria.setFetchMode("marca", FetchMode.JOIN);
+            criteria.add(Restrictions.eq("estado", estado));
+            criteria.add(Restrictions.eq("sede.id", idSede)); 
+            criteria.add(Restrictions.eq("categoria.id", idCate)); 
             if (!"-1".equalsIgnoreCase(idRefe.toString().trim())) {
-                criteria.add(Restrictions.eq("ref.id", idRefe));
+                criteria.add(Restrictions.eq("referencia.id", idRefe));
             }
             if (!"-1".equalsIgnoreCase(idMarca.toString().trim())) {
-                criteria.add(Restrictions.eq("marc.id", idMarca));
+                criteria.add(Restrictions.eq("marca.id", idMarca));
             }
-
+            
             rta = criteria.list();
         } catch (Exception e) {
             e.printStackTrace();

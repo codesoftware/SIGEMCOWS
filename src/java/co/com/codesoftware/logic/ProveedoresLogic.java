@@ -39,6 +39,8 @@ public class ProveedoresLogic implements AutoCloseable {
             Criteria crit = sesion.createCriteria(ProveedoresEntity.class);
             crit.add(Restrictions.eq("estado", "A"));
             crit.setFetchMode("retenciones", FetchMode.JOIN);
+            crit.setFetchMode("municipio", FetchMode.JOIN);
+            crit.setFetchMode("ciudad", FetchMode.JOIN);
             //crit.setFetchMode("", FetchMode.JOIN);
             respuesta = crit.list();
             

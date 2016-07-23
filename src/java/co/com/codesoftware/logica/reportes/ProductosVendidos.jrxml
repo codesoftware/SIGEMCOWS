@@ -13,7 +13,6 @@ where upper(facom_estad) = 'F'
 and fcprd_facom = facom_facom
 and fcprd_dska = dska_dska) prodComp
 FROM IN_TDSKA
-where dska_dska = 1
 order by dska_dska]]>
 	</queryString>
 	<field name="dska_cod_ext" class="java.lang.String"/>

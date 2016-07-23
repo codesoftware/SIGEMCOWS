@@ -11,13 +11,13 @@ import co.com.codesoftware.logica.admin.ResolucionFactLogica;
 import co.com.codesoftware.logica.admin.SedesLogica;
 import co.com.codesoftware.logica.admin.UbicacionLogica;
 import co.com.codesoftware.logica.admin.UsuarioLogica;
+import co.com.codesoftware.logica.excel.ExcelLogica;
 import co.com.codesoftware.logica.facturacion.FacturacionLogica;
 import co.com.codesoftware.logica.facturacion.RemisionLogica;
 import co.com.codesoftware.logica.inventario.PagoRemisionLogica;
 import co.com.codesoftware.logica.reportes.ReporteLogica;
 import co.com.codesoftware.persistence.entities.MapaEntity;
 import co.com.codesoftware.persistencia.entidad.admin.CiudadEntity;
-import co.com.codesoftware.persistencia.entidad.admin.ClienteEntity;
 import co.com.codesoftware.persistencia.entidad.admin.DepartamentoEntity;
 import co.com.codesoftware.persistencia.entidad.admin.ParametrosEmpresaEntity;
 import co.com.codesoftware.persistencia.entidad.admin.ResolucionFactEntity;
@@ -424,6 +424,28 @@ public class GeneralWS {
             rta = logic.enviaCorreos(mensajeCorreo.getAsunto(), mensajeCorreo.getMensaje(), mensajeCorreo.getCorreo());
         } catch (Exception e) {
             rta = e.toString();
+            e.printStackTrace();
+        }
+        return rta;
+    }
+    /**
+     * Funcion con la cual genera un excel apartir de una sentencia sql
+     * @param sql
+     * @return 
+     */
+    @WebMethod(operationName = "generarExcelSql")
+    public String generarExcelSql(@WebParam(name = "sql")String sql ){
+        String rta = "";
+        try {
+            ExcelLogica excel = new ExcelLogica();
+            //excel.setRuta("D:/Prueba.xls");
+            String valida = excel.generarExcel(sql);
+            if ("Ok".equalsIgnoreCase(valida)){
+                rta = excel.transformaExcelBase64();
+            }else {
+                rta = "Error al generar el excel";
+            }
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return rta;

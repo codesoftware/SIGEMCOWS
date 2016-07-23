@@ -6,7 +6,7 @@
 	<parameter name="pedi_pedi" class="java.lang.String"/>
 	<parameter name="rutaImagen" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[select pedi_fech, clien_cedula, UPPER(clien_nombres || ' ' ||clien_apellidos) nombre, (select count(*) + 1  from in_tpedi where pedi_esta = 'CO' and pedi_pedi < cast($P{pedi_pedi} as int) ) contador,
+		<![CDATA[select to_char(pedi_fech,'dd/mm/yyyy') pedi_fech, clien_cedula, UPPER(clien_nombres || ' ' ||clien_apellidos) nombre, (select count(*) + 1  from in_tpedi where pedi_esta = 'CO' and pedi_pedi < cast($P{pedi_pedi} as int) ) contador,
 sede_nombre, sede_direccion, sede_telefono,
 (select UPPER(para_valor) from em_tpara where para_clave = 'NOMBREEMPRESA') nomEmp,
 (select 'NIT: '||para_valor from em_tpara where para_clave = 'NIT') nitEmp,
@@ -32,7 +32,7 @@ AND PEDPROD_PEDI = pedi_pedi
 and pedi_usu = tius_tius
 and tius_pers = pers_pers]]>
 	</queryString>
-	<field name="pedi_fech" class="java.sql.Timestamp">
+	<field name="pedi_fech" class="java.lang.String">
 		<fieldDescription><![CDATA[fecha de creacion del pedido]]></fieldDescription>
 	</field>
 	<field name="clien_cedula" class="java.lang.String"/>
@@ -169,7 +169,7 @@ and tius_pers = pers_pers]]>
 					<text><![CDATA[ATENDIDO POR:]]></text>
 				</staticText>
 				<textField>
-					<reportElement x="154" y="0" width="427" height="20" uuid="59efd0e0-5c57-4b26-a5ca-c1d006b661d6"/>
+					<reportElement x="154" y="0" width="207" height="20" uuid="59efd0e0-5c57-4b26-a5ca-c1d006b661d6"/>
 					<textElement verticalAlignment="Middle"/>
 					<textFieldExpression><![CDATA[$F{atendido}]]></textFieldExpression>
 				</textField>
@@ -182,6 +182,18 @@ and tius_pers = pers_pers]]>
 					<reportElement x="361" y="60" width="220" height="20" uuid="063d1f54-373c-4963-87e4-a1c2827363fe"/>
 					<textElement verticalAlignment="Middle"/>
 					<textFieldExpression><![CDATA[$F{clien_direccion}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="361" y="1" width="55" height="20" uuid="b2661573-a1f0-42fd-b26d-850abb912d6c"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[FECHA:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="430" y="0" width="151" height="20" uuid="744c5c1d-cbdc-47c0-96dc-a4c74e1a7a86"/>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{pedi_fech}]]></textFieldExpression>
 				</textField>
 			</frame>
 			<frame>

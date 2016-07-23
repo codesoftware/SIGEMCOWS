@@ -14,8 +14,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 /**
@@ -81,6 +83,11 @@ public class FacturaCompraTmpLogica implements AutoCloseable {
         try {
             this.initOperation();
             Criteria crit = sesion.createCriteria(FacturaCompraTmpEntity.class);
+            crit.setFetchMode("proveedor", FetchMode.JOIN);
+            crit.setFetchMode("proveedor.retenciones", FetchMode.JOIN);
+            crit.setFetchMode("proveedor.ciudad", FetchMode.JOIN);
+            crit.setFetchMode("proveedor.municipio", FetchMode.JOIN);
+            crit.setFetchMode("sede", FetchMode.JOIN);
             if (!"".equalsIgnoreCase(estado)) {
                 crit.add(Restrictions.eq("estado", estado));
             }
@@ -93,8 +100,8 @@ public class FacturaCompraTmpLogica implements AutoCloseable {
             if (idSede != null && idSede != 0) {
                 crit.createAlias("sede", "s").add(Restrictions.eq("s.id", idSede));
             }
+            crit.addOrder(Order.desc("id"));
             rta = crit.list();
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -112,8 +119,13 @@ public class FacturaCompraTmpLogica implements AutoCloseable {
         FacturaCompraTmpEntity respuesta = new FacturaCompraTmpEntity();
         try {
             initOperation();
-            respuesta = (FacturaCompraTmpEntity) sesion.createCriteria(FacturaCompraTmpEntity.class)
-                    .add(Restrictions.eq("id", idFactura)).uniqueResult();
+            Criteria crit = this.sesion.createCriteria(FacturaCompraTmpEntity.class);
+            crit.setFetchMode("proveedor", FetchMode.EAGER);
+            crit.setFetchMode("sede", FetchMode.JOIN);
+            crit.setFetchMode("proveedor.retenciones", FetchMode.JOIN);
+            crit.setFetchMode("proveedor.municipio", FetchMode.JOIN);
+            crit.setFetchMode("proveedor.ciudad", FetchMode.JOIN);
+            respuesta = (FacturaCompraTmpEntity) crit.add(Restrictions.eq("id", idFactura)).uniqueResult();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -175,6 +187,13 @@ public class FacturaCompraTmpLogica implements AutoCloseable {
             initOperation();
             Criteria crit = sesion.createCriteria(ProdFacCompraTmpEntity.class)
                     .add(Restrictions.eq("idFacturaCompra", idFactura));
+            crit.setFetchMode("producto", FetchMode.JOIN);
+            crit.setFetchMode("producto.producto", FetchMode.JOIN);
+            crit.setFetchMode("producto.marca", FetchMode.JOIN);
+            crit.setFetchMode("producto.categoria", FetchMode.JOIN);
+            crit.setFetchMode("producto.subcuenta", FetchMode.JOIN);
+            crit.setFetchMode("producto.referencia", FetchMode.JOIN);
+            
             rta = crit.list();
         } catch (Exception e) {
             e.printStackTrace();
@@ -213,9 +232,11 @@ public class FacturaCompraTmpLogica implements AutoCloseable {
     }
 
     /**
-     * metodo que invoca la funcion que actualiza los valores en la tabla de factura de compra temporal
+     * metodo que invoca la funcion que actualiza los valores en la tabla de
+     * factura de compra temporal
+     *
      * @param idFacturaTmp
-     * @return 
+     * @return
      */
     public String llamaProcedimientoValoresFC(Integer idFacturaTmp) {
         String rta = "";
