@@ -52,20 +52,37 @@ public class FacturacionLogica implements AutoCloseable {
      * @param fechaInicial
      * @param fechaFinal
      * @param sede
+     * @param estado
      * @return
      */
     public List<FacturaEntity> obtieneFacturasXSede(Date fechaInicial,
             Date fechaFinal,
-            Integer sede) {
+            Integer sede, 
+            String estado) {
         List<FacturaEntity> rta = null;
         try {
             initOperation();
-            Integer iniFact = this.buscaConcecutivoFactura();
-            rta = sesion.createCriteria(FacturaEntity.class)
-                    .setFetchMode("idSede", FetchMode.JOIN)
+            Criteria crit = this.sesion.createCriteria(FacturaEntity.class);
+            crit.setFetchMode("idSede", FetchMode.JOIN)
                     .setFetchMode("cliente", FetchMode.JOIN)
                     .createAlias("idSede", "sed").add(Restrictions.eq("sed.id", sede))
-                    .add(Restrictions.between("fecha", fechaInicial, fechaFinal)).addOrder(Order.desc("id")).list();
+                    .add(Restrictions.between("fecha", fechaInicial, fechaFinal)).addOrder(Order.desc("id"));
+            if(estado == null){
+                estado = "";
+            }
+            if(!"".equalsIgnoreCase(estado.trim())){
+                if("R".equalsIgnoreCase(estado.trim())){
+                    crit.add(Restrictions.sqlRestriction("fact_fact in (select remi_fact from in_tremi)"));
+                }else if("PC".equalsIgnoreCase(estado.trim())){
+                    String []valores = new String[] { "S", "A","R"};
+                    crit.add(Restrictions.in("estado", valores));
+                }else if("P".equalsIgnoreCase(estado.trim())){
+                    crit.add(Restrictions.eq("estado", estado.trim()));
+                }else if("C".equalsIgnoreCase(estado.trim())){
+                    crit.add(Restrictions.eq("estado", estado.trim()));
+                }
+            }
+            rta = crit.list();
         } catch (Exception e) {
             e.printStackTrace();
         }
