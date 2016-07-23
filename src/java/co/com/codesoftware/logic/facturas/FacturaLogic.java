@@ -15,6 +15,7 @@ import co.com.codesoftware.persistencia.ReadFunction;
 import co.com.codesoftware.persistencia.utilities.DataType;
 import co.com.codesoftware.wrapperrequest.CancelaFacturaWrapRequest;
 import java.util.List;
+import org.hibernate.FetchMode;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -68,7 +69,7 @@ public class FacturaLogic implements AutoCloseable {
         List<HistorialFacturaEntity> rta = null;
         try {
             initOperation();
-            rta = sesion.createCriteria(HistorialFacturaEntity.class).
+            rta = sesion.createCriteria(HistorialFacturaEntity.class).setFetchMode("idUsuario", FetchMode.JOIN).
                     add(Restrictions.eq("idFactura", idFactura)).list();
         } catch (Exception e) {
             e.printStackTrace();
