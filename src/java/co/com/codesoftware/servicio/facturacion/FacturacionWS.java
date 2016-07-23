@@ -160,15 +160,17 @@ public class FacturacionWS {
      * @param fInicial
      * @param fFinal
      * @param idSede
+     * @param estado
      * @return
      */
     @WebMethod(operationName = "obtenerFacturasSede")
     @WebResult(name = "listaFacturas")
     public List<FacturaEntity> obtenerFacturasSede(@XmlElement(required = true) @WebParam(name = "fInicial") Date fInicial, @XmlElement(required = true) @WebParam(name = "fFinal") Date fFinal,
-            @XmlElement(required = true) @WebParam(name = "idSede") Integer idSede) {
+            @XmlElement(required = true) @WebParam(name = "idSede") Integer idSede,
+            @XmlElement(required = true) @WebParam(name = "estado") String estado) {
         List<FacturaEntity> rta = null;
         try (FacturacionLogica logica = new FacturacionLogica()) {
-            rta = logica.obtieneFacturasXSede(fInicial, fFinal, idSede);
+            rta = logica.obtieneFacturasXSede(fInicial, fFinal, idSede,estado);
         } catch (Exception e) {
             e.printStackTrace();
         }
