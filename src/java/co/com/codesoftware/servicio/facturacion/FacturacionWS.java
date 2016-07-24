@@ -187,7 +187,6 @@ public class FacturacionWS {
     @WebMethod(operationName = "obtenerMovimientoContableXFac")
     public List<MoviContableEntity> obtenerMovimientoContableXFac(@WebParam(name = "idFactura") Integer idFactura, @WebParam(name = "estado") String estado) {
         List<MoviContableEntity> lista = null;
-        System.out.println("id" + estado);
         try (FacturacionLogica logica = new FacturacionLogica()) {
             lista = logica.consultaMovContableXFac(idFactura, estado);
         } catch (Exception e) {

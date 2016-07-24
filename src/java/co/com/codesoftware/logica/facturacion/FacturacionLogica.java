@@ -804,6 +804,7 @@ public class FacturacionLogica implements AutoCloseable {
             rta = crit.addOrder(Order.asc("naturaleza"))
                     .setFetchMode("subcuenta", FetchMode.JOIN)
                     .setFetchMode("tipoDocumento", FetchMode.JOIN)
+                    .setFetchMode("auxiliar", FetchMode.JOIN)
                     .list();
 
         } catch (Exception e) {
