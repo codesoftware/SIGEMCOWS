@@ -405,7 +405,6 @@ public class FacturacionWS {
     public String llamaProcedimientoValoresFacturaTMP(@WebParam(name = "idFacturaCompra") Integer idFactura) {
         String rta = "";
         try {
-            System.out.println("valor factura"+idFactura);
             FacturaCompraTmpLogica logica = new FacturaCompraTmpLogica();
             rta = logica.llamaProcedimientoValoresFC(idFactura);
         } catch (Exception e) {

@@ -241,7 +241,6 @@ public class FacturaCompraTmpLogica implements AutoCloseable {
     public String llamaProcedimientoValoresFC(Integer idFacturaTmp) {
         String rta = "";
         try (ReadFunction rf = new ReadFunction()) {
-            System.err.println(idFacturaTmp);
             List<String> response = new ArrayList<>();
             rf.setNombreFuncion("FA_CALCULA_PAGOS_FAC_COMPRA");
             rf.setNumParam(1);
