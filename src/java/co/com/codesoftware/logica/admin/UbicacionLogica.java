@@ -12,6 +12,7 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 /**
@@ -70,6 +71,7 @@ public class UbicacionLogica implements AutoCloseable {
             this.initOperation();
             Criteria crit = sesion.createCriteria(CiudadEntity.class);
             crit.add(Restrictions.eq("departamento", idDepto));
+            crit.addOrder(Order.asc("nombre"));
             rta = crit.list();
         } catch (Exception e) {
             e.printStackTrace();
