@@ -81,6 +81,25 @@ public class ProductosGenericosLogica {
         }
         return rta;
     }
+    /**
+     * funcion que consulta un producto por el codigo externo
+     * @param codigoExt
+     * @return 
+     */
+    public ProductoGenericoEntity buscaProductoXCodigoExt(String codigoExt){
+        ProductoGenericoEntity producto = new ProductoGenericoEntity();
+        try (ProductoLogica logica = new ProductoLogica()){
+            ProductoEntity productoEntitiy = new ProductoEntity();
+
+            productoEntitiy = logica.obtieneProductoXCodigo(codigoExt);
+            if(productoEntitiy!=null)
+            producto = mapeaGenericObjectProductoEntity(productoEntitiy);
+        } catch (Exception e) {
+            e.printStackTrace();
+            producto=null;
+        }
+        return producto;
+    }
 
     /**
      * Funcion encargada de realizar la busqueda de productos y recetas aptos

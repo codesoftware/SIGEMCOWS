@@ -62,11 +62,12 @@ public class ProductoLogica implements AutoCloseable {
         }
         return rta;
     }
-    
+
     /**
-     * metodo que consulta los productos por 
+     * metodo que consulta los productos por
+     *
      * @param idSede
-     * @return 
+     * @return
      */
     public List<ProductoEntity> obtieneProductosXSede(Integer idSede) {
         List<ProductoEntity> rta = null;
@@ -80,6 +81,24 @@ public class ProductoLogica implements AutoCloseable {
         return rta;
     }
 
+    /**
+     * metodo que consulta los productos por codigo
+     *
+     * @param codigo
+     * @return
+     */
+    public ProductoEntity obtieneProductoXCodigo(String codigo) {
+        ProductoEntity rta = null;
+        try {
+            this.initOperation();
+            Criteria crit = sesion.createCriteria(ProductoEntity.class)
+                    .add(Restrictions.eq("codigoExt", codigo));
+            rta = (ProductoEntity)crit.uniqueResult();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
 
     /**
      * Funcion con la cual obtengo todos los productos del sistema que tengan
@@ -200,12 +219,35 @@ public class ProductoLogica implements AutoCloseable {
         }
         return rta;
     }
+
     /**
      * Funcion con la cual busco un producto por medio de su codigo y que tenga
      * precio en la sede
      *
+     * @param codExt
      * @return
      */
+    public PrecioProductoEntity buscoProductoEntityXCodExtSinSede(String codExt) {
+        PrecioProductoEntity rta = null;
+        try {
+            initOperation();
+            Criteria crit = sesion.createCriteria(PrecioProductoEntity.class);
+            crit.createAlias("producto", "prod");
+            crit.add(Restrictions.eq("prod.codigoExt", codExt));
+            crit.add(Restrictions.eq("estado", "A"));
+            crit.setFetchMode("producto", FetchMode.JOIN);
+            crit.setFetchMode("producto.referencia", FetchMode.JOIN);
+            crit.setFetchMode("producto.marca", FetchMode.JOIN);
+            crit.setFetchMode("producto.categoria", FetchMode.JOIN);
+            crit.setFetchMode("producto.subcuenta", FetchMode.JOIN);
+            rta = (PrecioProductoEntity) crit.uniqueResult();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+
     public PrecioProductoEntity buscoProductoEntityXCodExt(String codExt, Integer idSede) {
         PrecioProductoEntity rta = null;
         try {
@@ -221,13 +263,14 @@ public class ProductoLogica implements AutoCloseable {
             crit.setFetchMode("producto.categoria", FetchMode.JOIN);
             crit.setFetchMode("producto.subcuenta", FetchMode.JOIN);
             rta = (PrecioProductoEntity) crit.uniqueResult();
-            if(rta ==null || rta.getId()==0 || rta.getId()==null){
+            if (rta == null || rta.getId() == 0 || rta.getId() == null) {
                 RecetaLogica logica = new RecetaLogica();
                 PrecioRecetaEntity receta = new PrecioRecetaEntity();
                 receta = logica.getRecetaXCodigo(codExt, idSede);
-                if(receta!=null)
-                if(receta.getId()!=0 && receta.getId()!=null){
-                    rta = convierteRecetaProducto(receta);
+                if (receta != null) {
+                    if (receta.getId() != 0 && receta.getId() != null) {
+                        rta = convierteRecetaProducto(receta);
+                    }
                 }
             }
         } catch (Exception e) {
@@ -235,13 +278,14 @@ public class ProductoLogica implements AutoCloseable {
         }
         return rta;
     }
-    
+
     /**
      * metodo que convierte una receta en producto
+     *
      * @param receta
-     * @return 
+     * @return
      */
-    public PrecioProductoEntity convierteRecetaProducto(PrecioRecetaEntity receta){
+    public PrecioProductoEntity convierteRecetaProducto(PrecioRecetaEntity receta) {
         PrecioProductoEntity prd = new PrecioProductoEntity();
         try {
             prd.setEstado(receta.getEstado());
@@ -264,14 +308,13 @@ public class ProductoLogica implements AutoCloseable {
             entityprd.setIva(receta.getReceta().getIva());
             entityprd.setNombre(receta.getReceta().getNombre());
             prd.setProducto(entityprd);
-            
 
         } catch (Exception e) {
             e.printStackTrace();
         }
         return prd;
     }
-    
+
     /**
      * metodo que consulta las cantidades por producto y sede
      *
@@ -285,32 +328,33 @@ public class ProductoLogica implements AutoCloseable {
         try {
             Criteria crit = sesion.createCriteria(ExistenciaXSedeEntity.class)
                     .add(Restrictions.eq("idDska", idProducto)).
-                    createAlias("sede","sd").add(Restrictions.eq("sd.id", sede));
+                    createAlias("sede", "sd").add(Restrictions.eq("sd.id", sede));
             resultado = (ExistenciaXSedeEntity) crit.uniqueResult();
         } catch (Exception e) {
             e.printStackTrace();
         }
         return resultado;
     }
-    
+
     /**
      * metodo que consulta las existencias de los productos en todas las sedes
+     *
      * @param sede
      * @param idProducto
-     * @return 
+     * @return
      */
-        public List<ExistenciaXSedeEntity> consultaExistenciasTotales(Integer idProducto) {
-         List<ExistenciaXSedeEntity> resultado = new  ArrayList<ExistenciaXSedeEntity>();
+    public List<ExistenciaXSedeEntity> consultaExistenciasTotales(Integer idProducto) {
+        List<ExistenciaXSedeEntity> resultado = new ArrayList<ExistenciaXSedeEntity>();
         initOperation();
         try {
-            resultado= sesion.createCriteria(ExistenciaXSedeEntity.class)
+            resultado = sesion.createCriteria(ExistenciaXSedeEntity.class)
                     .add(Restrictions.eq("idDska", idProducto)).list();
         } catch (Exception e) {
             e.printStackTrace();
         }
         return resultado;
     }
-    
+
     /**
      * Funcion con la cual busco un producto por medio de su codigo y que tenga
      * precio en la sede
@@ -337,11 +381,12 @@ public class ProductoLogica implements AutoCloseable {
         }
         return rta;
     }
-    
+
     /**
      * Consulta cantidades en todas las sedes por producto
+     *
      * @param idProducto
-     * @return 
+     * @return
      */
     public List<ExistenciaXSedeEntity> consultaCantidades(Integer idProducto) {
         List<ExistenciaXSedeEntity> resultado = null;

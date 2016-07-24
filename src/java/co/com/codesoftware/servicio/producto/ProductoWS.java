@@ -52,6 +52,27 @@ public class ProductoWS {
             return null;
         }
     }
+
+    /**
+     * metodo que consulta un producto generico  por codigo externo
+     * @param codigoExterno
+     * @return 
+     */
+    @WebMethod(operationName = "obtenerProdcutoGeneriXCodExt")
+    @WebResult(name = "prodGenerico")
+    public ProductoGenericoEntity obtenerProdcutoGeneriXCodExt(@XmlElement(required = true) @WebParam(name = "codigoExterno") String codigoExterno) {
+        ProductoGenericoEntity producto = new ProductoGenericoEntity();
+        try {
+            ProductosGenericosLogica logica = new ProductosGenericosLogica();
+            producto= logica.buscaProductoXCodigoExt(codigoExterno);
+        } catch (Exception e) {
+            e.printStackTrace();
+            producto=null;
+        }
+        return producto;
+        
+    }
+
     @WebMethod(operationName = "obtenerProductosXSede")
     @WebResult(name = "ListGeneric")
     public List<ProductoGenericoEntity> obtenerProductosXSedeobtenerProductoXCodExt(@XmlElement(required = true) @WebParam(name = "sede_sede") Integer sede_sede) {
@@ -259,17 +280,18 @@ public class ProductoWS {
         }
         return resultado;
     }
-    
+
     /**
      * metodo que consulta las existencias en todas las sedes
+     *
      * @param idProducto
-     * @return 
+     * @return
      */
-     @WebMethod(operationName = "obtenerCantidadesTotales")
+    @WebMethod(operationName = "obtenerCantidadesTotales")
     @WebResult(name = "ExistenciaXSedeEntity")
     public List<ExistenciaXSedeEntity> obtenerCantidadesTotales(
             @XmlElement(required = true) @WebParam(name = "idDska") Integer idProducto) {
-         List<ExistenciaXSedeEntity> resultado = new  ArrayList<ExistenciaXSedeEntity>();
+        List<ExistenciaXSedeEntity> resultado = new ArrayList<ExistenciaXSedeEntity>();
         try (ProductoLogica logic = new ProductoLogica()) {
             resultado = logic.consultaCantidades(idProducto);
         } catch (Exception e) {
@@ -317,12 +339,13 @@ public class ProductoWS {
 
     /**
      * metodo que inserta los productos a una solicitud
+     *
      * @param productos
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "insertaProductosSolicitud")
     @WebResult(name = "respuestaEntity")
-    public RespuestaEntity insertaProductosSolicitud(@WebParam(name = "productosSolicitud")List<SolicitudProdEntity> productos){
+    public RespuestaEntity insertaProductosSolicitud(@WebParam(name = "productosSolicitud") List<SolicitudProdEntity> productos) {
         RespuestaEntity rta = new RespuestaEntity();
         try {
             SolicitudLogica logica = new SolicitudLogica();
@@ -332,80 +355,86 @@ public class ProductoWS {
         }
         return rta;
     }
+
     /**
      * metodo que consulta las solicitudes mediante los filtros seleccionados
+     *
      * @param fechaInicial
      * @param fechaFinal
      * @param sede
      * @param usuario
      * @param estado
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "obtenerSolicitudesFiltros")
     @WebResult(name = "listaSolicitudes")
-    public List<SolicitudEntity> obtenerSolicitudesFiltros(@WebParam(name = "fechaInicial")Date fechaInicial,@WebParam(name = "fechaFinal")Date fechaFinal,@WebParam(name="sede") Integer sede,@WebParam(name = "usuario")Integer usuario,@WebParam(name = "estado") String estado){
+    public List<SolicitudEntity> obtenerSolicitudesFiltros(@WebParam(name = "fechaInicial") Date fechaInicial, @WebParam(name = "fechaFinal") Date fechaFinal, @WebParam(name = "sede") Integer sede, @WebParam(name = "usuario") Integer usuario, @WebParam(name = "estado") String estado) {
         List<SolicitudEntity> respuesta = new ArrayList<>();
-        try (SolicitudLogica logica = new SolicitudLogica()){
+        try (SolicitudLogica logica = new SolicitudLogica()) {
             respuesta = logica.consultaSolicitudesXFiltro(fechaInicial, fechaFinal, estado, usuario, sede);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return respuesta;
     }
+
     /**
      * metodo el cual obtiene los productos por solicitud
+     *
      * @param idSolicitud
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "obtenerProductosXSolicitud")
     @WebResult(name = "listaProductos")
-    public List<SolicitudProdEntity> obtenerProductosXSolicitud(@WebParam(name = "idSolicitud") Integer idSolicitud){
+    public List<SolicitudProdEntity> obtenerProductosXSolicitud(@WebParam(name = "idSolicitud") Integer idSolicitud) {
         List<SolicitudProdEntity> respuesta = new ArrayList<>();
-        try (SolicitudLogica logica = new SolicitudLogica();){
+        try (SolicitudLogica logica = new SolicitudLogica();) {
             respuesta = logica.consultaProductosXSoliciud(idSolicitud);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return respuesta;
     }
-    
+
     /**
-     * metodo  que consulta la solicitud por filtros
+     * metodo que consulta la solicitud por filtros
+     *
      * @param fecha
      * @param sede
      * @param solicitud
      * @param usuario
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "obtenerSolicitudXfiltro")
-     @WebResult(name = "solicitud")
-    public SolicitudEntity obtenerSolicitudXfiltro(@WebParam(name = "fecha") Date fecha,@WebParam(name = "sede") Integer sede,@WebParam(name = "usuario") Integer usuario){
+    @WebResult(name = "solicitud")
+    public SolicitudEntity obtenerSolicitudXfiltro(@WebParam(name = "fecha") Date fecha, @WebParam(name = "sede") Integer sede, @WebParam(name = "usuario") Integer usuario) {
         SolicitudEntity solicitudEntity = new SolicitudEntity();
-        try (SolicitudLogica logica = new SolicitudLogica()){
-            solicitudEntity = logica.consultaSolicitudXFecha(fecha, sede,usuario);
+        try (SolicitudLogica logica = new SolicitudLogica()) {
+            solicitudEntity = logica.consultaSolicitudXFecha(fecha, sede, usuario);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return solicitudEntity;
     }
-    
+
     /**
      * metodo que actualiza los productos de una solicitud
+     *
      * @param idUsuario
      * @param productos
-     * @return 
-     */ 
+     * @return
+     */
     @WebMethod(operationName = "actualizaSolicitud")
-     @WebResult(name="RespuestaEntity")
-    public RespuestaEntity actualizaSolicitud(@WebParam(name = "idUsuario")Integer idUsuario,@WebParam(name = "productosSolicitud") List<SolicitudProdEntity> productos){
+    @WebResult(name = "RespuestaEntity")
+    public RespuestaEntity actualizaSolicitud(@WebParam(name = "idUsuario") Integer idUsuario, @WebParam(name = "productosSolicitud") List<SolicitudProdEntity> productos) {
         RespuestaEntity respuesta = new RespuestaEntity();
         try {
-           SolicitudLogica logica = new SolicitudLogica();
-           respuesta = logica.actualizaProductosSolicitud(productos,idUsuario);
+            SolicitudLogica logica = new SolicitudLogica();
+            respuesta = logica.actualizaProductosSolicitud(productos, idUsuario);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return respuesta;
     }
-            
+
 }
