@@ -747,17 +747,16 @@ public class FacturacionLogica implements AutoCloseable {
         try (ReadFunction rf = new ReadFunction()) {
             rf.setNombreFuncion("FA_FACTURACION_X_PRECIO");
             rf.setNumParam(9);
-            rf.addParametro("" + objFactura.getIdTius(), DataType.INT);
-            rf.addParametro("" + objFactura.getIdCliente(), DataType.INT);
-            rf.addParametro("" + idTrans, DataType.INT);
-            rf.addParametro("" + objFactura.getIdSede(), DataType.INT);
-            rf.addParametro("N/A", DataType.TEXT);
-            rf.addParametro("0", DataType.INT);
-            rf.addParametro("0", DataType.INT);
-            rf.addParametro("" + objFactura.getIdPedido(), DataType.INT);
-            rf.addParametro(objFactura.getReteFuente(), DataType.TEXT);
-
-            rf.callFunctionJdbc();
+            rf.adicionarParametro(objFactura.getIdTius(), DataType.INT);
+            rf.adicionarParametro(objFactura.getIdCliente(), DataType.INT);
+            rf.adicionarParametro(idTrans, DataType.INT);
+            rf.adicionarParametro(objFactura.getIdSede(), DataType.INT);
+            rf.adicionarParametro(objFactura.getTipoPago(), DataType.TEXT);
+            rf.adicionarParametro(objFactura.getIdVoucher(), DataType.TEXT);
+            rf.adicionarParametro(objFactura.getPagoTarjeta(), DataType.BIGDECIMAL);
+            rf.adicionarParametro(objFactura.getIdPedido(), DataType.INT);
+            rf.adicionarParametro(objFactura.getReteFuente(), DataType.TEXT);
+            rf.llamarFuncion();
             response = rf.getRespuestaPg();
             String respuesta = response.get(0);
             if (respuesta.indexOf("Error") >= 0) {

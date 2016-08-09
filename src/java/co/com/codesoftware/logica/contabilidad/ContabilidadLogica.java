@@ -28,6 +28,9 @@ public class ContabilidadLogica implements AutoCloseable {
      * Funcion con la cual obtengo los movimientos contables de acuerdo a las
      * fechas y al tipo de documento
      *
+     * @param fechaIn
+     * @param fechaFin
+     * @param tipoDoc
      * @return
      */
     public List<MoviContableEntity> consultarMovimientoscontable(Date fechaIn, Date fechaFin, String tipoDoc) {
@@ -35,12 +38,25 @@ public class ContabilidadLogica implements AutoCloseable {
         try {
             this.initOperation();
             Criteria crit = this.sesion.createCriteria(MoviContableEntity.class);
-            if(!"".equalsIgnoreCase(tipoDoc)){
-                crit.add(Restrictions.eq("llave", tipoDoc));
-            }
             crit.setFetchMode("subcuenta", FetchMode.JOIN);
             crit.setFetchMode("tipoDocumento", FetchMode.JOIN);
             crit.setFetchMode("auxiliar", FetchMode.JOIN);
+            if(!"-1".equalsIgnoreCase(tipoDoc)){
+                crit.add(Restrictions.eq("llave", tipoDoc));
+            }
+            if(fechaIn != null || fechaFin != null){
+                if(fechaIn != null && fechaFin != null){
+                    fechaFin.setHours(23);
+                    fechaFin.setMinutes(59);
+                    fechaFin.setSeconds(59);
+                    crit.add(Restrictions.between("fecha", fechaIn, fechaFin));
+                }else if(fechaIn != null ){
+                    crit.add(Restrictions.le("fecha", fechaIn));
+                }else if(fechaFin != null){
+                    crit.add(Restrictions.gt("fecha", fechaFin));
+                }
+                
+            }
             rta = crit.list();
         } catch (Exception e) {
             e.printStackTrace();

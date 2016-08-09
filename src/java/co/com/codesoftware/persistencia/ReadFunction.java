@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLType;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -126,9 +127,26 @@ public class ReadFunction implements AutoCloseable {
                 if (this.parametros != null) {
                     for (Parametro parametro : this.parametros) {
                         if (parametro.getDataType().toString().equalsIgnoreCase("TEXT")) {
-                            ps.setString(i, (String) parametro.getObjeto());
+                            String aux = (String) parametro.getObjeto();
+                            if(aux== null){
+                                ps.setNull(i, Types.VARCHAR);
+                            }else{
+                                ps.setString(i, aux);
+                            }
                         } else if (parametro.getDataType().toString().equalsIgnoreCase("INT")) {
-                            ps.setInt(i, (Integer) parametro.getObjeto());
+                            Integer aux =  (Integer) parametro.getObjeto();
+                            if(aux== null){
+                                ps.setNull(i, Types.VARCHAR);
+                            }else{
+                                ps.setInt(i, aux);
+                            }
+                        } else if(parametro.getDataType().toString().equalsIgnoreCase("BIGDECIMAL")){
+                            BigDecimal aux = (BigDecimal) parametro.getObjeto();
+                            if(aux== null){
+                                ps.setNull(i, Types.NUMERIC);
+                            }else{
+                                ps.setBigDecimal(i, aux);
+                            }
                         }
                         i++;
                     }

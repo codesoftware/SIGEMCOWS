@@ -7,6 +7,7 @@ package co.com.codesoftware.persistencia.entidad.contabilidad;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
 
 /**
  *
@@ -45,6 +47,9 @@ public class MoviContableEntity implements Serializable {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mvco_auco")
     private AuxContableEntity auxiliar;
+    @Column(name = "mvco_fecha")
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    private Date fecha;
 
     public Integer getId() {
         return id;
@@ -120,6 +125,14 @@ public class MoviContableEntity implements Serializable {
 
     public void setAuxiliar(AuxContableEntity auxiliar) {
         this.auxiliar = auxiliar;
+    }
+
+    public Date getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
     }
 
 }

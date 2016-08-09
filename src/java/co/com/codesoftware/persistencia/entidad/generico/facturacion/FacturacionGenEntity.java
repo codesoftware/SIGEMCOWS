@@ -7,7 +7,7 @@ import co.com.codesoftware.persistencia.entidad.facturacion.TemporalRecTable;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-public class FacturacionGenEntity implements Serializable{
+public class FacturacionGenEntity implements Serializable {
 
     private Integer idCliente;
     private Integer idTius;
@@ -19,6 +19,10 @@ public class FacturacionGenEntity implements Serializable{
     private Integer idPedido;
     //Parametro en el cual me indica si cobra retefuente o no
     private String reteFuente;
+    //Informacion para generar los pagos con tarjeta de credito
+    private String tipoPago;
+    private String idVoucher;
+    private BigDecimal pagoTarjeta;
 
     public Integer getIdCliente() {
         return idCliente;
@@ -91,6 +95,29 @@ public class FacturacionGenEntity implements Serializable{
     public void setReteFuente(String reteFuente) {
         this.reteFuente = reteFuente;
     }
-    
-    
+
+    public String getTipoPago() {
+        return tipoPago;
+    }
+
+    public void setTipoPago(String tipoPago) {
+        this.tipoPago = tipoPago;
+    }
+
+    public String getIdVoucher() {
+        return idVoucher;
+    }
+
+    public void setIdVoucher(String idVoucher) {
+        this.idVoucher = idVoucher;
+    }
+
+    public BigDecimal getPagoTarjeta() {
+        return pagoTarjeta;
+    }
+
+    public void setPagoTarjeta(BigDecimal pagoTarjeta) {
+        this.pagoTarjeta = pagoTarjeta;
+    }
+
 }
