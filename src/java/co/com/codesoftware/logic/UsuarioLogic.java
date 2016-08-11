@@ -55,9 +55,20 @@ public class UsuarioLogic implements AutoCloseable {
         }
         return response;
     }
-    
+    /**
+     * Funcion con la cual actualizo los perfiles
+     * @param perfil
+     * @return 
+     */
     public String actualizarPerfil(PerfilEntity perfil){
         String rta = "";
+        try {
+            this.initOperation();
+            this.sesion.update(perfil);
+            rta = "Ok";
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return rta;
     }
     

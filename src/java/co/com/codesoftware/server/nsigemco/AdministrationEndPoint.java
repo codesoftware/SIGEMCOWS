@@ -564,10 +564,11 @@ public class AdministrationEndPoint {
      * @param entity
      * @return 
      */
+    @WebMethod(operationName = "actualizarPerfiles")
     public String actualizarPerfiles(PerfilEntity entity){
         String rta = "";
         try (UsuarioLogic objLogic = new UsuarioLogic()){
-            
+            rta = objLogic.actualizarPerfil(entity);
         } catch (Exception e) {
             e.printStackTrace();
         }
