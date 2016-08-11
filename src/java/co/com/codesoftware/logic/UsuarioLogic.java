@@ -5,17 +5,15 @@
  */
 package co.com.codesoftware.logic;
 
-import co.com.codesoftware.persistencia.entidad.admin.UsuarioEntity;
 import co.com.codesoftware.persistencia.HibernateUtil;
 import co.com.codesoftware.persistencia.ReadFunction;
+import co.com.codesoftware.persistencia.entidad.admin.PerfilEntity;
 import co.com.codesoftware.persistencia.utilities.DataType;
 import java.util.ArrayList;
 import java.util.List;
-import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.criterion.Restrictions;
 
 /**
  *
@@ -57,7 +55,12 @@ public class UsuarioLogic implements AutoCloseable {
         }
         return response;
     }
-
+    
+    public String actualizarPerfil(PerfilEntity perfil){
+        String rta = "";
+        return rta;
+    }
+    
     private void initOperation() throws HibernateException {
         sesion = HibernateUtil.getSessionFactory().openSession();
         tx = sesion.beginTransaction();

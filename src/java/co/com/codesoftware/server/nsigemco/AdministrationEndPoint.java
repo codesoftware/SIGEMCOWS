@@ -25,6 +25,7 @@ import co.com.codesoftware.persistence.entity.productos.FacturaCompraEntity;
 import co.com.codesoftware.persistence.entity.productos.PagoFacCompraEntity;
 import co.com.codesoftware.persistence.entity.productos.ProductoFacCompraEntity;
 import co.com.codesoftware.persistence.entity.productos.ProductoTmpEntity;
+import co.com.codesoftware.persistencia.entidad.admin.PerfilEntity;
 import co.com.codesoftware.persistencia.entidad.inventario.CategoriaEntity;
 import co.com.codesoftware.persistencia.entidad.inventario.MarcaEntity;
 import co.com.codesoftware.persistencia.entidad.inventario.ProductoEntity;
@@ -557,5 +558,19 @@ public class AdministrationEndPoint {
             e.printStackTrace();
         }
         return respuesta;
+    }
+    /**
+     * Funcion con la cual actualiza los permisos de los perfiles
+     * @param entity
+     * @return 
+     */
+    public String actualizarPerfiles(PerfilEntity entity){
+        String rta = "";
+        try (UsuarioLogic objLogic = new UsuarioLogic()){
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
     }
 }
