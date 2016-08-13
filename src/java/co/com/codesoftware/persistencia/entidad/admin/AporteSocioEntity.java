@@ -24,6 +24,7 @@ import javax.persistence.TemporalType;
 @Entity
 @Table(name = "em_tapor")
 public class AporteSocioEntity implements Serializable {
+
     @Id
     @Column(name = "apor_apor")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,8 +45,9 @@ public class AporteSocioEntity implements Serializable {
     @Column(name = "apor_tran_mvco")
     private Integer idTransMvco;
     @Column(name = "apor_estado")
-    private String  estado;
-    
+    private String estado;
+    @Column(name = "apor_sede")
+    private Integer idSede;
 
     public Integer getId() {
         return id;
@@ -118,7 +120,13 @@ public class AporteSocioEntity implements Serializable {
     public void setEstado(String estado) {
         this.estado = estado;
     }
-    
-    
+
+    public Integer getIdSede() {
+        return idSede;
+    }
+
+    public void setIdSede(Integer idSede) {
+        this.idSede = idSede;
+    }
 
 }
