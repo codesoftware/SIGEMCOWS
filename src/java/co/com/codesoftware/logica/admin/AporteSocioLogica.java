@@ -7,8 +7,10 @@ package co.com.codesoftware.logica.admin;
 
 import co.com.codesoftware.persistencia.HibernateUtil;
 import co.com.codesoftware.persistencia.entidad.admin.AporteSocioEntity;
+import co.com.codesoftware.persistencia.entidad.admin.ProductoAporte;
 import java.util.ArrayList;
 import java.util.List;
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
@@ -88,6 +90,23 @@ public class AporteSocioLogica implements AutoCloseable {
             initOperation();
             rta = (AporteSocioEntity) sesion.createCriteria(AporteSocioEntity.class).
                     add(Restrictions.eq("id", id)).uniqueResult();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+    /**
+     * 
+     * @param idAporte
+     * @return 
+     */
+    public List<ProductoAporte> consultaProductosAporte(Integer idAporte){
+        List<ProductoAporte> rta = null;
+        try {
+            this.initOperation();
+            Criteria crit = this.sesion.createCriteria(ProductoAporte.class);
+            crit.add(Restrictions.eq("idAporte", idAporte));
+            rta = crit.list();
         } catch (Exception e) {
             e.printStackTrace();
         }

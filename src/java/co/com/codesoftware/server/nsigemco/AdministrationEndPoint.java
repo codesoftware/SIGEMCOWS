@@ -29,6 +29,7 @@ import co.com.codesoftware.persistence.entity.productos.ProductoFacCompraEntity;
 import co.com.codesoftware.persistence.entity.productos.ProductoTmpEntity;
 import co.com.codesoftware.persistencia.entidad.admin.AporteSocioEntity;
 import co.com.codesoftware.persistencia.entidad.admin.PerfilEntity;
+import co.com.codesoftware.persistencia.entidad.admin.ProductoAporte;
 import co.com.codesoftware.persistencia.entidad.admin.SocioEntity;
 import co.com.codesoftware.persistencia.entidad.inventario.CategoriaEntity;
 import co.com.codesoftware.persistencia.entidad.inventario.MarcaEntity;
@@ -667,52 +668,72 @@ public class AdministrationEndPoint {
         }
         return rta;
     }
-    
+
     /**
      * funcion con la cual consulto un aporte por id
+     *
      * @param id
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "obtenerAporte")
-    public AporteSocioEntity obtenerAporte(@WebParam(name = "id")Integer id){
+    public AporteSocioEntity obtenerAporte(@WebParam(name = "id") Integer id) {
         AporteSocioEntity rta = new AporteSocioEntity();
-        try (AporteSocioLogica logica = new AporteSocioLogica()){
+        try (AporteSocioLogica logica = new AporteSocioLogica()) {
             rta = logica.consultaAporte(id);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return rta;
     }
-    
+
     /**
      * metodo con el cual obtengo todos los aportes sin filtros
-     * @return 
+     *
+     * @return
      */
     @WebMethod(operationName = "obtenerAportes")
-    public List<AporteSocioEntity> obtenerAportes(){
+    public List<AporteSocioEntity> obtenerAportes() {
         List<AporteSocioEntity> rta = new ArrayList<>();
-        try (AporteSocioLogica logica = new AporteSocioLogica()){
+        try (AporteSocioLogica logica = new AporteSocioLogica()) {
             rta = logica.consultaAportes();
         } catch (Exception e) {
             e.printStackTrace();
         }
         return rta;
     }
-    
+
     /**
-     * metodod que actualiza un 
+     * metodod que actualiza un
+     *
      * @param entidad
-     * @return 
+     * @return
      */
-        @WebMethod(operationName = "actualizarAportes")
-        public String actualizarAportes(@WebParam(name = "Aporte") AporteSocioEntity entidad){
-            String rta;
-            try (AporteSocioLogica logica = new AporteSocioLogica()){
-                rta =logica.actualizaAporte(entidad);
-            } catch (Exception e) {
-                rta = "Error "+e.toString();
-            }
-            return rta;
+    @WebMethod(operationName = "actualizarAportes")
+    public String actualizarAportes(@WebParam(name = "Aporte") AporteSocioEntity entidad) {
+        String rta;
+        try (AporteSocioLogica logica = new AporteSocioLogica()) {
+            rta = logica.actualizaAporte(entidad);
+        } catch (Exception e) {
+            rta = "Error " + e.toString();
         }
+        return rta;
+    }
+
+    /**
+     * Funcion con la cual obtengo los productos de un aporte
+     *
+     * @param idAporte
+     * @return
+     */
+    @WebMethod(operationName = "obtenerPoductosAporte")
+    public List<ProductoAporte> obtenerPoductosAporte(@WebParam(name = "idAporte") Integer idAporte) {
+        List<ProductoAporte> rta = null;
+        try(AporteSocioLogica objLogica = new AporteSocioLogica()) {
+            rta = objLogica.consultaProductosAporte(idAporte);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
 
 }

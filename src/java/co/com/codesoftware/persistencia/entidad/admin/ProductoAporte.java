@@ -13,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import org.hibernate.annotations.Formula;
 
 /**
  *
@@ -33,6 +34,8 @@ public class ProductoAporte implements Serializable{
     private Integer cantidad;
     @Column(name = "PRAP_COSTO")
     private BigDecimal costo;
+    @Formula("(select prod.dska_cod_ext from in_tdska prod where prod.dska_dska = prap_dska)")
+    private String codExterno;
 
     public Integer getId() {
         return id;
@@ -73,4 +76,14 @@ public class ProductoAporte implements Serializable{
     public void setCosto(BigDecimal costo) {
         this.costo = costo;
     }
+
+    public String getCodExterno() {
+        return codExterno;
+    }
+
+    public void setCodExterno(String codExterno) {
+        this.codExterno = codExterno;
+    }
+    
+    
 }
