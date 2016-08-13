@@ -43,6 +43,9 @@ public class AporteSocioEntity implements Serializable {
     private Integer socio;
     @Column(name = "apor_tran_mvco")
     private Integer idTransMvco;
+    @Column(name = "apor_estado")
+    private String  estado;
+    
 
     public Integer getId() {
         return id;
@@ -107,5 +110,15 @@ public class AporteSocioEntity implements Serializable {
     public void setIdTransMvco(Integer idTransMvco) {
         this.idTransMvco = idTransMvco;
     }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+    
+    
 
 }
