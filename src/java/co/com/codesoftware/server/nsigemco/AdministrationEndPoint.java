@@ -16,6 +16,7 @@ import co.com.codesoftware.logic.SubCuentaLogic;
 import co.com.codesoftware.logic.UsuarioLogic;
 import co.com.codesoftware.logic.productos.FacturaCompraLogic;
 import co.com.codesoftware.logic.productos.PedidosLogic;
+import co.com.codesoftware.logica.admin.SocioLogica;
 import co.com.codesoftware.persistence.entities.MapaEntity;
 import co.com.codesoftware.persistence.entities.PucEntity;
 import co.com.codesoftware.persistence.entity.administracion.ProveedoresEntity;
@@ -26,6 +27,7 @@ import co.com.codesoftware.persistence.entity.productos.PagoFacCompraEntity;
 import co.com.codesoftware.persistence.entity.productos.ProductoFacCompraEntity;
 import co.com.codesoftware.persistence.entity.productos.ProductoTmpEntity;
 import co.com.codesoftware.persistencia.entidad.admin.PerfilEntity;
+import co.com.codesoftware.persistencia.entidad.admin.SocioEntity;
 import co.com.codesoftware.persistencia.entidad.inventario.CategoriaEntity;
 import co.com.codesoftware.persistencia.entidad.inventario.MarcaEntity;
 import co.com.codesoftware.persistencia.entidad.inventario.ProductoEntity;
@@ -88,15 +90,16 @@ public class AdministrationEndPoint {
 
     /**
      * metodo que actualiza un proveedor
+     *
      * @param proveedor
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "actualizarProveedor")
     @WebResult(name = "RespuestaEntity")
     public RespuestaEntity actualizarProveedor(@WebParam(name = "proveedor") ProveedoresEntity proveedor) {
         RespuestaEntity respuesta = new RespuestaEntity();
-        try(ProveedoresLogic logic = new ProveedoresLogic()) {
-               respuesta= logic.actualizaProveedor(proveedor);
+        try (ProveedoresLogic logic = new ProveedoresLogic()) {
+            respuesta = logic.actualizaProveedor(proveedor);
         } catch (Exception e) {
             respuesta.setCodigoRespuesta(0);
             respuesta.setDescripcionRespuesta(e.toString());
@@ -423,9 +426,11 @@ public class AdministrationEndPoint {
         return respuesta;
 
     }
+
     /**
      * Funcion con la cual registro porductos en el excel
-     * @return 
+     *
+     * @return
      */
     @WebMethod(operationName = "registroProductosExcel")
     public RespuestaEntity registroProductosExcel() {
@@ -505,7 +510,6 @@ public class AdministrationEndPoint {
      *
      * @return
      */
-
     @WebMethod(operationName = "consultaSubcuentas")
     public List<SubCuentaEntity> consultaSubCuentas() {
         List<SubCuentaEntity> respuesta = null;
@@ -559,19 +563,88 @@ public class AdministrationEndPoint {
         }
         return respuesta;
     }
+
     /**
      * Funcion con la cual actualiza los permisos de los perfiles
+     *
      * @param entity
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "actualizarPerfiles")
-    public String actualizarPerfiles(PerfilEntity entity){
+    public String actualizarPerfiles(PerfilEntity entity) {
         String rta = "";
-        try (UsuarioLogic objLogic = new UsuarioLogic()){
+        try (UsuarioLogic objLogic = new UsuarioLogic()) {
             rta = objLogic.actualizarPerfil(entity);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return rta;
+    }
+
+    /**
+     * metodo que consulta los socios sin filro
+     *
+     * @return
+     */
+    @WebMethod(operationName = "obtenerSocios")
+    public List<SocioEntity> obtenerSocios() {
+        List<SocioEntity> respuesta = new ArrayList<>();
+        try (SocioLogica logica = new SocioLogica()) {
+            respuesta = logica.consultaSocios();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return respuesta;
+    }
+
+    /**
+     * metodo que consulta un socio por id
+     *
+     * @param idSocio
+     * @return
+     */
+    @WebMethod(operationName = "obtenerSocio")
+    public SocioEntity obtenerSocio(@WebParam(name = "idSocio") Integer idSocio) {
+        SocioEntity respuesta = new SocioEntity();
+        try (SocioLogica socio = new SocioLogica()) {
+            respuesta = socio.consultaSocio(idSocio);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return respuesta;
+    }
+
+    /**
+     * metodo que actualiza un socio
+     *
+     * @param socio
+     * @return
+     */
+    @WebMethod(operationName = "actualizaSocio")
+    public String actualizaSocio(@WebParam(name = "socio") SocioEntity socio) {
+        String respuesta = "";
+        try (SocioLogica logica = new SocioLogica()) {
+            respuesta = logica.actualizaSocio(socio);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return respuesta;
+    }
+
+    /**
+     * metodo con el cual se inserta un socio
+     * @param socio
+     * @return 
+     */
+    @WebMethod(operationName = "insertaSocio")
+    public String insertaSocio(@WebParam(name = "socio") SocioEntity socio) {
+        String respuesta = "";
+        try (SocioLogica logica = new SocioLogica()) {
+            respuesta = logica.insertarSocio(socio);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return respuesta;
     }
 }
