@@ -632,26 +632,12 @@ public class AdministrationEndPoint {
         }
         return respuesta;
     }
-    /**
-     * Funcion con la cual inserto un aporte
-     * @param objEntity
-     * @return 
-     */
-    @WebMethod(operationName = "insertaAporte")
-    public String insertaAporte(AporteSocioEntity objEntity){
-        String rta = "";
-        try (AporteSocioLogica objLogica = new AporteSocioLogica()){
-            rta = objLogica.insertaAporte(objEntity);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return rta;
-    }
 
     /**
      * metodo con el cual se inserta un socio
+     *
      * @param socio
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "insertaSocio")
     public String insertaSocio(@WebParam(name = "socio") SocioEntity socio) {
@@ -664,4 +650,69 @@ public class AdministrationEndPoint {
         }
         return respuesta;
     }
+
+    /**
+     * Funcion con la cual inserto un aporte
+     *
+     * @param objEntity
+     * @return
+     */
+    @WebMethod(operationName = "insertaAporte")
+    public String insertaAporte(AporteSocioEntity objEntity) {
+        String rta = "";
+        try (AporteSocioLogica objLogica = new AporteSocioLogica()) {
+            rta = objLogica.insertaAporte(objEntity);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+    
+    /**
+     * funcion con la cual consulto un aporte por id
+     * @param id
+     * @return 
+     */
+    @WebMethod(operationName = "obtenerAporte")
+    public AporteSocioEntity obtenerAporte(@WebParam(name = "id")Integer id){
+        AporteSocioEntity rta = new AporteSocioEntity();
+        try (AporteSocioLogica logica = new AporteSocioLogica()){
+            rta = logica.consultaAporte(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+    
+    /**
+     * metodo con el cual obtengo todos los aportes sin filtros
+     * @return 
+     */
+    @WebMethod(operationName = "obtenerAportes")
+    public List<AporteSocioEntity> obtenerAportes(){
+        List<AporteSocioEntity> rta = new ArrayList<>();
+        try (AporteSocioLogica logica = new AporteSocioLogica()){
+            rta = logica.consultaAportes();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+    
+    /**
+     * metodod que actualiza un 
+     * @param entidad
+     * @return 
+     */
+        @WebMethod(operationName = "actualizarAportes")
+        public String actualizarAportes(@WebParam(name = "Aporte") AporteSocioEntity entidad){
+            String rta;
+            try (AporteSocioLogica logica = new AporteSocioLogica()){
+                rta =logica.actualizaAporte(entidad);
+            } catch (Exception e) {
+                rta = "Error "+e.toString();
+            }
+            return rta;
+        }
+
 }
