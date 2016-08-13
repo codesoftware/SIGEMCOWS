@@ -14,6 +14,7 @@
         <mapping class="co.com.codesoftware.persistencia.entidad.admin.UsuarioEntity"/>
         <mapping class="co.com.codesoftware.persistencia.entidad.admin.PersonaEntity"/>
         <mapping class="co.com.codesoftware.persistencia.entidad.admin.PerfilEntity"/>
+        <mapping class="co.com.codesoftware.persistencia.entidad.admin.SocioEntity"/>
         <mapping class="co.com.codesoftware.persistencia.entidad.admin.SedeEntity"/>
         <mapping class="co.com.codesoftware.persistencia.entidad.admin.ParametrosEmpresaEntity"/>
         <mapping class="co.com.codesoftware.persistencia.entidad.admin.ClienteEntity"/>
