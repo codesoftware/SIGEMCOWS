@@ -21,6 +21,7 @@
         <mapping class="co.com.codesoftware.persistencia.entidad.admin.ResolucionFactEntity"/>
         <mapping class="co.com.codesoftware.persistencia.entidad.admin.DepartamentoEntity"/>
         <mapping class="co.com.codesoftware.persistencia.entidad.admin.CiudadEntity"/>
+        <mapping class="co.com.codesoftware.persistencia.entidad.admin.AporteSocioEntity"/>
 
         <mapping class="co.com.codesoftware.persistencia.entidad.inventario.CategoriaEntity"/>
         <mapping class="co.com.codesoftware.persistencia.entidad.inventario.ConteoEntity"/>

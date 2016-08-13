@@ -49,6 +49,7 @@ public class AporteSocioLogica implements AutoCloseable {
     public List<AporteSocioEntity> consultaAportes() {
         List<AporteSocioEntity> rta = new ArrayList<>();
         try {
+            initOperation();
             rta = sesion.createCriteria(AporteSocioEntity.class).list();
         } catch (Exception e) {
             e.printStackTrace();
