@@ -607,7 +607,7 @@ public class ProductoLogic implements AutoCloseable {
             crit.setFetchMode("marca", FetchMode.JOIN);
             //Query query = sesion.createQuery("from PorcentajePrecioEntity where estado = :estado ");
             //query.setString("estado", estado);
-            
+
             rta = crit.list();
         } catch (Exception e) {
             e.printStackTrace();
@@ -637,15 +637,15 @@ public class ProductoLogic implements AutoCloseable {
             criteria.setFetchMode("referencia", FetchMode.JOIN);
             criteria.setFetchMode("marca", FetchMode.JOIN);
             criteria.add(Restrictions.eq("estado", estado));
-            criteria.add(Restrictions.eq("sede.id", idSede)); 
-            criteria.add(Restrictions.eq("categoria.id", idCate)); 
+            criteria.add(Restrictions.eq("sede.id", idSede));
+            criteria.add(Restrictions.eq("categoria.id", idCate));
             if (!"-1".equalsIgnoreCase(idRefe.toString().trim())) {
                 criteria.add(Restrictions.eq("referencia.id", idRefe));
             }
             if (!"-1".equalsIgnoreCase(idMarca.toString().trim())) {
                 criteria.add(Restrictions.eq("marca.id", idMarca));
             }
-            
+
             rta = criteria.list();
         } catch (Exception e) {
             e.printStackTrace();
@@ -777,7 +777,7 @@ public class ProductoLogic implements AutoCloseable {
         FacturaCompraGeneralEntity respuesta = new FacturaCompraGeneralEntity();
         try {
             initOperation();
-            FacturaCompraEntity resultFact = (FacturaCompraEntity) sesion.createCriteria(FacturaCompraEntity.class).add(Restrictions.eq("id", id)).uniqueResult();
+            FacturaCompraEntity resultFact = (FacturaCompraEntity) sesion.createCriteria(FacturaCompraEntity.class).add(Restrictions.eq("id", id)).createAlias("proveedor", "pr").setFetchMode("pr", FetchMode.JOIN).createAlias("sede", "sed").setFetchMode("sed", FetchMode.JOIN).uniqueResult();
             List<ImagenesFacCompraEntity> resultImag = sesion.createCriteria(ImagenesFacCompraEntity.class).createAlias("facturaCompra", "iF").setFetchMode("iF", FetchMode.JOIN).add(Restrictions.eq("iF.id", id)).list();
             List<PagoFacCompraEntity> resultPago = sesion.createCriteria(PagoFacCompraEntity.class).add(Restrictions.eq("idFacturaCompra", id)).list();
             List<ProductoFacCompraEntity> resultProdu = sesion.createCriteria(ProductoFacCompraEntity.class).add(Restrictions.eq("idFacturaCompra", id)).list();
@@ -789,6 +789,21 @@ public class ProductoLogic implements AutoCloseable {
             e.printStackTrace();
         }
         return respuesta;
+    }
+    /**
+     * metodo que consulta una factura de compra
+     * @param id
+     * @return 
+     */
+    public FacturaCompraEntity consultaFacturaCompra(Integer id){
+        FacturaCompraEntity rta = new FacturaCompraEntity();
+        try {
+            initOperation();
+            rta = (FacturaCompraEntity) sesion.createCriteria(FacturaCompraEntity.class).add(Restrictions.eq("id", id)).createAlias("proveedor", "pr").setFetchMode("pr", FetchMode.JOIN).createAlias("sede", "sed").setFetchMode("sed", FetchMode.JOIN).uniqueResult();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
     }
 
     /**
