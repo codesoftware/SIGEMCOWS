@@ -16,6 +16,7 @@ import co.com.codesoftware.logic.SubCuentaLogic;
 import co.com.codesoftware.logic.UsuarioLogic;
 import co.com.codesoftware.logic.productos.FacturaCompraLogic;
 import co.com.codesoftware.logic.productos.PedidosLogic;
+import co.com.codesoftware.logica.admin.AporteSocioLogica;
 import co.com.codesoftware.logica.admin.SocioLogica;
 import co.com.codesoftware.persistence.entities.MapaEntity;
 import co.com.codesoftware.persistence.entities.PucEntity;
@@ -26,6 +27,7 @@ import co.com.codesoftware.persistence.entity.productos.FacturaCompraEntity;
 import co.com.codesoftware.persistence.entity.productos.PagoFacCompraEntity;
 import co.com.codesoftware.persistence.entity.productos.ProductoFacCompraEntity;
 import co.com.codesoftware.persistence.entity.productos.ProductoTmpEntity;
+import co.com.codesoftware.persistencia.entidad.admin.AporteSocioEntity;
 import co.com.codesoftware.persistencia.entidad.admin.PerfilEntity;
 import co.com.codesoftware.persistencia.entidad.admin.SocioEntity;
 import co.com.codesoftware.persistencia.entidad.inventario.CategoriaEntity;
@@ -629,6 +631,21 @@ public class AdministrationEndPoint {
             e.printStackTrace();
         }
         return respuesta;
+    }
+    /**
+     * Funcion con la cual inserto un aporte
+     * @param objEntity
+     * @return 
+     */
+    @WebMethod(operationName = "insertaAporte")
+    public String insertaAporte(AporteSocioEntity objEntity){
+        String rta = "";
+        try (AporteSocioLogica objLogica = new AporteSocioLogica()){
+            rta = objLogica.insertaAporte(objEntity);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
     }
 
     /**
