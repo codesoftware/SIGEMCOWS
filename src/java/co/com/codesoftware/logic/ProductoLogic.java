@@ -19,6 +19,7 @@ import co.com.codesoftware.persistence.entity.productos.FacturaCompraTotalEntity
 import co.com.codesoftware.persistence.entity.productos.ImagenesFacCompraEntity;
 import co.com.codesoftware.persistence.entity.productos.KardexProductoEntity;
 import co.com.codesoftware.persistence.entity.productos.PagoFacCompraEntity;
+import co.com.codesoftware.persistence.entity.productos.PagoFacturaCompraEntity;
 import co.com.codesoftware.persistence.entity.productos.PorcentajePrecioEntity;
 import co.com.codesoftware.persistence.entity.productos.ProductoFacCompraEntity;
 import co.com.codesoftware.persistencia.ReadFunction;
@@ -790,12 +791,14 @@ public class ProductoLogic implements AutoCloseable {
         }
         return respuesta;
     }
+
     /**
      * metodo que consulta una factura de compra
+     *
      * @param id
-     * @return 
+     * @return
      */
-    public FacturaCompraEntity consultaFacturaCompra(Integer id){
+    public FacturaCompraEntity consultaFacturaCompra(Integer id) {
         FacturaCompraEntity rta = new FacturaCompraEntity();
         try {
             initOperation();
@@ -804,6 +807,32 @@ public class ProductoLogic implements AutoCloseable {
             e.printStackTrace();
         }
         return rta;
+    }
+
+    /**
+     * metodo que consulta los pagos de la factura de compra
+     *
+     * @param id
+     * @return
+     */
+    public List<PagoFacturaCompraEntity> consultaPagosFacturaCompra(Integer id) {
+        List<PagoFacturaCompraEntity> rta = new ArrayList<>();
+        try {
+            initOperation();
+            rta = sesion.createCriteria(PagoFacturaCompraEntity.class).add(Restrictions.eq("idFacturaCompra", id)).list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+    
+    /**
+     * metodo que valida e inserta un pago
+     * @param pago
+     * @return 
+     */
+    public String insertaPago(PagoFacturaCompraEntity pago){
+        return "OK";
     }
 
     /**
