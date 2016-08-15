@@ -381,6 +381,25 @@ public class ProductoLogica implements AutoCloseable {
         }
         return rta;
     }
+    
+        /**
+     * metodo que consulta las cantidades de todos los productos por sede
+     *
+     * @param sede
+     * @return
+     */
+    public List<ExistenciaXSedeEntity> consultaCantidadesXSede(Integer sede) {
+        List<ExistenciaXSedeEntity> respuesta = null;
+        try {
+            initOperation();
+            respuesta = sesion.createCriteria(ExistenciaXSedeEntity.class)
+                    .createAlias("sede", "sd").add(Restrictions.eq("sd.id", sede)).list();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return respuesta;
+    }
 
     /**
      * Consulta cantidades en todas las sedes por producto

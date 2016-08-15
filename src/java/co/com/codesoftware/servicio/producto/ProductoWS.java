@@ -339,6 +339,23 @@ public class ProductoWS {
         }
         return respuesta;
     }
+    
+        /**
+     * metodo que consulta las cantidades por sede
+     * @param sede
+     * @return 
+     */
+    @WebMethod(operationName = "obtenerCantidadesTotalesXSede")
+    @WebResult(name = "ExistenciaXSedeEntity")
+    public List<ExistenciaXSedeEntity> obtenerCantidadesTotalesXSede(@XmlElement(required = true) @WebParam(name = "idSede") Integer sede) {
+        List<ExistenciaXSedeEntity> resultado = null;
+        try (ProductoLogica logic = new ProductoLogica()) {
+            resultado = logic.consultaCantidadesXSede(sede);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return resultado;
+    }
 
     /**
      * metodo que inserta los productos a una solicitud
