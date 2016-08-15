@@ -471,5 +471,22 @@ public class ProductoWS {
         }
         return respuesta;
     }
+    /**
+     * Funcion con la cual inserto un producto a un aporte
+     * @return 
+     */
+    public String insertarProductoAporte(@WebParam(name = "idAporte")Integer idAporte,
+            @WebParam(name = "codigo")String codigo, 
+            @WebParam(name = "cantidad")Integer cantidad, 
+            @WebParam(name = "costo")BigDecimal costo,
+            @WebParam(name = "idTius")Integer idTius){
+        String rta = "";
+        try (ProductoLogica objLogica = new ProductoLogica()){
+            rta = objLogica.insertProdAporte(idAporte, codigo, cantidad, costo, idTius);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
 
 }

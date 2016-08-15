@@ -400,6 +400,33 @@ public class ProductoLogica implements AutoCloseable {
         }
         return resultado;
     }
+    /**
+     * 
+     * @param idAporte
+     * @param codExterno
+     * @param costo
+     * @param idTius
+     * @param cantidad
+     * @return 
+     */
+    public String insertProdAporte(Integer idAporte, String codExterno, Integer cantidad, 
+            BigDecimal costo, Integer idTius) {
+        List<String> rta = new ArrayList<>();
+        try (ReadFunction rf = new ReadFunction()) {
+            rf.setNombreFuncion("IN_INSERTA_PROD_APORTE");
+            rf.setNumParam(5);
+            rf.adicionarParametro(idAporte, DataType.INT);
+            rf.adicionarParametro(codExterno, DataType.TEXT);
+            rf.adicionarParametro(cantidad, DataType.INT); 
+            rf.adicionarParametro(costo, DataType.NUMERIC);
+            rf.adicionarParametro(idTius, DataType.INT);
+            rf.callFunctionJdbc();
+            rta = rf.getRespuestaPg();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta.get(0);
+    }
 
     private void initOperation() throws HibernateException {
         sesion = HibernateUtil.getSessionFactory().openSession();
