@@ -34,9 +34,9 @@ public class ExistenciaXSedeEntity implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "eprs_sede")
     private SedeEntity sede;
-    @Formula("(SELECT dska_desc from in_tdska where dska_dska = eprs_dska)")
+    @Formula("(SELECT prod.dska_cod_ext from in_tdska prod where prod.dska_dska = eprs_dska)")
     private String codigoExterno;
-    @Formula("(SELECT dska_cod_ext from in_tdska where dska_dska = eprs_dska)")
+    @Formula("(SELECT prod.dska_desc from in_tdska prod where prod.dska_dska = eprs_dska)")
     private String descripcionProducto;
 
     public Integer getId() {
@@ -86,5 +86,5 @@ public class ExistenciaXSedeEntity implements Serializable {
     public void setDescripcionProducto(String descripcionProducto) {
         this.descripcionProducto = descripcionProducto;
     }
-    
+
 }

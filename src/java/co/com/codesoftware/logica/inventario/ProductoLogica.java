@@ -16,6 +16,7 @@ import co.com.codesoftware.persistencia.entidad.inventario.PromPonderaEntity;
 import co.com.codesoftware.persistencia.entidad.receta.PrecioRecetaEntity;
 import co.com.codesoftware.persistencia.utilities.DataType;
 import java.math.BigDecimal;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.Criteria;
@@ -93,7 +94,7 @@ public class ProductoLogica implements AutoCloseable {
             this.initOperation();
             Criteria crit = sesion.createCriteria(ProductoEntity.class)
                     .add(Restrictions.eq("codigoExt", codigo));
-            rta = (ProductoEntity)crit.uniqueResult();
+            rta = (ProductoEntity) crit.uniqueResult();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -381,8 +382,8 @@ public class ProductoLogica implements AutoCloseable {
         }
         return rta;
     }
-    
-        /**
+
+    /**
      * metodo que consulta las cantidades de todos los productos por sede
      *
      * @param sede
@@ -391,10 +392,28 @@ public class ProductoLogica implements AutoCloseable {
     public List<ExistenciaXSedeEntity> consultaCantidadesXSede(Integer sede) {
         List<ExistenciaXSedeEntity> respuesta = null;
         try {
+            respuestaFuncion();
             initOperation();
             respuesta = sesion.createCriteria(ExistenciaXSedeEntity.class)
-                    .createAlias("sede", "sd").add(Restrictions.eq("sd.id", sede)).list();
+                    .setFetchMode("sede", FetchMode.JOIN).createAlias("sede", "sd").add(Restrictions.eq("sd.id", sede)).list();
 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return respuesta;
+    }
+
+    /**
+     * metodo que ejecuta el ajuste
+     *
+     * @return
+     */
+    public String respuestaFuncion() {
+        String respuesta = "";
+        List<String> response = new ArrayList<>();
+        try (ReadFunction rf = new ReadFunction();) {
+           ResultSet rs = rf.enviaQuery("SELECT  IN_VALIDA_EXISTENCIAS(dska_dska) from in_tdska");
+         
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -419,16 +438,17 @@ public class ProductoLogica implements AutoCloseable {
         }
         return resultado;
     }
+
     /**
-     * 
+     *
      * @param idAporte
      * @param codExterno
      * @param costo
      * @param idTius
      * @param cantidad
-     * @return 
+     * @return
      */
-    public String insertProdAporte(Integer idAporte, String codExterno, Integer cantidad, 
+    public String insertProdAporte(Integer idAporte, String codExterno, Integer cantidad,
             BigDecimal costo, Integer idTius) {
         List<String> rta = new ArrayList<>();
         try (ReadFunction rf = new ReadFunction()) {
@@ -436,7 +456,7 @@ public class ProductoLogica implements AutoCloseable {
             rf.setNumParam(5);
             rf.adicionarParametro(idAporte, DataType.INT);
             rf.adicionarParametro(codExterno, DataType.TEXT);
-            rf.adicionarParametro(cantidad, DataType.INT); 
+            rf.adicionarParametro(cantidad, DataType.INT);
             rf.adicionarParametro(costo, DataType.NUMERIC);
             rf.adicionarParametro(idTius, DataType.INT);
             rf.callFunctionJdbc();
