@@ -74,9 +74,9 @@ public class ProductoWS {
             producto = null;
         }
         return producto;
-
+        
     }
-
+    
     @WebMethod(operationName = "obtenerProductosXSede")
     @WebResult(name = "ListGeneric")
     public List<ProductoGenericoEntity> obtenerProductosXSedeobtenerProductoXCodExt(@XmlElement(required = true) @WebParam(name = "sede_sede") Integer sede_sede) {
@@ -88,7 +88,7 @@ public class ProductoWS {
             return null;
         }
     }
-
+    
     @WebMethod(operationName = "obtieneRecetasXSede")
     @WebResult(name = "ListaReceta")
     public List<PrecioRecetaEntity> consultaRecetas(@WebParam(name = "idSede") Integer idSede) {
@@ -214,7 +214,7 @@ public class ProductoWS {
             return null;
         }
     }
-
+    
     @WebMethod(operationName = "obtenerRecetaXCodigo")
     @WebResult(name = "recetaEntity")
     public PrecioRecetaEntity obtenerRecetaXCodigo(@WebParam(name = "codigo") String codigo, @WebParam(name = "sede") Integer sede) {
@@ -340,17 +340,18 @@ public class ProductoWS {
         }
         return respuesta;
     }
-    
+
     /**
      * metodo que consulta un prodcuto por codigo externo
+     *
      * @param codigoExterno
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "consultaProdXcodExterno")
-    public ProductoSimpleEntity consultaProdXcodExterno(@WebParam(name = "codExterno") String codigoExterno){
+    public ProductoSimpleEntity consultaProdXcodExterno(@WebParam(name = "codExterno") String codigoExterno) {
         ProductoSimpleEntity rta = new ProductoSimpleEntity();
-        try (SolicitudLogica logica = new SolicitudLogica()){
-          rta = logica.consultaProductoXCodExterno(codigoExterno);
+        try (SolicitudLogica logica = new SolicitudLogica()) {
+            rta = logica.consultaProductoXCodExterno(codigoExterno);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -457,14 +458,15 @@ public class ProductoWS {
 
     /**
      * metodo que consulta una solicitud por id
+     *
      * @param id
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "obtenerSolicitudXId")
     @WebResult(name = "solicitud")
     public SolicitudEntity obtenerSolicitudXId(@WebParam(name = "id") Integer id) {
         SolicitudEntity solicitudEntity = new SolicitudEntity();
-        try (SolicitudLogica logica = new SolicitudLogica()){
+        try (SolicitudLogica logica = new SolicitudLogica()) {
             solicitudEntity = logica.consultaSolicitudXId(id);
         } catch (Exception e) {
             e.printStackTrace();
@@ -485,7 +487,15 @@ public class ProductoWS {
         RespuestaEntity respuesta = new RespuestaEntity();
         try {
             SolicitudLogica logica = new SolicitudLogica();
-            respuesta = logica.actualizaProductosSolicitud(productos, idUsuario);
+            boolean rta = logica.actualizaSolicitud(productos.get(0).getSolicitud());
+            if (rta) {
+                logica.borraProductosSolicitud(productos.get(0).getSolicitud().getId());
+                respuesta = logica.actualizaProductosSolicitud(productos, idUsuario);
+            } else {
+                respuesta.setCodigoRespuesta(0);
+                respuesta.setDescripcionRespuesta("Error al enviar productos de la solicitud");
+                respuesta.setMensajeRespuesta("Error al enviar productos de la solicitud");
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -551,32 +561,37 @@ public class ProductoWS {
         }
         return rta;
     }
+
     /**
-     * Funcion con la cual elimino todos los productos que tiene relacionado un aporte
+     * Funcion con la cual elimino todos los productos que tiene relacionado un
+     * aporte
+     *
      * @param idAporte
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "eliminaProdAporte")
-    public String eliminaProdAporte(@WebParam(name = "idAporte")Integer idAporte){
+    public String eliminaProdAporte(@WebParam(name = "idAporte") Integer idAporte) {
         String rta = "";
-        try (ProductoLogica objLogica = new ProductoLogica()){
+        try (ProductoLogica objLogica = new ProductoLogica()) {
             rta = objLogica.borrarProductosAporte(idAporte);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return rta;
     }
+
     /**
      * Funcion con la cual genero el proceso de aporte
+     *
      * @param idAporte
      * @param idAuxCon
      * @param idTius
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "generaProcesoAporte")
-    public String generaProcesoAporte(@WebParam(name = "idAporte")Integer idAporte, 
-            @WebParam(name = "idAuxCon")Integer idAuxCon, 
-            @WebParam(name = "idTius")Integer idTius){
+    public String generaProcesoAporte(@WebParam(name = "idAporte") Integer idAporte,
+            @WebParam(name = "idAuxCon") Integer idAuxCon,
+            @WebParam(name = "idTius") Integer idTius) {
         String rta = "";
         try {
             ProductoLogica objLogica = new ProductoLogica();
@@ -586,5 +601,5 @@ public class ProductoWS {
         }
         return rta;
     }
-
+    
 }

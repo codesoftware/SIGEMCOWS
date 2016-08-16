@@ -15,6 +15,8 @@ import co.com.codesoftware.persistencia.utilities.RespuestaEntity;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.HibernateException;
@@ -180,7 +182,6 @@ public class SolicitudLogica implements AutoCloseable {
     public SolicitudEntity consultaSolicitudXId(Integer id) {
         SolicitudEntity solicitud = new SolicitudEntity();
         try {
-            System.out.println("co.com.codesoftware.logica.inventario.SolicitudLogica.consultaSolicitudXId()" + id);
             initOperation();
             solicitud = (SolicitudEntity) sesion.createCriteria(SolicitudEntity.class)
                     .setFetchMode("sede", FetchMode.JOIN)
@@ -204,7 +205,7 @@ public class SolicitudLogica implements AutoCloseable {
         try {
             for (SolicitudProdEntity item : productos) {
                 initOperation();
-                sesion.update(item);
+                sesion.save(item);
                 close();
             }
             //respuesta = actualizaSolicitud("E", productos.get(0).getSolicitud());
@@ -217,6 +218,54 @@ public class SolicitudLogica implements AutoCloseable {
             respuesta.setMensajeRespuesta(e.toString());
         }
         return respuesta;
+    }
+
+    /**
+     * metodo que borra los productos de una solicitud
+     * @param idSolicitud
+     * @return 
+     */
+    public boolean borraProductosSolicitud(Integer idSolicitud) {
+        try {
+            initOperation();
+            List<SolicitudProdEntity> rta = sesion.createCriteria(SolicitudProdEntity.class)
+                    .createAlias("solicitud", "sol").add(Restrictions.eq("sol.id", idSolicitud)).list();
+            for(SolicitudProdEntity item:rta){
+                sesion.delete(item);
+            }
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }finally{
+            try {
+                close();
+            } catch (Exception ex) {
+                Logger.getLogger(SolicitudLogica.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    
+    /**
+     * metodo que actualiza una solicitud nuevo comentario
+     * @param entidad
+     * @return 
+     */
+    public boolean actualizaSolicitud(SolicitudEntity entidad){
+        try {
+            initOperation();
+            sesion.update(entidad);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }finally{
+            try {
+                close();
+            } catch (Exception ex) {
+                Logger.getLogger(SolicitudLogica.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 
     /**
