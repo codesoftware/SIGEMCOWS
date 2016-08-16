@@ -5,7 +5,6 @@
  */
 package co.com.codesoftware.persistencia.entidad.inventario;
 
-
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Column;
@@ -28,7 +27,8 @@ import co.com.codesoftware.persistencia.entidad.admin.UsuarioEntity;
  */
 @Entity
 @Table(name = "fa_tsoli")
-public class SolicitudEntity implements Serializable{
+public class SolicitudEntity implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "soli_soli")
@@ -46,6 +46,8 @@ public class SolicitudEntity implements Serializable{
     @JoinColumn(name = "soli_sede")
     @OneToOne(fetch = FetchType.LAZY)
     private SedeEntity sede;
+    @Column(name = "soli_comeen")
+    private String comentarioEntrega;
 
     public Integer getId() {
         return id;
@@ -94,8 +96,15 @@ public class SolicitudEntity implements Serializable{
     public void setSede(SedeEntity sede) {
         this.sede = sede;
     }
+
+    public String getComentarioEntrega() {
+        return comentarioEntrega;
+    }
+
+    public void setComentarioEntrega(String comentarioEntrega) {
+        this.comentarioEntrega = comentarioEntrega;
+    }
     
     
-    
-    
+
 }

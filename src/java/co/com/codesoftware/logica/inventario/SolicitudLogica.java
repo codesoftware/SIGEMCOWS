@@ -171,12 +171,32 @@ public class SolicitudLogica implements AutoCloseable {
     }
 
     /**
+     * metodo que consulta usa solicitud por ID
+     * @param id
+     * @return 
+     */
+    public SolicitudEntity consultaSolicitudXId(Integer id) {
+        SolicitudEntity solicitud = new SolicitudEntity();
+        try {
+            initOperation();
+            solicitud = (SolicitudEntity) sesion.createCriteria(SolicitudEntity.class)
+                    .setFetchMode("sede", FetchMode.JOIN)
+                    .setFetchMode("usuario", FetchMode.JOIN)
+                    .add(Restrictions.eq(".id", id))
+                    .uniqueResult();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return solicitud;
+    }
+
+    /**
      * metoddo que actualiza los productos de una solicitud
      *
      * @param productos
      * @return
      */
-    public RespuestaEntity actualizaProductosSolicitud(List<SolicitudProdEntity> productos,Integer idUsuario) {
+    public RespuestaEntity actualizaProductosSolicitud(List<SolicitudProdEntity> productos, Integer idUsuario) {
         RespuestaEntity respuesta = new RespuestaEntity();
         try {
             for (SolicitudProdEntity item : productos) {
@@ -185,7 +205,7 @@ public class SolicitudLogica implements AutoCloseable {
                 close();
             }
             //respuesta = actualizaSolicitud("E", productos.get(0).getSolicitud());
-            respuesta=ejecutaProcedimientoSolicitud(idUsuario, productos.get(0).getSolicitud().getId());
+            respuesta = ejecutaProcedimientoSolicitud(idUsuario, productos.get(0).getSolicitud().getId());
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -231,36 +251,37 @@ public class SolicitudLogica implements AutoCloseable {
      */
     public RespuestaEntity ejecutaProcedimientoSolicitud(Integer idUsuario, Integer idSede) {
         RespuestaEntity respuesta = new RespuestaEntity();
-        try (ReadFunction rf = new ReadFunction()){
+        try (ReadFunction rf = new ReadFunction()) {
             rf.setNombreFuncion("FA_ENVIASOLICITUD");
             rf.setNumParam(2);
             rf.addParametro(idUsuario.toString(), DataType.INT);
             rf.addParametro(idSede.toString(), DataType.INT);
             boolean valida = rf.callFunctionJdbc();
-            if(valida){
-                if(rf.getRespuestaPg().get(0).startsWith("Error")){
-                   respuesta.setCodigoRespuesta(0); 
-                }else{
+            if (valida) {
+                if (rf.getRespuestaPg().get(0).startsWith("Error")) {
+                    respuesta.setCodigoRespuesta(0);
+                } else {
                     respuesta.setCodigoRespuesta(1);
                 }
                 respuesta.setDescripcionRespuesta(rf.getRespuestaPg().get(0));
-                
-            }else{
+
+            } else {
                 respuesta.setDescripcionRespuesta("Error al realizar solicitud ");
                 respuesta.setCodigoRespuesta(0);
-            }            
+            }
         } catch (Exception e) {
-             respuesta.setDescripcionRespuesta("Error"+e.getMessage());
-                respuesta.setCodigoRespuesta(0);
+            respuesta.setDescripcionRespuesta("Error" + e.getMessage());
+            respuesta.setCodigoRespuesta(0);
             e.printStackTrace();
         }
         return respuesta;
-        }
-        /**
-         * metodo que inicia la factoria de conexiones hibernate
-         *
-         * @throws HibernateException
-         */
+    }
+
+    /**
+     * metodo que inicia la factoria de conexiones hibernate
+     *
+     * @throws HibernateException
+     */
     private void initOperation() throws HibernateException {
         sesion = HibernateUtil.getSessionFactory().openSession();
         tx = sesion.beginTransaction();

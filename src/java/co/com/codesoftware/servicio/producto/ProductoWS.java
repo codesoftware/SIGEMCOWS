@@ -339,11 +339,12 @@ public class ProductoWS {
         }
         return respuesta;
     }
-    
-        /**
+
+    /**
      * metodo que consulta las cantidades por sede
+     *
      * @param sede
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "obtenerCantidadesTotalesXSede")
     @WebResult(name = "ExistenciaXSedeEntity")
@@ -438,6 +439,23 @@ public class ProductoWS {
     }
 
     /**
+     * metodo que consulta una solicitud por id
+     * @param id
+     * @return 
+     */
+    @WebMethod(operationName = "obtenerSolicitudXId")
+    @WebResult(name = "solicitud")
+    public SolicitudEntity obtenerSolicitudXId(@WebParam(name = "id") Integer id) {
+        SolicitudEntity solicitudEntity = new SolicitudEntity();
+        try (SolicitudLogica logica = new SolicitudLogica()){
+            solicitudEntity = logica.consultaSolicitudXId(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return solicitudEntity;
+    }
+
+    /**
      * metodo que actualiza los productos de una solicitud
      *
      * @param idUsuario
@@ -467,44 +485,49 @@ public class ProductoWS {
     public List<PagoFacturaCompraEntity> consultaPagosFactCompra(@WebParam(name = "idFactura") Integer idFactura) {
         List<PagoFacturaCompraEntity> lista = new ArrayList<>();
         try (ProductoLogic logica = new ProductoLogic()) {
-           lista = logica.consultaPagosFacturaCompra(idFactura);
+            lista = logica.consultaPagosFacturaCompra(idFactura);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return lista;
     }
-    /***
+
+    /**
+     * *
      * metodo que llama al procedimiento de insercion de pagos
+     *
      * @param pago
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "insertaPagoFactCompra")
-    public String insertaPagoFactCompra(@WebParam(name = "pago") PagoFacturaCompraEntity pago ){
+    public String insertaPagoFactCompra(@WebParam(name = "pago") PagoFacturaCompraEntity pago) {
         String respuesta = "";
-        try (ProductoLogic logica = new ProductoLogic()){
+        try (ProductoLogic logica = new ProductoLogic()) {
             respuesta = logica.insertaPago(pago);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return respuesta;
     }
+
     /**
      * Funcion con la cual inserto un producto a un aporte
+     *
      * @param idAporte
      * @param codigo
      * @param cantidad
      * @param costo
      * @param idTius
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "insertarProductoAporte")
-    public String insertarProductoAporte(@WebParam(name = "idAporte")Integer idAporte,
-            @WebParam(name = "codigo")String codigo, 
-            @WebParam(name = "cantidad")Integer cantidad, 
-            @WebParam(name = "costo")BigDecimal costo,
-            @WebParam(name = "idTius")Integer idTius){
+    public String insertarProductoAporte(@WebParam(name = "idAporte") Integer idAporte,
+            @WebParam(name = "codigo") String codigo,
+            @WebParam(name = "cantidad") Integer cantidad,
+            @WebParam(name = "costo") BigDecimal costo,
+            @WebParam(name = "idTius") Integer idTius) {
         String rta = "";
-        try (ProductoLogica objLogica = new ProductoLogica()){
+        try (ProductoLogica objLogica = new ProductoLogica()) {
             rta = objLogica.insertProdAporte(idAporte, codigo, cantidad, costo, idTius);
         } catch (Exception e) {
             e.printStackTrace();
