@@ -457,9 +457,9 @@ public class ProductoLogica implements AutoCloseable {
             rf.adicionarParametro(idAporte, DataType.INT);
             rf.adicionarParametro(codExterno, DataType.TEXT);
             rf.adicionarParametro(cantidad, DataType.INT);
-            rf.adicionarParametro(costo, DataType.NUMERIC);
+            rf.adicionarParametro(costo, DataType.BIGDECIMAL);
             rf.adicionarParametro(idTius, DataType.INT);
-            rf.callFunctionJdbc();
+            rf.llamarFuncion();
             rta = rf.getRespuestaPg();
         } catch (Exception e) {
             e.printStackTrace();

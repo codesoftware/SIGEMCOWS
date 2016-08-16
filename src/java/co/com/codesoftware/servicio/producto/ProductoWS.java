@@ -490,8 +490,14 @@ public class ProductoWS {
     }
     /**
      * Funcion con la cual inserto un producto a un aporte
+     * @param idAporte
+     * @param codigo
+     * @param cantidad
+     * @param costo
+     * @param idTius
      * @return 
      */
+    @WebMethod(operationName = "insertarProductoAporte")
     public String insertarProductoAporte(@WebParam(name = "idAporte")Integer idAporte,
             @WebParam(name = "codigo")String codigo, 
             @WebParam(name = "cantidad")Integer cantidad, 
