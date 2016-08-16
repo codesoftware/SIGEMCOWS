@@ -549,5 +549,25 @@ public class ProductoWS {
         }
         return rta;
     }
+    /**
+     * Funcion con la cual genero el proceso de aporte
+     * @param idProceso
+     * @param idAuxCon
+     * @param idTius
+     * @return 
+     */
+    @WebMethod(operationName = "generaProcesoAporte")
+    public String generaProcesoAporte(@WebParam(name = "idAporte")Integer idAporte, 
+            @WebParam(name = "idAuxCon")Integer idAuxCon, 
+            @WebParam(name = "idTius")Integer idTius){
+        String rta = "";
+        try {
+            ProductoLogica objLogica = new ProductoLogica();
+            rta = objLogica.ejecutarProcesoAporte(idAporte, idAuxCon, idTius);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
 
 }

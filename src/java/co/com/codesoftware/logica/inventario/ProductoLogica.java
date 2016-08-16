@@ -464,6 +464,7 @@ public class ProductoLogica implements AutoCloseable {
             rta = rf.getRespuestaPg();
         } catch (Exception e) {
             e.printStackTrace();
+            return "Error " + e;
         }
         return rta.get(0);
     }
@@ -486,6 +487,32 @@ public class ProductoLogica implements AutoCloseable {
         }
         return rta;
     }
+    /**
+     * Funcion con la cual llamo la funcion con la cual ejecuto el proceso de aportes
+     * @param idAporte
+     * @param idProceso
+     * @param idAuxContable
+     * @param idTius
+     * @return 
+     */
+    public String ejecutarProcesoAporte(Integer idAporte, Integer idAuxContable, Integer idTius){
+        List<String> rta = new ArrayList<>();
+        try (ReadFunction rf = new ReadFunction()) {
+            rf.setNombreFuncion("IN_GENERA_PROCESO_APORTE");
+            rf.setNumParam(3);
+            rf.adicionarParametro(idAporte, DataType.INT);
+            rf.adicionarParametro(idAuxContable, DataType.TEXT);
+            rf.adicionarParametro(idTius, DataType.INT);
+            rf.llamarFuncion();
+            rta = rf.getRespuestaPg();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Error " + e;
+        }
+        return rta.get(0);
+    }
+            
+            
 
     private void initOperation() throws HibernateException {
         sesion = HibernateUtil.getSessionFactory().openSession();
