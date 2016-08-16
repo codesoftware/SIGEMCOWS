@@ -178,11 +178,12 @@ public class SolicitudLogica implements AutoCloseable {
     public SolicitudEntity consultaSolicitudXId(Integer id) {
         SolicitudEntity solicitud = new SolicitudEntity();
         try {
+            System.out.println("co.com.codesoftware.logica.inventario.SolicitudLogica.consultaSolicitudXId()"+id);
             initOperation();
             solicitud = (SolicitudEntity) sesion.createCriteria(SolicitudEntity.class)
                     .setFetchMode("sede", FetchMode.JOIN)
                     .setFetchMode("usuario", FetchMode.JOIN)
-                    .add(Restrictions.eq(".id", id))
+                    .add(Restrictions.eq("id", id))
                     .uniqueResult();
         } catch (Exception e) {
             e.printStackTrace();
