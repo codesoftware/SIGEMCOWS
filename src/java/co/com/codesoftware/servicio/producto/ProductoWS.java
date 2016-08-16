@@ -551,7 +551,7 @@ public class ProductoWS {
     }
     /**
      * Funcion con la cual genero el proceso de aporte
-     * @param idProceso
+     * @param idAporte
      * @param idAuxCon
      * @param idTius
      * @return 
