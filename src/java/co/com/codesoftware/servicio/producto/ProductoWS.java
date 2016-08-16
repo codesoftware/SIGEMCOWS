@@ -511,5 +511,20 @@ public class ProductoWS {
         }
         return rta;
     }
+    /**
+     * Funcion con la cual elimino todos los productos que tiene relacionado un aporte
+     * @param idAporte
+     * @return 
+     */
+    @WebMethod(operationName = "eliminaProdAporte")
+    public String eliminaProdAporte(@WebParam(name = "idAporte")Integer idAporte){
+        String rta = "";
+        try (ProductoLogica objLogica = new ProductoLogica()){
+            rta = objLogica.borrarProductosAporte(idAporte);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
 
 }

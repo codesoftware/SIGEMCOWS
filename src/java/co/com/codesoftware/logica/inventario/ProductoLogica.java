@@ -22,6 +22,7 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.MatchMode;
@@ -465,6 +466,25 @@ public class ProductoLogica implements AutoCloseable {
             e.printStackTrace();
         }
         return rta.get(0);
+    }
+    /**
+     * Funcion con la cual borro todos los productos de un aporte
+     * @param idAporte
+     * @return 
+     */
+    public String borrarProductosAporte(Integer idAporte){
+        String rta = "";
+        try {
+            this.initOperation();
+            Query query = this.sesion.createQuery("delete from ProductoAporte where idAporte = :idAporte ");
+            query.setInteger("idAporte", idAporte);
+            query.executeUpdate();
+            rta = "Ok";
+        } catch (Exception e) {
+            e.printStackTrace();
+            rta = "Error "+ e;
+        }
+        return rta;
     }
 
     private void initOperation() throws HibernateException {
