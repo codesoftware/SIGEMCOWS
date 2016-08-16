@@ -10,6 +10,7 @@ import co.com.codesoftware.logica.inventario.ProductoLogica;
 import co.com.codesoftware.logica.inventario.ProductosGenericosLogica;
 import co.com.codesoftware.logica.inventario.SolicitudLogica;
 import co.com.codesoftware.logica.receta.RecetaLogica;
+import co.com.codesoftware.persistence.entities.simple.ProductoSimpleEntity;
 import co.com.codesoftware.persistence.entity.productos.PagoFacturaCompraEntity;
 import co.com.codesoftware.persistencia.entidad.generico.producto.ProductoGenericoEntity;
 import co.com.codesoftware.persistencia.entidad.inventario.ExistenciaXSedeEntity;
@@ -338,6 +339,22 @@ public class ProductoWS {
             e.printStackTrace();
         }
         return respuesta;
+    }
+    
+    /**
+     * metodo que consulta un prodcuto por codigo externo
+     * @param codigoExterno
+     * @return 
+     */
+    @WebMethod(operationName = "consultaProdXcodExterno")
+    public ProductoSimpleEntity consultaProdXcodExterno(@WebParam(name = "codExterno") String codigoExterno){
+        ProductoSimpleEntity rta = new ProductoSimpleEntity();
+        try (SolicitudLogica logica = new SolicitudLogica()){
+          rta = logica.consultaProductoXCodExterno(codigoExterno);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
     }
 
     /**

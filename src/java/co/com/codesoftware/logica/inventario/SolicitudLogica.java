@@ -5,6 +5,7 @@
  */
 package co.com.codesoftware.logica.inventario;
 
+import co.com.codesoftware.persistence.entities.simple.ProductoSimpleEntity;
 import co.com.codesoftware.persistencia.HibernateUtil;
 import co.com.codesoftware.persistencia.ReadFunction;
 import co.com.codesoftware.persistencia.entidad.inventario.SolicitudEntity;
@@ -172,13 +173,14 @@ public class SolicitudLogica implements AutoCloseable {
 
     /**
      * metodo que consulta usa solicitud por ID
+     *
      * @param id
-     * @return 
+     * @return
      */
     public SolicitudEntity consultaSolicitudXId(Integer id) {
         SolicitudEntity solicitud = new SolicitudEntity();
         try {
-            System.out.println("co.com.codesoftware.logica.inventario.SolicitudLogica.consultaSolicitudXId()"+id);
+            System.out.println("co.com.codesoftware.logica.inventario.SolicitudLogica.consultaSolicitudXId()" + id);
             initOperation();
             solicitud = (SolicitudEntity) sesion.createCriteria(SolicitudEntity.class)
                     .setFetchMode("sede", FetchMode.JOIN)
@@ -215,6 +217,23 @@ public class SolicitudLogica implements AutoCloseable {
             respuesta.setMensajeRespuesta(e.toString());
         }
         return respuesta;
+    }
+
+    /**
+     * metodo que consulta un produnto simple por codigo externo
+     *
+     * @param codigoExterno
+     * @return
+     */
+    public ProductoSimpleEntity consultaProductoXCodExterno(String codigoExterno) {
+        ProductoSimpleEntity rta = new ProductoSimpleEntity();
+        try {
+            initOperation();
+            rta = (ProductoSimpleEntity) sesion.createCriteria(ProductoSimpleEntity.class).add(Restrictions.eq("codigoExt", codigoExterno)).uniqueResult();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
     }
 
     /**
