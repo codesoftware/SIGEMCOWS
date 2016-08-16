@@ -501,7 +501,7 @@ public class ProductoLogica implements AutoCloseable {
             rf.setNombreFuncion("IN_GENERA_PROCESO_APORTE");
             rf.setNumParam(3);
             rf.adicionarParametro(idAporte, DataType.INT);
-            rf.adicionarParametro(idAuxContable, DataType.TEXT);
+            rf.adicionarParametro(idAuxContable, DataType.INT);
             rf.adicionarParametro(idTius, DataType.INT);
             rf.llamarFuncion();
             rta = rf.getRespuestaPg();
