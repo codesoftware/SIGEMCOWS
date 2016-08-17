@@ -12,10 +12,14 @@ import co.com.codesoftware.persistence.entities.simple.PrecioProdSimpleEntity;
 import co.com.codesoftware.persistence.entities.simple.ProductoSimpleEntity;
 import co.com.codesoftware.persistencia.entidad.inventario.ProductoEntity;
 import co.com.codesoftware.persistence.entity.administracion.RespuestaEntity;
+import co.com.codesoftware.persistence.entity.productos.FacturaCompraEntity;
 import co.com.codesoftware.persistence.entity.productos.FacturaCompraTotalEntity;
 import co.com.codesoftware.persistence.entity.productos.ImagenesFacCompraEntity;
 import co.com.codesoftware.persistence.entity.productos.KardexProductoEntity;
+import co.com.codesoftware.persistence.entity.productos.PagoFacCompraEntity;
+import co.com.codesoftware.persistence.entity.productos.PagoFacturaCompraEntity;
 import co.com.codesoftware.persistence.entity.productos.PorcentajePrecioEntity;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.jws.WebMethod;
@@ -228,7 +232,7 @@ public class ProductosEndPoint {
         }
         return rta;
     }
-    
+
     /**
      * Funcion con la cual ejecuto el cambio de precios masivos
      *
@@ -251,80 +255,92 @@ public class ProductosEndPoint {
         }
         return rta;
     }
-    
+
     /**
      * metodo que consulta la factura e compra por filtros
+     *
      * @param idProveedor
      * @param fechaInicial
      * @param fechaFinal
      * @param estado
      * @param imagen
-     * @param digitalizado String Indica si la consulta busca o no las facturas que ya han sido digitalizadas
-     * @return 
+     * @param digitalizado String Indica si la consulta busca o no las facturas
+     * que ya han sido digitalizadas
+     * @return
      */
     @WebMethod(operationName = "consultaFacturaCompraFiltros")
     @WebResult(name = "FacturaCompraTotalEntity")
-    public List<FacturaCompraTotalEntity> consultaFacturaCompraFiltros(Integer idProveedor,Date fechaInicial,Date fechaFinal,String estado,String imagen, String digitalizado){
-         List<FacturaCompraTotalEntity> respuesta = null;
-         try (ProductoLogic objLogic = new ProductoLogic()){
+    public List<FacturaCompraTotalEntity> consultaFacturaCompraFiltros(Integer idProveedor, Date fechaInicial, Date fechaFinal, String estado, String imagen, String digitalizado) {
+        List<FacturaCompraTotalEntity> respuesta = null;
+        try (ProductoLogic objLogic = new ProductoLogic()) {
             respuesta = objLogic.consultaFacturas(idProveedor, fechaInicial, fechaFinal, estado, imagen, digitalizado);
         } catch (Exception e) {
             e.printStackTrace();
         }
-         return respuesta;
+        return respuesta;
     }
-    
+
     /**
      * funcion que inserta imagenes para la factura de compra
+     *
      * @param entity
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "insertaImagenesFacturaCompra")
     @WebResult(name = "ResultEntity")
-    public RespuestaEntity insertaImagenesFacturaCompra(ImagenesFacCompraEntity entity){
+    public RespuestaEntity insertaImagenesFacturaCompra(ImagenesFacCompraEntity entity) {
         RespuestaEntity res = new RespuestaEntity();
-        try (FacturaCompraLogic logic = new FacturaCompraLogic()){
+        try (FacturaCompraLogic logic = new FacturaCompraLogic()) {
             res = logic.insertaImagen(entity);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return res;
     }
+
     /**
      * metodo que consulta ua factura en especifico
+     *
      * @param id
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "consultaFacturaTotal")
     @WebResult(name = "FacturaCompraGeneralEntity")
-    public FacturaCompraGeneralEntity consultaFacturaTotal(Integer id){
+    public FacturaCompraGeneralEntity consultaFacturaTotal(Integer id) {
         FacturaCompraGeneralEntity respuesta = new FacturaCompraGeneralEntity();
-        try (ProductoLogic logic = new ProductoLogic()){
+        try (ProductoLogic logic = new ProductoLogic()) {
             respuesta = logic.consultaFacturaEspecifico(id);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return respuesta;
     }
+
+    
+    
+    
+    
+
     /**
-     * Funcion con la cual obtengo el kardex de un producto 
+     * Funcion con la cual obtengo el kardex de un producto
+     *
      * @param idDska
      * @param idSede
      * @param fechaIni
      * @param fechaFin
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "buscaKardexProductoXSede")
     @WebResult(name = "listaKardexProd")
     //@ResponseWrapper(localName = "buscaKardexProductoXSedeResponse", targetNamespace = "http://entity.ws.codesoftware.com.co/", className = "co.com.codesoftware.ws.entity.ConsultaFacturaTotalResponse")
-    public List<KardexProductoEntity> buscaKardexProductoXSede(@WebParam(name = "idDska") Integer idDska,@WebParam(name = "idSede") Integer idSede,@WebParam(name = "fechaIni") Date fechaIni,@WebParam(name = "fechaFin") Date fechaFin){
+    public List<KardexProductoEntity> buscaKardexProductoXSede(@WebParam(name = "idDska") Integer idDska, @WebParam(name = "idSede") Integer idSede, @WebParam(name = "fechaIni") Date fechaIni, @WebParam(name = "fechaFin") Date fechaFin) {
         List<KardexProductoEntity> rta = null;
-        try(ProductoLogic objLogic = new ProductoLogic()) {
-            rta = objLogic.buscaKardexProducto(idDska,idSede,fechaIni,fechaFin);
+        try (ProductoLogic objLogic = new ProductoLogic()) {
+            rta = objLogic.buscaKardexProducto(idDska, idSede, fechaIni, fechaFin);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return rta;
     }
-    
+
 }

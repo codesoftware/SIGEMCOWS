@@ -827,6 +827,22 @@ public class ProductoLogic implements AutoCloseable {
     }
     
     /**
+     * metodo que consulta el pago anterior
+     * @param id
+     * @return 
+     */
+    public List<PagoFacCompraEntity> consultaPagoAnterior(Integer id){
+        List<PagoFacCompraEntity> rta = new ArrayList<>();
+        try {
+            initOperation();
+            rta = sesion.createCriteria(PagoFacCompraEntity.class).add(Restrictions.eq("idFacturaCompra", id)).list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+    
+    /**
      * metodo que valida e inserta un pago
      * @param pago
      * @return 

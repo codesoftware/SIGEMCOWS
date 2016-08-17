@@ -11,6 +11,8 @@ import co.com.codesoftware.logica.inventario.ProductosGenericosLogica;
 import co.com.codesoftware.logica.inventario.SolicitudLogica;
 import co.com.codesoftware.logica.receta.RecetaLogica;
 import co.com.codesoftware.persistence.entities.simple.ProductoSimpleEntity;
+import co.com.codesoftware.persistence.entity.productos.FacturaCompraEntity;
+import co.com.codesoftware.persistence.entity.productos.PagoFacCompraEntity;
 import co.com.codesoftware.persistence.entity.productos.PagoFacturaCompraEntity;
 import co.com.codesoftware.persistencia.entidad.generico.producto.ProductoGenericoEntity;
 import co.com.codesoftware.persistencia.entidad.inventario.ExistenciaXSedeEntity;
@@ -74,9 +76,9 @@ public class ProductoWS {
             producto = null;
         }
         return producto;
-        
+
     }
-    
+
     @WebMethod(operationName = "obtenerProductosXSede")
     @WebResult(name = "ListGeneric")
     public List<ProductoGenericoEntity> obtenerProductosXSedeobtenerProductoXCodExt(@XmlElement(required = true) @WebParam(name = "sede_sede") Integer sede_sede) {
@@ -88,7 +90,7 @@ public class ProductoWS {
             return null;
         }
     }
-    
+
     @WebMethod(operationName = "obtieneRecetasXSede")
     @WebResult(name = "ListaReceta")
     public List<PrecioRecetaEntity> consultaRecetas(@WebParam(name = "idSede") Integer idSede) {
@@ -214,7 +216,7 @@ public class ProductoWS {
             return null;
         }
     }
-    
+
     @WebMethod(operationName = "obtenerRecetaXCodigo")
     @WebResult(name = "recetaEntity")
     public PrecioRecetaEntity obtenerRecetaXCodigo(@WebParam(name = "codigo") String codigo, @WebParam(name = "sede") Integer sede) {
@@ -520,6 +522,61 @@ public class ProductoWS {
     }
 
     /**
+     * metodo en el cual se consulta una factura de compra
+     *
+     * @param id
+     * @return
+     */
+    @WebMethod(operationName = "consultaFactCompra")
+    @WebResult(name = "facturaCompraEntity")
+    public FacturaCompraEntity consultaFactCompra(@WebParam(name = "id") Integer id) {
+        FacturaCompraEntity respuesta = new FacturaCompraEntity();
+        try (ProductoLogic logic = new ProductoLogic()) {
+            respuesta = logic.consultaFacturaCompra(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return respuesta;
+    }
+
+    /**
+     * metodo que consulta los pagos realizados cuando se registra la factura de
+     * compra
+     *
+     * @param id
+     * @return
+     */
+    @WebMethod(operationName = "consultaPagoFactura")
+    @WebResult(name = "PagoFacturaCompra")
+    public List<PagoFacCompraEntity> consultaPagoFactura(@WebParam(name = "id") Integer id) {
+        List<PagoFacCompraEntity> rta = new ArrayList<PagoFacCompraEntity>();
+        try (ProductoLogic logica = new ProductoLogic()) {
+            rta = logica.consultaPagoAnterior(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+
+    /**
+     * metodo que consulta los pagos realizados
+     *
+     * @param id
+     * @return
+     */
+    @WebMethod(operationName = "consultaPagoFactReal")
+    @WebResult(name = "PagoFacturaCompra")
+    public List<PagoFacturaCompraEntity> consultaPagoFactReal(@WebParam(name = "id") Integer id) {
+        List<PagoFacturaCompraEntity> rta = new ArrayList<>();
+        try (ProductoLogic logica = new ProductoLogic()) {
+            rta = logica.consultaPagosFacturaCompra(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+
+    /**
      * *
      * metodo que llama al procedimiento de insercion de pagos
      *
@@ -601,5 +658,5 @@ public class ProductoWS {
         }
         return rta;
     }
-    
+
 }
