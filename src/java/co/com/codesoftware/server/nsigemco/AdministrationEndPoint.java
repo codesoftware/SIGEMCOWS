@@ -18,7 +18,6 @@ import co.com.codesoftware.logic.productos.FacturaCompraLogic;
 import co.com.codesoftware.logic.productos.PedidosLogic;
 import co.com.codesoftware.logica.admin.AporteSocioLogica;
 import co.com.codesoftware.logica.admin.SocioLogica;
-import co.com.codesoftware.persistence.entities.MapaEntity;
 import co.com.codesoftware.persistence.entities.PucEntity;
 import co.com.codesoftware.persistence.entity.administracion.ProveedoresEntity;
 import co.com.codesoftware.persistence.entity.administracion.RespuestaEntity;
