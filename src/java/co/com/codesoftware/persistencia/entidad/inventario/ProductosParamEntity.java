@@ -13,6 +13,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import org.hibernate.annotations.Formula;
@@ -32,6 +33,8 @@ public class ProductosParamEntity implements Serializable {
     @Column(name = "propar_dska")
     private Integer idProducto;
     @Column(name = "propar_tius")
+    private Integer idUsuario;
+    @JoinColumn(name = "propar_auco")
     @OneToOne(fetch = FetchType.LAZY)
     private AuxContableEntity axiliar;
     @Column(name = "propar_desc")
@@ -41,6 +44,15 @@ public class ProductosParamEntity implements Serializable {
     @Formula("(select prod.dska_desc from in_tdska prod where prod.dska_dska = propar_dska)")
     private String descripcionProducto;
 
+    public Integer getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(Integer idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+
+    
     public Integer getId() {
         return id;
     }
