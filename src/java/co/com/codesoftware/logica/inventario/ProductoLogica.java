@@ -8,6 +8,7 @@ package co.com.codesoftware.logica.inventario;
 import co.com.codesoftware.logica.receta.RecetaLogica;
 import co.com.codesoftware.persistencia.HibernateUtil;
 import co.com.codesoftware.persistencia.ReadFunction;
+import co.com.codesoftware.persistencia.entidad.admin.ProductoAporte;
 import co.com.codesoftware.persistencia.entidad.admin.SedeEntity;
 import co.com.codesoftware.persistencia.entidad.inventario.ExistenciaXSedeEntity;
 import co.com.codesoftware.persistencia.entidad.inventario.PrecioProductoEntity;
@@ -449,10 +450,11 @@ public class ProductoLogica implements AutoCloseable {
      * @param cantidad
      * @return
      */
-    public String insertProdAporte(Integer idAporte, String codExterno, Integer cantidad,
-            BigDecimal costo, Integer idTius) {
+    public String insertProdAporte(Integer idAporte, ArrayList<ProductoAporte> productos, Integer idTius) {
         List<String> rta = new ArrayList<>();
         try (ReadFunction rf = new ReadFunction()) {
+            if(productos != null){
+            }
             rf.setNombreFuncion("IN_INSERTA_PROD_APORTE");
             rf.setNumParam(5);
             rf.adicionarParametro(idAporte, DataType.INT);

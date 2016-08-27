@@ -15,6 +15,7 @@ import co.com.codesoftware.persistence.entities.simple.ProductoSimpleEntity;
 import co.com.codesoftware.persistence.entity.productos.FacturaCompraEntity;
 import co.com.codesoftware.persistence.entity.productos.PagoFacCompraEntity;
 import co.com.codesoftware.persistence.entity.productos.PagoFacturaCompraEntity;
+import co.com.codesoftware.persistencia.entidad.admin.ProductoAporte;
 import co.com.codesoftware.persistencia.entidad.generico.producto.ProductoGenericoEntity;
 import co.com.codesoftware.persistencia.entidad.inventario.ExistenciaXSedeEntity;
 import co.com.codesoftware.persistencia.entidad.inventario.PrecioProductoEntity;
@@ -608,9 +609,7 @@ public class ProductoWS {
      */
     @WebMethod(operationName = "insertarProductoAporte")
     public String insertarProductoAporte(@WebParam(name = "idAporte") Integer idAporte,
-            @WebParam(name = "codigo") String codigo,
-            @WebParam(name = "cantidad") Integer cantidad,
-            @WebParam(name = "costo") BigDecimal costo,
+            @WebParam(name = "codigo") ArrayList<ProductoAporte> productos,
             @WebParam(name = "idTius") Integer idTius) {
         String rta = "";
         try (ProductoLogica objLogica = new ProductoLogica()) {
