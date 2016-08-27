@@ -37,5 +37,7 @@
         <mapping class="co.com.codesoftware.persistence.entity.productos.MovimientoInventarioEntity"/>
         <mapping class="co.com.codesoftware.persistencia.entidad.facturacion.FacturaCompraTmpEntity"/>
         <mapping class="co.com.codesoftware.persistencia.entidad.facturacion.ProdFacCompraTmpEntity"/>
+        <mapping class="co.com.codesoftware.persistencia.entidad.facturacion.ProductosParamEntity"/>
+        
     </session-factory>
 </hibernate-configuration>

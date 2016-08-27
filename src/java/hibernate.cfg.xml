@@ -41,6 +41,7 @@
         <mapping class="co.com.codesoftware.persistencia.entidad.facturacion.TemporalProdTable"/>
         <mapping class="co.com.codesoftware.persistencia.entidad.facturacion.RemisionEntity"/>
         <mapping class="co.com.codesoftware.persistencia.entidad.facturacion.DetProdRemision"/>
+        <mapping class="co.com.codesoftware.persistencia.entidad.facturacion.ProductosParamEntity"/>
                 
         <mapping class="co.com.codesoftware.persistencia.entidad.pedido.PedidoEntity"/>
         <mapping class="co.com.codesoftware.persistencia.entidad.pedido.PedidoProductoEntity"/>

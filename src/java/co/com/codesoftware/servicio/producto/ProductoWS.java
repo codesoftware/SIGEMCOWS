@@ -8,6 +8,7 @@ package co.com.codesoftware.servicio.producto;
 import co.com.codesoftware.logic.ProductoLogic;
 import co.com.codesoftware.logica.inventario.ProductoLogica;
 import co.com.codesoftware.logica.inventario.ProductosGenericosLogica;
+import co.com.codesoftware.logica.inventario.ProductosParamLogica;
 import co.com.codesoftware.logica.inventario.SolicitudLogica;
 import co.com.codesoftware.logica.receta.RecetaLogica;
 import co.com.codesoftware.persistence.entities.simple.ProductoSimpleEntity;
@@ -17,6 +18,7 @@ import co.com.codesoftware.persistence.entity.productos.PagoFacturaCompraEntity;
 import co.com.codesoftware.persistencia.entidad.generico.producto.ProductoGenericoEntity;
 import co.com.codesoftware.persistencia.entidad.inventario.ExistenciaXSedeEntity;
 import co.com.codesoftware.persistencia.entidad.inventario.PrecioProductoEntity;
+import co.com.codesoftware.persistencia.entidad.inventario.ProductosParamEntity;
 import co.com.codesoftware.persistencia.entidad.inventario.PromPonderaEntity;
 import co.com.codesoftware.persistencia.entidad.inventario.SolicitudEntity;
 import co.com.codesoftware.persistencia.entidad.inventario.SolicitudProdEntity;
@@ -659,4 +661,68 @@ public class ProductoWS {
         return rta;
     }
 
+    /**
+     * metodo que inserta un producto parametrizado
+     *
+     * @param entidad
+     * @return
+     */
+    @WebMethod(operationName = "insertarProdParametrizado")
+    public boolean insertarProdParametrizado(@WebParam(name = "productoParametrizado") ProductosParamEntity entidad) {
+        boolean rta = false;
+        try (ProductosParamLogica logica = new ProductosParamLogica()) {
+            rta = logica.insertarProducto(entidad);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+
+    /**
+     * metodo que inserta un producto parametrizado
+     *
+     * @param entidad
+     * @return
+     */
+    @WebMethod(operationName = "actualizaProdParametrizado")
+    public boolean actualizaProdParametrizado(@WebParam(name = "productoParametrizado") ProductosParamEntity entidad) {
+        boolean rta = false;
+        try (ProductosParamLogica logica = new ProductosParamLogica()) {
+            rta = logica.actualizarProducto(entidad);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+    
+    /**
+     * metodo en el cual cosulta un producto parametrizado por id
+     * @param id
+     * @return 
+     */
+    @WebMethod(operationName = "obtenerProdParametrizado")
+    public ProductosParamEntity obtenerProdParametrizado(@WebParam(name = "idProd")Integer id){
+        ProductosParamEntity rta = new ProductosParamEntity();
+        try (ProductosParamLogica logica = new ProductosParamLogica()){
+            rta = logica.consultaUnicoProd(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+    
+    /**
+     * metodo que cosnsulta todos los productos parametrizados
+     * @return 
+     */
+    @WebMethod(operationName = "obtenerProductosParametrizado")
+    public List<ProductosParamEntity> obtenerProductosParametrizado(){
+         List<ProductosParamEntity> rta = new ArrayList<>();
+        try (ProductosParamLogica logica = new ProductosParamLogica()){
+            rta = logica.consultaLista();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
 }
