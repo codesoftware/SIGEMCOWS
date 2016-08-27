@@ -414,8 +414,8 @@ public class ProductoLogica implements AutoCloseable {
         String respuesta = "";
         List<String> response = new ArrayList<>();
         try (ReadFunction rf = new ReadFunction();) {
-           ResultSet rs = rf.enviaQuery("SELECT  IN_VALIDA_EXISTENCIAS(dska_dska) from in_tdska");
-         
+            ResultSet rs = rf.enviaQuery("SELECT  IN_VALIDA_EXISTENCIAS(dska_dska) from in_tdska");
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -444,38 +444,47 @@ public class ProductoLogica implements AutoCloseable {
     /**
      *
      * @param idAporte
-     * @param codExterno
-     * @param costo
+     * @param productos
      * @param idTius
-     * @param cantidad
      * @return
      */
-    public String insertProdAporte(Integer idAporte, ArrayList<ProductoAporte> productos, Integer idTius) {
+    public String insertProdAporte(Integer idAporte, List<ProductoAporte> productos, Integer idTius) {
         List<String> rta = new ArrayList<>();
+        Integer iterador = 0;
         try (ReadFunction rf = new ReadFunction()) {
-            if(productos != null){
+            if (productos != null) {
+                for (ProductoAporte item : productos) {
+                    rf.setNombreFuncion("IN_INSERTA_PROD_APORTE");
+                    rf.setNumParam(5);
+                    rf.adicionarParametro(idAporte, DataType.INT);
+                    rf.adicionarParametro(item.getCodExterno(), DataType.TEXT);
+                    rf.adicionarParametro(item.getCantidad(), DataType.INT);
+                    rf.adicionarParametro(item.getCosto(), DataType.BIGDECIMAL);
+                    rf.adicionarParametro(idTius, DataType.INT);
+                    rf.llamarFuncion();
+                    rta = rf.getRespuestaPg();
+                    if(!"Ok".equalsIgnoreCase(rta.get(0))){
+                        break;
+                    }
+                    rf.vaciaParametros();
+                    iterador++;
+                    System.out.println("Numero de registros: " + iterador);
+                }
             }
-            rf.setNombreFuncion("IN_INSERTA_PROD_APORTE");
-            rf.setNumParam(5);
-            rf.adicionarParametro(idAporte, DataType.INT);
-            rf.adicionarParametro(codExterno, DataType.TEXT);
-            rf.adicionarParametro(cantidad, DataType.INT);
-            rf.adicionarParametro(costo, DataType.BIGDECIMAL);
-            rf.adicionarParametro(idTius, DataType.INT);
-            rf.llamarFuncion();
-            rta = rf.getRespuestaPg();
         } catch (Exception e) {
             e.printStackTrace();
             return "Error " + e;
         }
         return rta.get(0);
     }
+
     /**
      * Funcion con la cual borro todos los productos de un aporte
+     *
      * @param idAporte
-     * @return 
+     * @return
      */
-    public String borrarProductosAporte(Integer idAporte){
+    public String borrarProductosAporte(Integer idAporte) {
         String rta = "";
         try {
             this.initOperation();
@@ -485,19 +494,22 @@ public class ProductoLogica implements AutoCloseable {
             rta = "Ok";
         } catch (Exception e) {
             e.printStackTrace();
-            rta = "Error "+ e;
+            rta = "Error " + e;
         }
         return rta;
     }
+
     /**
-     * Funcion con la cual llamo la funcion con la cual ejecuto el proceso de aportes
+     * Funcion con la cual llamo la funcion con la cual ejecuto el proceso de
+     * aportes
+     *
      * @param idAporte
      * @param idProceso
      * @param idAuxContable
      * @param idTius
-     * @return 
+     * @return
      */
-    public String ejecutarProcesoAporte(Integer idAporte, Integer idAuxContable, Integer idTius){
+    public String ejecutarProcesoAporte(Integer idAporte, Integer idAuxContable, Integer idTius) {
         List<String> rta = new ArrayList<>();
         try (ReadFunction rf = new ReadFunction()) {
             rf.setNombreFuncion("IN_GENERA_PROCESO_APORTE");
@@ -513,8 +525,6 @@ public class ProductoLogica implements AutoCloseable {
         }
         return rta.get(0);
     }
-            
-            
 
     private void initOperation() throws HibernateException {
         sesion = HibernateUtil.getSessionFactory().openSession();

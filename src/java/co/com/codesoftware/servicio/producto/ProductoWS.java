@@ -601,19 +601,17 @@ public class ProductoWS {
      * Funcion con la cual inserto un producto a un aporte
      *
      * @param idAporte
-     * @param codigo
-     * @param cantidad
-     * @param costo
+     * @param productos
      * @param idTius
      * @return
      */
     @WebMethod(operationName = "insertarProductoAporte")
     public String insertarProductoAporte(@WebParam(name = "idAporte") Integer idAporte,
-            @WebParam(name = "codigo") ArrayList<ProductoAporte> productos,
+            @WebParam(name = "productos") List<ProductoAporte> productos,
             @WebParam(name = "idTius") Integer idTius) {
         String rta = "";
         try (ProductoLogica objLogica = new ProductoLogica()) {
-            rta = objLogica.insertProdAporte(idAporte, codigo, cantidad, costo, idTius);
+            rta = objLogica.insertProdAporte(idAporte, productos, idTius);
         } catch (Exception e) {
             e.printStackTrace();
         }

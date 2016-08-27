@@ -8,13 +8,11 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLType;
 import java.sql.Statement;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.hibernate.type.PostgresUUIDType;
 
 public class ReadFunction implements AutoCloseable {
 
@@ -84,6 +82,11 @@ public class ReadFunction implements AutoCloseable {
         }
         this.parametros.add(param);
         return true;
+    }
+    
+    public void vaciaParametros(){
+        this.parametros = null;
+        this.parameters = null;                
     }
 
     /**
