@@ -305,7 +305,6 @@ public class ReporteLogica implements AutoCloseable {
     public String generaReporteBase64(List<MapaEntity> datos, List<MapaEntity> parametrosReporte) {
         String ruta = null;
         try {
-
             Map<String, Object> parametros = convierteList((ArrayList<MapaEntity>) datos);
             Map<String, Object> datosReporte = convierteList((ArrayList<MapaEntity>) parametrosReporte);
             parametros.put("RUTALOGO", rutaRepoServ);

@@ -3,6 +3,8 @@
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
+	<parameter name="fechaInicial" class="java.lang.String"/>
+	<parameter name="fechaFinal" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT dska_cod_ext,dska_desc, coalesce((select sum(dtpr_cant)
 from fa_tdtpr
@@ -11,7 +13,11 @@ where dtpr_dska = dska_dska), 0 ) prodVendidos,
 from fa_tfacom, fa_tfcprd
 where upper(facom_estad) = 'F'
 and fcprd_facom = facom_facom
-and fcprd_dska = dska_dska) prodComp
+and fcprd_dska = dska_dska) prodComp,
+(SELECT coalesce(sum(prap_cant),0)
+FROM IN_TPRAP, em_tapor
+where apor_apor = prap_apor
+AND PRAP_DSKA = DSKA_DSKA) APORTES
 FROM IN_TDSKA
 order by dska_dska]]>
 	</queryString>
@@ -19,6 +25,7 @@ order by dska_dska]]>
 	<field name="dska_desc" class="java.lang.String"/>
 	<field name="prodvendidos" class="java.lang.Long"/>
 	<field name="prodcomp" class="java.lang.Long"/>
+	<field name="aportes" class="java.math.BigDecimal"/>
 	<columnHeader>
 		<band height="61" splitType="Stretch">
 			<staticText>
@@ -30,7 +37,9 @@ order by dska_dska]]>
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
 				<text><![CDATA[CODIGO EXTERNO]]></text>
 			</staticText>
 			<staticText>
@@ -42,11 +51,13 @@ order by dska_dska]]>
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
 				<text><![CDATA[DESCRIPCION]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="302" y="41" width="131" height="20" uuid="857f172c-d3ad-40fb-be2c-ebe7450bd84e"/>
+				<reportElement x="302" y="41" width="92" height="20" uuid="857f172c-d3ad-40fb-be2c-ebe7450bd84e"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -54,11 +65,13 @@ order by dska_dska]]>
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[PRODUCTOS VENDIDOS]]></text>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[VENDIDOS]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="433" y="41" width="138" height="20" uuid="995a3c61-7c1a-4bf4-aba9-62e9650b8152"/>
+				<reportElement x="394" y="41" width="92" height="20" uuid="995a3c61-7c1a-4bf4-aba9-62e9650b8152"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -66,8 +79,48 @@ order by dska_dska]]>
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement verticalAlignment="Middle"/>
-				<text><![CDATA[PRODUCTOS COMPRADOS]]></text>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[COMPRADOS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="100" height="20" uuid="cac5e983-1f1a-4f30-8fe5-3cf2e2437398"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha Inicial:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="100" y="0" width="124" height="20" uuid="c1f429a6-fbd1-44f9-a86f-f11a8037fa30"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{fechaInicial}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="224" y="0" width="100" height="20" uuid="e5e4f1f8-d9ff-4f91-9c1f-c9f8c81c5673"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha Final:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="324" y="0" width="156" height="20" uuid="11ae965b-ef74-4a63-98c9-9c0d187ba6e8"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{fechaFinal}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="486" y="41" width="85" height="20" uuid="8764b403-c3f0-4230-829c-2cc7329d5213"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[APORTES]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
@@ -98,7 +151,7 @@ order by dska_dska]]>
 				<textFieldExpression><![CDATA[$F{dska_desc}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="302" y="0" width="131" height="20" uuid="299843ee-51ab-42a9-a97e-02ac7091cc0c"/>
+				<reportElement x="302" y="0" width="92" height="20" uuid="299843ee-51ab-42a9-a97e-02ac7091cc0c"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -110,7 +163,7 @@ order by dska_dska]]>
 				<textFieldExpression><![CDATA[$F{prodvendidos}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="433" y="0" width="138" height="20" uuid="72bd2e7c-a823-4167-8a66-5d049db723dc"/>
+				<reportElement x="394" y="0" width="92" height="20" uuid="72bd2e7c-a823-4167-8a66-5d049db723dc"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -120,6 +173,18 @@ order by dska_dska]]>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{prodcomp}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="486" y="0" width="85" height="20" uuid="5484d504-bc5c-44ae-93c3-654dd4949263"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{aportes}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
