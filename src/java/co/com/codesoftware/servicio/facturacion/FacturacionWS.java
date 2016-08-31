@@ -82,6 +82,25 @@ public class FacturacionWS {
     }
 
     /**
+     * Funcion con la cual obtengo una factura por medio del id de su resolucion
+     * de facturacion y de su consecutivo de facturacion
+     *
+     * @param idResolucion
+     * @param idConsec
+     * @return
+     */
+    @WebMethod(operationName = "obtenerFacturaXConsec")
+    @WebResult(name = "FacturaEntity")
+    public FacturaEntity obtenerFacturaXConsec(@XmlElement(required = true) @WebParam(name = "idResolucion") Integer idResolucion,
+            @XmlElement(required = true) @WebParam(name = "idConsec") Integer idConsec) {
+        try (FacturacionLogica objLogica = new FacturacionLogica()) {
+            return objLogica.getFacturaForConsec(idResolucion, idConsec);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    /**
      * Metodo que consulta el valor de la facturacion por sede
      *
      * @param sede
@@ -441,9 +460,9 @@ public class FacturacionWS {
      * @return
      */
     @WebMethod(operationName = "consultaMaxFacturacion")
-    public Integer consultaMaxFacturacion(@WebParam(name = "idResolucion")Integer idResolucion) {
+    public Integer consultaMaxFacturacion(@WebParam(name = "idResolucion") Integer idResolucion) {
         Integer maxFact = null;
-        try (FacturacionLogica objLogica = new FacturacionLogica()){
+        try (FacturacionLogica objLogica = new FacturacionLogica()) {
             maxFact = objLogica.consultaMaxFacturacion(idResolucion);
         } catch (Exception e) {
             e.printStackTrace();

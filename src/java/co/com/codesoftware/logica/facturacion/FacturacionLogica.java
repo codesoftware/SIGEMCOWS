@@ -257,6 +257,50 @@ public class FacturacionLogica implements AutoCloseable {
         }
         return factura;
     }
+    
+    /**
+     * Funcion con la cual se obtiene una factura por medio de su id
+     *
+     * @param id
+     * @return
+     */
+    public FacturaEntity getFacturaForConsec(Integer idRsfa, Integer consec) {
+        FacturaEntity factura = null;
+        boolean validaFecha = true;
+        try {
+            initOperation();
+            Criteria criteria = sesion.createCriteria(FacturaEntity.class);
+            criteria.add(Restrictions.eq("resolucion", idRsfa));
+            criteria.add(Restrictions.eq("consecutivo", consec));
+            criteria.setFetchMode("cliente", FetchMode.JOIN);
+            criteria.setFetchMode("idSede", FetchMode.JOIN);
+            factura = (FacturaEntity) criteria.uniqueResult();
+            if (factura != null) {
+                Criteria crit = sesion.createCriteria(DetProduFacturaEntity.class);
+                crit.add(Restrictions.eq("idFactura", factura.getId()));
+                crit.setFetchMode("producto", FetchMode.JOIN);
+                crit.setFetchMode("producto.referencia", FetchMode.JOIN);
+                crit.setFetchMode("producto.marca", FetchMode.JOIN);
+                crit.setFetchMode("producto.categoria", FetchMode.JOIN);
+                crit.setFetchMode("producto.subcuenta", FetchMode.JOIN);
+                List<DetProduFacturaEntity> aux = crit.list();
+                if (aux != null) {
+                    if (!aux.isEmpty()) {
+                        if (validaFecha) {
+                            validaFecha = false;
+                            factura.setFechaExacta(aux.get(0).getFecha());
+                        }
+                        factura.setDetalleProductos(aux);
+                    }
+                }
+                factura.setDetalleRecetas(sesion.createCriteria(DetReceFacturaEntity.class).
+                        add(Restrictions.eq("factura", factura.getId())).list());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return factura;
+    }
 
     /**
      * Funcion con la cual obtengo la suma de facturas que existen en el dia
@@ -846,6 +890,7 @@ public class FacturacionLogica implements AutoCloseable {
     public Integer consultaMaxFacturacion(Integer idResolucion) {
         Integer rta = null;
         try {
+            this.initOperation();
             Query query = sesion.createQuery("select max(consecutivo) from FacturaEntity where resolucion = :idRsfa");
             query.setInteger("idRsfa", idResolucion);
             rta = (Integer) query.uniqueResult();
