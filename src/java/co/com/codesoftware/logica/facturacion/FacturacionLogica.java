@@ -57,7 +57,7 @@ public class FacturacionLogica implements AutoCloseable {
      */
     public List<FacturaEntity> obtieneFacturasXSede(Date fechaInicial,
             Date fechaFinal,
-            Integer sede, 
+            Integer sede,
             String estado) {
         List<FacturaEntity> rta = null;
         try {
@@ -67,18 +67,18 @@ public class FacturacionLogica implements AutoCloseable {
                     .setFetchMode("cliente", FetchMode.JOIN)
                     .createAlias("idSede", "sed").add(Restrictions.eq("sed.id", sede))
                     .add(Restrictions.between("fecha", fechaInicial, fechaFinal)).addOrder(Order.desc("id"));
-            if(estado == null){
+            if (estado == null) {
                 estado = "";
             }
-            if(!"".equalsIgnoreCase(estado.trim())){
-                if("R".equalsIgnoreCase(estado.trim())){
+            if (!"".equalsIgnoreCase(estado.trim())) {
+                if ("R".equalsIgnoreCase(estado.trim())) {
                     crit.add(Restrictions.sqlRestriction("fact_fact in (select remi_fact from in_tremi)"));
-                }else if("PC".equalsIgnoreCase(estado.trim())){
-                    String []valores = new String[] { "S", "A","R"};
+                } else if ("PC".equalsIgnoreCase(estado.trim())) {
+                    String[] valores = new String[]{"S", "A", "R"};
                     crit.add(Restrictions.in("estado", valores));
-                }else if("P".equalsIgnoreCase(estado.trim())){
+                } else if ("P".equalsIgnoreCase(estado.trim())) {
                     crit.add(Restrictions.eq("estado", estado.trim()));
-                }else if("C".equalsIgnoreCase(estado.trim())){
+                } else if ("C".equalsIgnoreCase(estado.trim())) {
                     crit.add(Restrictions.eq("estado", estado.trim()));
                 }
             }
@@ -116,7 +116,7 @@ public class FacturacionLogica implements AutoCloseable {
             if (idFactura == null) {
                 idFactura = 0;
             }
-           //idFactura = idFactura - iniFact;
+            //idFactura = idFactura - iniFact;
             if (idFactura > 0) {
                 crit.add(Restrictions.eq("id", idFactura));
             } else {
@@ -835,22 +835,43 @@ public class FacturacionLogica implements AutoCloseable {
         }
         return rta;
     }
+
     /**
-     * Funcion con la cual obtengo el valor de 
-     * @param valor
-     * @return 
+     * Funcion con la cual obtengo el ultimo consecutivo con el cual se facturo
+     * dependendiendo la resolucion
+     *
+     * @param idResolucion
+     * @return
      */
-    public BigDecimal obtieneValorFacturasMes(Integer valor){
+    public Integer consultaMaxFacturacion(Integer idResolucion) {
+        Integer rta = null;
+        try {
+            Query query = sesion.createQuery("select max(consecutivo) from FacturaEntity where resolucion = :idRsfa");
+            query.setInteger("idRsfa", idResolucion);
+            rta = (Integer) query.uniqueResult();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+
+    /**
+     * Funcion con la cual obtengo el valor de
+     *
+     * @param valor
+     * @return
+     */
+    public BigDecimal obtieneValorFacturasMes(Integer valor) {
         BigDecimal valorTotal = null;
         System.out.println("Valor " + valor);
         try {
             this.initOperation();
             Criteria crit = this.sesion.createCriteria(FacturaEntity.class);
             crit.setProjection(Projections.sum("valor"));
-            if(valor == 0){
+            if (valor == 0) {
                 crit.add(Restrictions.sqlRestriction("to_char(fact_fec_ini , 'mm/yyyy') = to_char(now(), 'mm/yyyy')"));
-            }else{
-                crit.add(Restrictions.sqlRestriction("to_char(fact_fec_ini , 'mm/yyyy') =  to_char(current_date + interval '-"+valor+" month', 'mm/yyyy')"));
+            } else {
+                crit.add(Restrictions.sqlRestriction("to_char(fact_fec_ini , 'mm/yyyy') =  to_char(current_date + interval '-" + valor + " month', 'mm/yyyy')"));
             }
             valorTotal = (BigDecimal) crit.uniqueResult();
         } catch (Exception e) {

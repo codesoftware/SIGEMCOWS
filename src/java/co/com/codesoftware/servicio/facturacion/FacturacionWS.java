@@ -170,7 +170,7 @@ public class FacturacionWS {
             @XmlElement(required = true) @WebParam(name = "estado") String estado) {
         List<FacturaEntity> rta = null;
         try (FacturacionLogica logica = new FacturacionLogica()) {
-            rta = logica.obtieneFacturasXSede(fInicial, fFinal, idSede,estado);
+            rta = logica.obtieneFacturasXSede(fInicial, fFinal, idSede, estado);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -396,12 +396,14 @@ public class FacturacionWS {
         return rta;
 
     }
+
     /**
      * metodo que consulta los valores temporales de la factura de compra
+     *
      * @param idFactura
-     * @return 
+     * @return
      */
-     @WebMethod(operationName = "llamaProcedimientoValoresFacturaTMP")
+    @WebMethod(operationName = "llamaProcedimientoValoresFacturaTMP")
     public String llamaProcedimientoValoresFacturaTMP(@WebParam(name = "idFacturaCompra") Integer idFactura) {
         String rta = "";
         try {
@@ -413,13 +415,14 @@ public class FacturacionWS {
         return rta;
 
     }
-    
+
     /**
      * metodo que consulta las facturas vencidas
-     * @return 
+     *
+     * @return
      */
     @WebMethod(operationName = "consultaFacturasVencidas")
-    public List<FacturaCompraEntity> consultaFacturasVencidas(){
+    public List<FacturaCompraEntity> consultaFacturasVencidas() {
         List<FacturaCompraEntity> respuesta = new ArrayList<>();
         try {
             FacturaCompraLogic logica = new FacturaCompraLogic();
@@ -428,6 +431,24 @@ public class FacturacionWS {
             e.printStackTrace();
         }
         return respuesta;
+    }
+
+    /**
+     * Funcion con la cual consulto el ultimo consecutivo de facturaaaacion por
+     * medio de su resolucion de facturacion
+     *
+     * @param idResolucion
+     * @return
+     */
+    @WebMethod(operationName = "consultaMaxFacturacion")
+    public Integer consultaMaxFacturacion(@WebParam(name = "idResolucion")Integer idResolucion) {
+        Integer maxFact = null;
+        try (FacturacionLogica objLogica = new FacturacionLogica()){
+            maxFact = objLogica.consultaMaxFacturacion(idResolucion);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return maxFact;
     }
 
 }
