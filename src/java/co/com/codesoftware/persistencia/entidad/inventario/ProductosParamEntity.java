@@ -43,6 +43,8 @@ public class ProductosParamEntity implements Serializable {
     private String estado;
     @Formula("(select prod.dska_desc from in_tdska prod where prod.dska_dska = propar_dska)")
     private String descripcionProducto;
+    @Formula("(select prod.dska_cod_ext from in_tdska prod where prod.dska_dska = propar_dska)")
+    private String codigoExterno;
 
     public Integer getIdUsuario() {
         return idUsuario;
@@ -100,6 +102,15 @@ public class ProductosParamEntity implements Serializable {
     public void setDescripcionProducto(String descripcionProducto) {
         this.descripcionProducto = descripcionProducto;
     }
+
+    public String getCodigoExterno() {
+        return codigoExterno;
+    }
+
+    public void setCodigoExterno(String codigoExterno) {
+        this.codigoExterno = codigoExterno;
+    }
+    
     
     
     

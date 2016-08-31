@@ -79,7 +79,8 @@ public class ProductosParamLogica implements AutoCloseable {
     public List<ProductosParamEntity> consultaLista(){
         List<ProductosParamEntity> rta = new ArrayList<>();
         try {
-            
+            initOperation();
+            rta = sesion.createCriteria(ProductosParamEntity.class).list();
         } catch (Exception e) {
             e.printStackTrace();
         }
