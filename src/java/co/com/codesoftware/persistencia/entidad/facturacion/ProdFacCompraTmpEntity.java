@@ -52,6 +52,10 @@ public class ProdFacCompraTmpEntity implements Serializable{
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     @Column(name = "fcprd_tmp_fech")
     private Date fecha;
+    @Column(name = "fcprd_tmp_inve")
+    private String inventariable;
+    @Column(name = "fcprd_tmp_cantinve")
+    private Integer cantidadInventariable;
 
 
     public Integer getId() {
@@ -133,6 +137,24 @@ public class ProdFacCompraTmpEntity implements Serializable{
     public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
+
+    public String getInventariable() {
+        return inventariable;
+    }
+
+    public void setInventariable(String inventariable) {
+        this.inventariable = inventariable;
+    }
+
+    public Integer getCantidadInventariable() {
+        return cantidadInventariable;
+    }
+
+    public void setCantidadInventariable(Integer cantidadInventariable) {
+        this.cantidadInventariable = cantidadInventariable;
+    }
+    
+    
 
 
     
