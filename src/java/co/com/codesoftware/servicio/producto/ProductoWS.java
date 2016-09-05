@@ -722,4 +722,25 @@ public class ProductoWS {
         }
         return rta;
     }
+    
+    /**
+     * metodo que verifica si el producto esta parametrizado en los productos no inventareables
+     * @param idProducto
+     * @return 
+     */
+   @WebMethod(operationName = "verificaProductoParametrizado")
+   public String verificaProductoParametrizado(@WebParam(name = "idProducto") Integer idProducto){
+       String rta = "";
+       try (ProductosParamLogica logica = new ProductosParamLogica()){
+           if(logica.verificaProductoParam(idProducto)>0){
+               rta = "Ok";
+           }else{
+               rta = "Error, Producto no se encuentra parametrizado en los productos no inventariables";
+           }
+                   
+       } catch (Exception e) {
+           e.printStackTrace();
+       }
+       return rta;
+   }
 }

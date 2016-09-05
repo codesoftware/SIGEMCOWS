@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Projection;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
 /**
@@ -66,6 +68,24 @@ public class ProductosParamLogica implements AutoCloseable {
             initOperation();
             rta = (ProductosParamEntity) sesion.createCriteria(ProductosParamEntity.class)
                     .add(Restrictions.eq("id", id)).uniqueResult();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+    
+    /**
+     * metodo que valida si el producto esta parametrizado
+     * @param idProducto
+     * @return 
+     */
+    public Integer verificaProductoParam(Integer idProducto){
+        Integer rta = 0;
+        try {
+            initOperation();
+            rta = (Integer)sesion.createCriteria(ProductosParamEntity.class).
+                    setProjection(Projections.rowCount()).
+                    add(Restrictions.eq("idProducto", idProducto)).uniqueResult().hashCode();
         } catch (Exception e) {
             e.printStackTrace();
         }
