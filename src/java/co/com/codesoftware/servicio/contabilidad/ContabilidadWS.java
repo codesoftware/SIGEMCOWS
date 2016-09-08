@@ -202,4 +202,24 @@ public class ContabilidadWS {
         }
         return  rta;
     }
+    /**
+     * FUncion con la cual obtengo los movimientos contables por medio de la cuenta
+     * @param fechaIn
+     * @param fechaFi
+     * @param cuenta
+     * @return 
+     */
+    @WebMethod(operationName = "obtenerMoviContCuenta")
+    @WebResult(name = "listaMovimientos")
+    public List<MoviContableEntity> obtenerMoviContCuenta(@XmlElement(required = true) @WebParam(name = "fechaIn")Date fechaIn, 
+            @XmlElement(required = true) @WebParam(name = "fechaFi")Date fechaFi,
+            @XmlElement(required = true) @WebParam(name = "cuenta")String cuenta ){
+        List<MoviContableEntity> rta = null;
+        try (ContabilidadLogica objLogica = new ContabilidadLogica()){
+            rta = objLogica.consultarMovContXCuenta(fechaIn, fechaFi, cuenta);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return  rta;
+    }
 }

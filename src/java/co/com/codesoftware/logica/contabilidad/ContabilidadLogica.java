@@ -13,6 +13,8 @@ import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 /**
@@ -57,6 +59,39 @@ public class ContabilidadLogica implements AutoCloseable {
                 }
                 
             }
+            rta = crit.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+    
+    public List<MoviContableEntity> consultarMovContXCuenta(Date fechaIn, Date fechaFin, String cuenta) {
+        List<MoviContableEntity> rta = null;
+        try {
+            this.initOperation();
+            Criteria crit = this.sesion.createCriteria(MoviContableEntity.class);
+            crit.setFetchMode("subcuenta", FetchMode.JOIN);
+            crit.setFetchMode("tipoDocumento", FetchMode.JOIN);
+            crit.setFetchMode("auxiliar", FetchMode.JOIN);
+            if(cuenta != null){
+                crit.createAlias("subcuenta", "sbcu");
+                crit.add(Restrictions.like("sbcu.codigo", cuenta, MatchMode.ANYWHERE));
+            }
+            if(fechaIn != null || fechaFin != null){
+                if(fechaIn != null && fechaFin != null){
+                    fechaFin.setHours(23);
+                    fechaFin.setMinutes(59);
+                    fechaFin.setSeconds(59);
+                    crit.add(Restrictions.between("fecha", fechaIn, fechaFin));
+                }else if(fechaIn != null ){
+                    crit.add(Restrictions.le("fecha", fechaIn));
+                }else if(fechaFin != null){
+                    crit.add(Restrictions.gt("fecha", fechaFin));
+                }
+                
+            }
+            crit.addOrder(Order.desc("id"));
             rta = crit.list();
         } catch (Exception e) {
             e.printStackTrace();
