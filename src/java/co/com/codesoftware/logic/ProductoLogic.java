@@ -22,6 +22,7 @@ import co.com.codesoftware.persistence.entity.productos.PagoFacCompraEntity;
 import co.com.codesoftware.persistence.entity.productos.PagoFacturaCompraEntity;
 import co.com.codesoftware.persistence.entity.productos.PorcentajePrecioEntity;
 import co.com.codesoftware.persistence.entity.productos.ProductoFacCompraEntity;
+import co.com.codesoftware.persistence.entity.productos.ProductoTmpEntity;
 import co.com.codesoftware.persistencia.ReadFunction;
 import co.com.codesoftware.persistencia.utilities.DataType;
 import java.math.BigDecimal;
@@ -881,6 +882,36 @@ public class ProductoLogic implements AutoCloseable {
                 crit.createAlias("sede", "sed").add(Restrictions.eq("sed.id", idSede));
             }
             rta = crit.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+    /**
+     * Funcion con la cual verifico los repetidos en la tabla auxiliar 
+     * @return 
+     */
+    public List consultaRepetidos(){
+        List<String> rta = null;
+        try {
+            this.initOperation();
+            Query query = this.sesion.createQuery("select codigoExterno from ProductoTmpEntity group by codigoExterno having count(* ) > 1");
+            rta = query.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+    /**
+     * Funcion con la cual consulta los codigos repetidos en el Excel y en sistema
+     * @return 
+     */
+    public List consultaRepetidosSistema(){
+        List<String> rta = null;
+        try {
+            this.initOperation();
+            Query query = this.sesion.createQuery("select prod.codigoExt from ProductoEntity prod, ProductoTmpEntity tem where prod.codigoExt = tem.codigoExterno ");
+            rta = query.list();
         } catch (Exception e) {
             e.printStackTrace();
         }

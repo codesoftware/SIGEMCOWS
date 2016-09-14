@@ -734,5 +734,33 @@ public class AdministrationEndPoint {
         }
         return rta;
     }
+    /**
+     * Funcion con la cual se obtiene los repetidos de la tabla temporal
+     * @return 
+     */
+    @WebMethod(operationName = "obtieneRepetidosTemporal")
+    public List<String> obtieneRepetidosTemporal(){
+        List<String> rta = null;
+        try (ProductoLogic objLogic = new ProductoLogic() ){
+            rta = objLogic.consultaRepetidos();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+    /**
+     * Funcion con la cual obtengo los codigos repeditos en el sistema y el excel
+     * @return 
+     */
+    @WebMethod(operationName = "obtieneRepetidosSistemaTemporal")
+    public List<String> obtieneRepetidosSistemaTemporal(){
+        List<String> rta = null;
+        try (ProductoLogic objLogic = new ProductoLogic() ){
+            rta = objLogic.consultaRepetidosSistema();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
 
 }
