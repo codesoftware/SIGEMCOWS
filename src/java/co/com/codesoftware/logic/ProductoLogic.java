@@ -917,6 +917,23 @@ public class ProductoLogic implements AutoCloseable {
         }
         return rta;
     }
+    /**
+     * Funcion 
+     * @return 
+     */
+    public String borraTemporalProductos(){
+        String rta= "";
+        try {
+            this.initOperation();
+            Query query = this.sesion.createQuery("delete from ProductoTmpEntity");
+            query.executeUpdate();
+            rta = "Ok";
+        } catch (Exception e) {
+            e.printStackTrace();
+            rta = "Error " + e;
+        }
+        return rta;
+    }
 
     /**
      * Funcion con la cual registro los productos sin realizar movimientos

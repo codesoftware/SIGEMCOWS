@@ -762,5 +762,19 @@ public class AdministrationEndPoint {
         }
         return rta;
     }
+    /**
+     * Funcion con la cual borro los datos temporales para el cargue de productos
+     * @return 
+     */
+    @WebMethod(operationName = "borraTablaTemporal")
+    public String borraTablaTemporal(){
+        String rta = "";
+        try(ProductoLogic objLogic = new ProductoLogic()) {
+            rta = objLogic.borraTemporalProductos();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
 
 }
