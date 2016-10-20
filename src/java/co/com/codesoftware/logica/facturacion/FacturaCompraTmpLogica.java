@@ -187,12 +187,12 @@ public class FacturaCompraTmpLogica implements AutoCloseable {
             initOperation();
             Criteria crit = sesion.createCriteria(ProdFacCompraTmpEntity.class)
                     .add(Restrictions.eq("idFacturaCompra", idFactura));
-            crit.setFetchMode("producto", FetchMode.JOIN);
-            crit.setFetchMode("producto.producto", FetchMode.JOIN);
-            crit.setFetchMode("producto.marca", FetchMode.JOIN);
-            crit.setFetchMode("producto.categoria", FetchMode.JOIN);
-            crit.setFetchMode("producto.subcuenta", FetchMode.JOIN);
-            crit.setFetchMode("producto.referencia", FetchMode.JOIN);
+//            crit.setFetchMode("producto", FetchMode.JOIN);
+//            crit.setFetchMode("producto.producto", FetchMode.JOIN);
+//            crit.setFetchMode("producto.marca", FetchMode.JOIN);
+//            crit.setFetchMode("producto.categoria", FetchMode.JOIN);
+//            crit.setFetchMode("producto.subcuenta", FetchMode.JOIN);
+//            crit.setFetchMode("producto.referencia", FetchMode.JOIN);
             
             rta = crit.list();
         } catch (Exception e) {
