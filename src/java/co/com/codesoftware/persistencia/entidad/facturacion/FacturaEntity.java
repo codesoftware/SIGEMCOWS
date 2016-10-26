@@ -18,6 +18,7 @@ import java.io.Serializable;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import org.hibernate.annotations.Formula;
 
 @Entity
 @Table(name = "fa_tfact")
@@ -77,6 +78,8 @@ public class FacturaEntity implements Serializable {
     private BigDecimal valorCobrar;
     @Column(name = "FACT_VLRRTFU")
     private BigDecimal vlrReteFu;
+    @Formula("(select sum((dtpr.dtpr_vlr_iva_tot + dtpr.dtpr_utilidad ) - dtpr.dtpr_vlr_total) from fa_tdtpr dtpr where fact_fact = dtpr.dtpr_fact)")
+    private BigDecimal vlrCostoProd;
 
     public Integer getId() {
         return id;
@@ -276,6 +279,14 @@ public class FacturaEntity implements Serializable {
 
     public void setVlrReteFu(BigDecimal vlrReteFu) {
         this.vlrReteFu = vlrReteFu;
+    }
+
+    public BigDecimal getVlrCostoProd() {
+        return vlrCostoProd;
+    }
+
+    public void setVlrCostoProd(BigDecimal vlrCostoProd) {
+        this.vlrCostoProd = vlrCostoProd;
     }
 
 }
