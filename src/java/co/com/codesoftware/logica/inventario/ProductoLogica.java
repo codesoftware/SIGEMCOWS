@@ -517,8 +517,12 @@ public class ProductoLogica implements AutoCloseable {
             rf.adicionarParametro(idAporte, DataType.INT);
             rf.adicionarParametro(idAuxContable, DataType.INT);
             rf.adicionarParametro(idTius, DataType.INT);
-            rf.llamarFuncion();
-            rta = rf.getRespuestaPg();
+            boolean valida = rf.llamarFuncion();
+            if(valida){
+                rta = rf.getRespuestaPg();
+            }else{
+                rta.add(rf.getRtaPg());
+            }
         } catch (Exception e) {
             e.printStackTrace();
             return "Error " + e;

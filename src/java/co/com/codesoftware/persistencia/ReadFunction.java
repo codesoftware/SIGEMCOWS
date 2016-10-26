@@ -83,10 +83,10 @@ public class ReadFunction implements AutoCloseable {
         this.parametros.add(param);
         return true;
     }
-    
-    public void vaciaParametros(){
+
+    public void vaciaParametros() {
         this.parametros = null;
-        this.parameters = null;                
+        this.parameters = null;
     }
 
     /**
@@ -131,23 +131,23 @@ public class ReadFunction implements AutoCloseable {
                     for (Parametro parametro : this.parametros) {
                         if (parametro.getDataType().toString().equalsIgnoreCase("TEXT")) {
                             String aux = (String) parametro.getObjeto();
-                            if(aux== null){
+                            if (aux == null) {
                                 ps.setNull(i, Types.VARCHAR);
-                            }else{
+                            } else {
                                 ps.setString(i, aux);
                             }
                         } else if (parametro.getDataType().toString().equalsIgnoreCase("INT")) {
-                            Integer aux =  (Integer) parametro.getObjeto();
-                            if(aux== null){
+                            Integer aux = (Integer) parametro.getObjeto();
+                            if (aux == null) {
                                 ps.setNull(i, Types.VARCHAR);
-                            }else{
+                            } else {
                                 ps.setInt(i, aux);
                             }
-                        } else if(parametro.getDataType().toString().equalsIgnoreCase("BIGDECIMAL")){
+                        } else if (parametro.getDataType().toString().equalsIgnoreCase("BIGDECIMAL")) {
                             BigDecimal aux = (BigDecimal) parametro.getObjeto();
-                            if(aux== null){
+                            if (aux == null) {
                                 ps.setNull(i, Types.NUMERIC);
-                            }else{
+                            } else {
                                 ps.setBigDecimal(i, aux);
                             }
                         }
@@ -161,12 +161,13 @@ public class ReadFunction implements AutoCloseable {
                 this.ListResponsePg();
                 ps.close();
                 conn.close();
-            }else{
+            } else {
                 respuesta = "Error al crear la conexion ";
             }
 
         } catch (Exception e) {
             e.printStackTrace();
+            rtaPg = "Error al ejecutar el proceso " + e;
             return false;
         }
         return true;
@@ -310,6 +311,14 @@ public class ReadFunction implements AutoCloseable {
 
     public void setRespuestaPg(List<String> respuestaPg) {
         this.respuestaPg = respuestaPg;
+    }
+
+    public String getRtaPg() {
+        return rtaPg;
+    }
+
+    public void setRtaPg(String rtaPg) {
+        this.rtaPg = rtaPg;
     }
 
 }
