@@ -22,8 +22,10 @@ import javax.jws.WebResult;
 import javax.xml.bind.annotation.XmlElement;
 
 /**
- *
- * @author ACER
+ * MO-001 Consulta movimientos contables terceros: se modifica la consulta para
+ * que reciba el id del tercero y el tipo 
+ * jmorenor1986 
+ * 07/11/2016
  */
 @WebService(serviceName = "ContabilidadWS")
 public class ContabilidadWS {
@@ -207,16 +209,23 @@ public class ContabilidadWS {
      * @param fechaIn
      * @param fechaFi
      * @param cuenta
+     * @param tipo
+     * @param tercero
+     * 
      * @return 
      */
     @WebMethod(operationName = "obtenerMoviContCuenta")
     @WebResult(name = "listaMovimientos")
     public List<MoviContableEntity> obtenerMoviContCuenta(@XmlElement(required = true) @WebParam(name = "fechaIn")Date fechaIn, 
             @XmlElement(required = true) @WebParam(name = "fechaFi")Date fechaFi,
-            @XmlElement(required = true) @WebParam(name = "cuenta")String cuenta ){
+            @XmlElement(required = true) @WebParam(name = "cuenta")String cuenta,
+            @XmlElement(required = true) @WebParam(name = "tipo")String tipo,
+            @XmlElement(required = true) @WebParam(name = "tercero")Integer tercero){
         List<MoviContableEntity> rta = null;
         try (ContabilidadLogica objLogica = new ContabilidadLogica()){
-            rta = objLogica.consultarMovContXCuenta(fechaIn, fechaFi, cuenta);
+            //MO-001
+            rta = objLogica.consultarMovContXCuenta(fechaIn, fechaFi, cuenta,tipo,tercero);
+            //MO-001
         } catch (Exception e) {
             e.printStackTrace();
         }

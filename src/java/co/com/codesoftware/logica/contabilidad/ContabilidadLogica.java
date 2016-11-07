@@ -18,8 +18,12 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 /**
- *
- * @author ACER
+ * /*
+ * MO-001 Consulta movimientos contables terceros: se modifica la consulta para
+ * que reciba el id del tercero y el tipo 
+ * jmorenor1986 
+ * 07/11/2016
+ * -------------------------------------------------------------------------------------------------------
  */
 public class ContabilidadLogica implements AutoCloseable {
 
@@ -43,21 +47,21 @@ public class ContabilidadLogica implements AutoCloseable {
             crit.setFetchMode("subcuenta", FetchMode.JOIN);
             crit.setFetchMode("tipoDocumento", FetchMode.JOIN);
             crit.setFetchMode("auxiliar", FetchMode.JOIN);
-            if(!"-1".equalsIgnoreCase(tipoDoc)){
+            if (!"-1".equalsIgnoreCase(tipoDoc)) {
                 crit.add(Restrictions.eq("llave", tipoDoc));
             }
-            if(fechaIn != null || fechaFin != null){
-                if(fechaIn != null && fechaFin != null){
+            if (fechaIn != null || fechaFin != null) {
+                if (fechaIn != null && fechaFin != null) {
                     fechaFin.setHours(23);
                     fechaFin.setMinutes(59);
                     fechaFin.setSeconds(59);
                     crit.add(Restrictions.between("fecha", fechaIn, fechaFin));
-                }else if(fechaIn != null ){
+                } else if (fechaIn != null) {
                     crit.add(Restrictions.le("fecha", fechaIn));
-                }else if(fechaFin != null){
+                } else if (fechaFin != null) {
                     crit.add(Restrictions.gt("fecha", fechaFin));
                 }
-                
+
             }
             rta = crit.list();
         } catch (Exception e) {
@@ -65,31 +69,42 @@ public class ContabilidadLogica implements AutoCloseable {
         }
         return rta;
     }
-    
-    public List<MoviContableEntity> consultarMovContXCuenta(Date fechaIn, Date fechaFin, String cuenta) {
+
+    public List<MoviContableEntity> consultarMovContXCuenta(Date fechaIn, Date fechaFin, String cuenta, String tipo, Integer tercero) {
         List<MoviContableEntity> rta = null;
         try {
+            System.out.println("cuenta:"+cuenta);
+            System.out.println("tipo:"+tipo);
+            System.out.println("tercero:"+tercero);
             this.initOperation();
             Criteria crit = this.sesion.createCriteria(MoviContableEntity.class);
             crit.setFetchMode("subcuenta", FetchMode.JOIN);
             crit.setFetchMode("tipoDocumento", FetchMode.JOIN);
             crit.setFetchMode("auxiliar", FetchMode.JOIN);
-            if(cuenta != null){
+            if (cuenta != null && !"".equalsIgnoreCase(cuenta)) {
                 crit.createAlias("subcuenta", "sbcu");
                 crit.add(Restrictions.like("sbcu.codigo", cuenta, MatchMode.ANYWHERE));
             }
-            if(fechaIn != null || fechaFin != null){
-                if(fechaIn != null && fechaFin != null){
+            //MO-001
+            if(tipo!=null && !"".equalsIgnoreCase(tipo)){
+                crit.add(Restrictions.eq("tipoTercero", Integer.parseInt(tipo)));
+            }
+            if(tercero!=null && tercero !=-1){
+                crit.add(Restrictions.eq("tercero", tercero));
+            }
+            //MO-001
+            if (fechaIn != null || fechaFin != null) {
+                if (fechaIn != null && fechaFin != null) {
                     fechaFin.setHours(23);
                     fechaFin.setMinutes(59);
                     fechaFin.setSeconds(59);
                     crit.add(Restrictions.between("fecha", fechaIn, fechaFin));
-                }else if(fechaIn != null ){
+                } else if (fechaIn != null) {
                     crit.add(Restrictions.le("fecha", fechaIn));
-                }else if(fechaFin != null){
+                } else if (fechaFin != null) {
                     crit.add(Restrictions.gt("fecha", fechaFin));
                 }
-                
+
             }
             crit.addOrder(Order.desc("id"));
             rta = crit.list();

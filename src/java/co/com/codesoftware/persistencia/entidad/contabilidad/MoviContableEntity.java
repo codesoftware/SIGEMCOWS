@@ -18,8 +18,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 
 /**
- *
- * @author john
+ * MO-001 se añade el mapeo del tercero sin la relacion jmorenor1986 07/11/2016
+ * ----------------------------------------------------
  */
 @Entity
 @Table(name = "co_tmvco")
@@ -50,6 +50,10 @@ public class MoviContableEntity implements Serializable {
     @Column(name = "mvco_fecha")
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date fecha;
+    @Column(name = "mvco_tercero")
+    private Integer tercero;
+    @Column(name = "mvco_tipo")
+    private Integer tipoTercero;
 
     public Integer getId() {
         return id;
@@ -133,6 +137,22 @@ public class MoviContableEntity implements Serializable {
 
     public void setFecha(Date fecha) {
         this.fecha = fecha;
+    }
+
+    public Integer getTercero() {
+        return tercero;
+    }
+
+    public void setTercero(Integer tercero) {
+        this.tercero = tercero;
+    }
+
+    public Integer getTipoTercero() {
+        return tipoTercero;
+    }
+
+    public void setTipoTercero(Integer tipoTercero) {
+        this.tipoTercero = tipoTercero;
     }
 
 }
